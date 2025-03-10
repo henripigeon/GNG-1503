@@ -4422,7 +4422,6 @@ function getRandomQuestionForCard(cardId: string): CardQuestion | null {
 }
 // BEGINNING FROM function GameContent() ONWARDS
 // (Ensure you've already defined uiTranslations, scenarioList, newScenarioRankings, etc. above this.)
-
 function GameContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -4470,15 +4469,19 @@ function GameContent() {
   const [team1CardCount, setTeam1CardCount] = useState(5);
   const [team2CardCount, setTeam2CardCount] = useState(5);
 
-  // Used cards
+  // Used cards (only appended after round finishes)
   const [usedCardsTeam1, setUsedCardsTeam1] = useState<string[]>([]);
   const [usedCardsTeam2, setUsedCardsTeam2] = useState<string[]>([]);
 
   // Shuffle scenarios on mount
-  const [shuffledScenarios, setShuffledScenarios] = useState<ScenarioData[]>([]);
+  const [shuffledScenarios, setShuffledScenarios] = useState(scenarioList);
   useEffect(() => {
+    // Simple shuffle
     const arr = [...scenarioList];
-    shuffle(arr);
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
     setShuffledScenarios(arr);
   }, []);
 
@@ -4504,14 +4507,18 @@ function GameContent() {
   const [team2Card, setTeam2Card] = useState("");
 
   // Q&A
-  const [team1Question, setTeam1Question] = useState<CardQuestion | null>(null);
-  const [team2Question, setTeam2Question] = useState<CardQuestion | null>(null);
+  const [team1Question, setTeam1Question] = useState<any>(null);
+  const [team2Question, setTeam2Question] = useState<any>(null);
   const [team1Answer, setTeam1Answer] = useState("");
   const [team2Answer, setTeam2Answer] = useState("");
   const [team1Confirmed, setTeam1Confirmed] = useState(false);
   const [team2Confirmed, setTeam2Confirmed] = useState(false);
   const [team1Bonus, setTeam1Bonus] = useState(false);
   const [team2Bonus, setTeam2Bonus] = useState(false);
+
+  // For coloring correct/incorrect:
+  const [team1AnswerCorrect, setTeam1AnswerCorrect] = useState(false);
+  const [team2AnswerCorrect, setTeam2AnswerCorrect] = useState(false);
 
   // End Game / Final Certificate
   const [showFinalCertificate, setShowFinalCertificate] = useState(false);
@@ -4520,6 +4527,9 @@ function GameContent() {
   const [adminPassword, setAdminPassword] = useState("");
   // Admin panel collapsible
   const [showAdminPanel, setShowAdminPanel] = useState(false);
+
+  // Collapsible hints
+  const [showHints, setShowHints] = useState(false);
 
   // On scenario or round change
   useEffect(() => {
@@ -4565,12 +4575,9 @@ function GameContent() {
       setCardError(t.bothTeamsCardError);
       return;
     }
-    if (usedCardsTeam1.includes(c1) || usedCardsTeam2.includes(c2)) {
-      setCardError(t.cardReuseError);
-      return;
-    }
-    setUsedCardsTeam1((prev) => [...prev, c1]);
-    setUsedCardsTeam2((prev) => [...prev, c2]);
+
+    // We only check if it's valid scenario card, not if it's "already used" here
+    // The "used" logic is now handled after awarding the round.
     setCardError("");
     triggerQuestionPhase();
   }
@@ -4583,10 +4590,13 @@ function GameContent() {
     const c1 = team1Card.trim().toUpperCase();
     const c2 = team2Card.trim().toUpperCase();
 
+    // Check if these cards are valid for the scenario
     if (!ranking.includes(c1) || !ranking.includes(c2)) {
       setCardError(t.invalidCardsError);
       return;
     }
+
+    // Attempt to get question data
     const qData1 = getRandomQuestionForCard(c1);
     const qData2 = getRandomQuestionForCard(c2);
     if (!qData1 || !qData2) {
@@ -4601,6 +4611,9 @@ function GameContent() {
     setTeam2Confirmed(false);
     setTeam1Bonus(false);
     setTeam2Bonus(false);
+    setTeam1AnswerCorrect(false);
+    setTeam2AnswerCorrect(false);
+
     setShowQuestionPhase(true);
   }, [currentScenario, team1Card, team2Card, t]);
 
@@ -4609,21 +4622,38 @@ function GameContent() {
     if (team === "team1") setTeam1Answer(answer);
     else setTeam2Answer(answer);
   }
+
   function confirmAnswer(team: "team1" | "team2") {
     if (team === "team1" && team1Question) {
       const correctKey = lang === "fr" ? team1Question.correctFr : team1Question.correctEn;
+      const isCorrect = team1Answer === correctKey;
       setTeam1Confirmed(true);
-      setTeam1Bonus(team1Answer === correctKey);
+      setTeam1Bonus(isCorrect);
+      setTeam1AnswerCorrect(isCorrect);
     } else if (team === "team2" && team2Question) {
       const correctKey = lang === "fr" ? team2Question.correctFr : team2Question.correctEn;
+      const isCorrect = team2Answer === correctKey;
       setTeam2Confirmed(true);
-      setTeam2Bonus(team2Answer === correctKey);
+      setTeam2Bonus(isCorrect);
+      setTeam2AnswerCorrect(isCorrect);
     }
   }
 
   // Award round
   const awardRound = useCallback(
     (winner: "team1" | "team2", tie = false) => {
+      const c1 = team1Card.trim().toUpperCase();
+      const c2 = team2Card.trim().toUpperCase();
+
+      // Mark these cards as used, but only once per round
+      // (If there's a tie, awardRound might be called twice, so we guard against duplicates)
+      setUsedCardsTeam1((prev) =>
+        prev.includes(c1) ? prev : [...prev, c1]
+      );
+      setUsedCardsTeam2((prev) =>
+        prev.includes(c2) ? prev : [...prev, c2]
+      );
+
       if (!tie) {
         if (winner === "team1") {
           setTeam1Wins((prev) => prev + 1);
@@ -4656,6 +4686,9 @@ function GameContent() {
           setTeam2Confirmed(false);
           setTeam1Bonus(false);
           setTeam2Bonus(false);
+          setTeam1AnswerCorrect(false);
+          setTeam2AnswerCorrect(false);
+
           setTimeLeft(initialTime);
           setCardError("");
           setShowQuestionPhase(false);
@@ -4663,7 +4696,7 @@ function GameContent() {
         }, 2000);
       }, 2000);
     },
-    [team1Bonus, team2Bonus]
+    [team1Bonus, team2Bonus, team1Card, team2Card, initialTime]
   );
 
   // Decide round winner after both confirm Q
@@ -4734,14 +4767,14 @@ function GameContent() {
     setShowAdminPanel((prev) => !prev);
   }
 
-  // Hide most UI if in "card entry" mode
+  // We only allow card entry if timeLeft == 0 and not in question phase
   const inCardEntryMode = timeLeft <= 0 && !showQuestionPhase && !gameOver;
 
   return (
     <div
       style={{
         minHeight: "100vh",
-        backgroundImage: "url('/earthmain12.jpg'), linear-gradient(red, red)",
+        backgroundImage: "url('/bgsimple.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -4766,7 +4799,7 @@ function GameContent() {
           zIndex: 9999,
         }}
       >
-        {/* Language Switch Buttons on Top Right */}
+        {/* Language Switch Buttons */}
         <div style={{ display: "flex", gap: "0.5rem" }}>
           <button
             onClick={() => switchLanguage("en")}
@@ -4802,57 +4835,62 @@ function GameContent() {
       {/* MAIN CONTAINER */}
       <div
         className="flex flex-col items-center w-full px-4 py-6 space-y-6 relative"
-        style={{ marginTop: "3rem" }} // account for header height
+        style={{ marginTop: "3rem" }}
       >
-        {/* BOTH CARD COUNTS (top-left) */}
-        {!gameOver && !inCardEntryMode && (
-          <div
-            style={{
-              position: "absolute",
-              top: "1rem",
-              left: "1rem",
-              backgroundColor: "#ffffff",
-              padding: "0.5rem 1rem",
-              borderRadius: "0.5rem",
-              border: "1px solid #1e3a8a",
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.25rem",
-            }}
-          >
-            <h2 style={{ fontSize: "1rem", fontWeight: "bold", color: "#1e3a8a" }}>
-              {team1Name.toUpperCase()}: {team1CardCount} {t.teamXCards}
-            </h2>
-            <h2 style={{ fontSize: "1rem", fontWeight: "bold", color: "#1e3a8a" }}>
-              {team2Name.toUpperCase()}: {team2CardCount} {t.teamXCards}
-            </h2>
-          </div>
+        {/* CARD COUNTS & SCOREBOARD (always visible unless game over) */}
+        {!gameOver && (
+          <>
+            {/* Card counts (top-left) */}
+            <div
+              style={{
+                position: "absolute",
+                top: "1rem",
+                left: "1rem",
+                backgroundColor: "#ffffff",
+                padding: "0.5rem 1rem",
+                borderRadius: "0.5rem",
+                border: "1px solid #1e3a8a",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.25rem",
+                color: "#1e3a8a",
+              }}
+            >
+              <h2 style={{ fontSize: "1rem", fontWeight: "bold" }}>
+                {team1Name.toUpperCase()}: {team1CardCount} {t.teamXCards}
+              </h2>
+              <h2 style={{ fontSize: "1rem", fontWeight: "bold" }}>
+                {team2Name.toUpperCase()}: {team2CardCount} {t.teamXCards}
+              </h2>
+            </div>
+
+            {/* Round / Score (top-center) */}
+            <div
+              style={{
+                position: "absolute",
+                top: "1rem",
+                left: "50%",
+                transform: "translateX(-50%)",
+                backgroundColor: "rgba(0,0,0,0.7)",
+                padding: "0.5rem 1rem",
+                borderRadius: "0.5rem",
+                textAlign: "center",
+                minWidth: "16rem",
+              }}
+            >
+              <p style={{ fontSize: "1.2rem", fontWeight: "bold", margin: 0 }}>
+                {t.roundScore}: {roundsPlayed}/{totalRounds} — {t.overallScore}:{" "}
+                {team1Wins} - {team2Wins}
+              </p>
+            </div>
+          </>
         )}
 
-        {/* SCORE / ROUND INFO (make it "longer not taller") */}
-        {!gameOver && !inCardEntryMode && (
-          <div
-            style={{
-              position: "absolute",
-              top: "1rem",
-              left: "50%",
-              transform: "translateX(-50%)",
-              backgroundColor: "rgba(0,0,0,0.7)",
-              padding: "0.5rem 1rem",
-              borderRadius: "0.5rem",
-              textAlign: "center",
-              minWidth: "16rem", // longer horizontally
-            }}
-          >
-            <p style={{ fontSize: "1.2rem", fontWeight: "bold", margin: 0 }}>
-              {t.roundScore}: {roundsPlayed}/{totalRounds} — {t.overallScore}:{" "}
-              {team1Wins} - {team2Wins}
-            </p>
-          </div>
-        )}
-
-        {/* TIMER / SKIP / ENDGAME */}
-        {!gameOver && !inCardEntryMode && (
+        {/* 
+          TIMER / SKIP / ENDGAME
+          (Hide this entire block in question phase)
+        */}
+        {!gameOver && !inCardEntryMode && !showQuestionPhase && (
           <div
             style={{
               marginTop: "4rem",
@@ -4896,37 +4934,13 @@ function GameContent() {
           </div>
         )}
 
-        {/* HINTS + SCENARIO (hidden if in card entry mode) */}
-        {!gameOver && !inCardEntryMode && (
+        {/* 
+          SCENARIO + COLLAPSIBLE HINT 
+          (Hide both if question phase or if gameOver or if in card entry mode)
+        */}
+        {!gameOver && !inCardEntryMode && !showQuestionPhase && (
           <>
-            {/* Hints box */}
-            <motion.div
-              style={{
-                padding: "1rem",
-                backgroundColor: "rgba(37,99,235,0.8)",
-                borderRadius: "0.5rem",
-                maxWidth: "40rem",
-                width: "100%",
-                marginTop: "1rem",
-              }}
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <h4 style={{ fontSize: "1.25rem", fontWeight: "bold", marginBottom: "0.5rem" }}>
-                {t.hints}
-              </h4>
-              <p style={{ fontSize: "0.9rem" }}>{t.hintsText}</p>
-              {currentScenario && (
-                <p style={{ marginTop: "0.5rem", fontStyle: "italic" }}>
-                  {lang === "fr"
-                    ? currentScenario.shortHintFr
-                    : currentScenario.shortHintEn}
-                </p>
-              )}
-            </motion.div>
-
-            {/* Scenario box */}
+            {/* Scenario box first */}
             <motion.div
               style={{
                 padding: "1rem",
@@ -4946,12 +4960,306 @@ function GameContent() {
               </h3>
               <p style={{ fontSize: "0.9rem" }}>{scenarioDescription}</p>
             </motion.div>
+
+            {/* Collapsible Hints */}
+            <motion.div
+              style={{
+                padding: "1rem",
+                backgroundColor: "rgba(31,41,55,0.8)",
+                borderRadius: "0.5rem",
+                maxWidth: "40rem",
+                width: "100%",
+                marginTop: "1rem",
+              }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <h4
+                  style={{
+                    fontSize: "1rem",
+                    fontWeight: "bold",
+                    marginBottom: "0.25rem",
+                  }}
+                >
+                  {t.hints}
+                </h4>
+                <button
+                  onClick={() => setShowHints(!showHints)}
+                  style={{
+                    backgroundColor: "#6b7280",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "0.25rem",
+                    padding: "0.25rem 0.5rem",
+                    cursor: "pointer",
+                  }}
+                >
+                  {showHints
+                    ? lang === "fr"
+                      ? "Fermer"
+                      : "Hide"
+                    : lang === "fr"
+                    ? "Ouvrir"
+                    : "Show"}
+                </button>
+              </div>
+              {showHints && (
+                <div style={{ marginTop: "0.25rem" }}>
+                  <p style={{ fontSize: "0.8rem", marginBottom: "0.25rem" }}>{t.hintsText}</p>
+                  {currentScenario && (
+                    <p style={{ fontStyle: "italic", fontSize: "0.8rem" }}>
+                      {lang === "fr"
+                        ? currentScenario.shortHintFr
+                        : currentScenario.shortHintEn}
+                    </p>
+                  )}
+                </div>
+              )}
+            </motion.div>
           </>
         )}
 
-        {/* AnimatePresence for phases */}
+        {/* WAIT PHASE: "Please wait" message if timeLeft>0, no question, no game over, not in card entry */}
+        {!showQuestionPhase && !gameOver && !inCardEntryMode && timeLeft > 0 && (
+          <motion.div
+            key="waitPhase"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "1rem",
+              marginTop: "1rem",
+            }}
+          >
+            <div
+              style={{
+                padding: "1rem",
+                backgroundColor: "rgba(31,41,55,0.8)",
+                color: "#ffffff",
+                borderRadius: "0.5rem",
+                textAlign: "center",
+                maxWidth: "30rem",
+              }}
+            >
+              <h2
+                style={{
+                  fontSize: "1.5rem",
+                  fontWeight: "bold",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                {lang === "fr" ? "Veuillez patienter!" : "Please Wait!"}
+              </h2>
+              <p style={{ fontSize: "1rem" }}>{t.waitForTimerOrSkip}</p>
+            </div>
+          </motion.div>
+        )}
+
+        {/* CARD ENTRY PHASE */}
+        {inCardEntryMode && (
+          <motion.div
+            key="cardInputPhase"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "1rem",
+              marginTop: "6rem", // extra top margin so it sits lower
+            }}
+          >
+            <h2 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
+              {lang === "fr" ? "Sélectionnez vos cartes!" : "Select Your Cards!"}
+            </h2>
+
+            {cardError && (
+              <div
+                style={{
+                  color: "#f87171",
+                  fontWeight: "bold",
+                  fontSize: "1.25rem",
+                  textAlign: "center",
+                }}
+              >
+                {cardError}
+              </div>
+            )}
+
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "1rem",
+                justifyContent: "center",
+              }}
+            >
+              {/* Team 1 input */}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  backgroundColor: "#ffffff",
+                  padding: "1rem",
+                  borderRadius: "0.5rem",
+                  border: "1px solid #1e3a8a",
+                }}
+              >
+                <span
+                  style={{
+                    color: "#1e3a8a",
+                    fontWeight: "bold",
+                    marginBottom: "0.5rem",
+                    fontSize: "1rem",
+                  }}
+                >
+                  {team1Name.toUpperCase()}
+                </span>
+                <label
+                  style={{
+                    color: "#1e3a8a",
+                    fontWeight: "bold",
+                    marginBottom: "0.25rem",
+                    fontSize: "1rem",
+                  }}
+                >
+                  {t.cardIdLabel}
+                </label>
+                <input
+                  type="text"
+                  placeholder={t.cardPlaceholder}
+                  value={team1Card}
+                  onChange={(e) => setTeam1Card(e.target.value)}
+                  style={{
+                    padding: "0.5rem",
+                    fontSize: "1rem",
+                    borderRadius: "0.25rem",
+                    border: "1px solid #1e3a8a",
+                    width: "12rem",
+                    outline: "none",
+                    color: "#1e3a8a",
+                    backgroundColor: "#ffffff",
+                  }}
+                />
+                {team1Card.trim() && (
+                  <div style={{ marginTop: "0.5rem" }}>
+                    <img
+                      src={
+                        lang === "fr"
+                          ? `/cards/FRgng1503${team1Card.trim().toUpperCase()}.png`
+                          : `/cards/ENgng1503${team1Card.trim().toUpperCase()}.png`
+                      }
+                      alt={team1Card.trim().toUpperCase()}
+                      style={{
+                        width: "12rem",
+                        height: "auto",
+                        objectFit: "contain",
+                        border: "2px solid white",
+                        borderRadius: "0.25rem",
+                        marginTop: "0.5rem",
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Team 2 input */}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  backgroundColor: "#ffffff",
+                  padding: "1rem",
+                  borderRadius: "0.5rem",
+                  border: "1px solid #1e3a8a",
+                }}
+              >
+                <span
+                  style={{
+                    color: "#1e3a8a",
+                    fontWeight: "bold",
+                    marginBottom: "0.5rem",
+                    fontSize: "1rem",
+                  }}
+                >
+                  {team2Name.toUpperCase()}
+                </span>
+                <label
+                  style={{
+                    color: "#1e3a8a",
+                    fontWeight: "bold",
+                    marginBottom: "0.25rem",
+                    fontSize: "1rem",
+                  }}
+                >
+                  {t.cardIdLabel}
+                </label>
+                <input
+                  type="text"
+                  placeholder={t.cardPlaceholder}
+                  value={team2Card}
+                  onChange={(e) => setTeam2Card(e.target.value)}
+                  style={{
+                    padding: "0.5rem",
+                    fontSize: "1rem",
+                    borderRadius: "0.25rem",
+                    border: "1px solid #1e3a8a",
+                    width: "12rem",
+                    outline: "none",
+                    color: "#1e3a8a",
+                    backgroundColor: "#ffffff",
+                  }}
+                />
+                {team2Card.trim() && (
+                  <div style={{ marginTop: "0.5rem" }}>
+                    <img
+                      src={
+                        lang === "fr"
+                          ? `/cards/FRgng1503${team2Card.trim().toUpperCase()}.png`
+                          : `/cards/ENgng1503${team2Card.trim().toUpperCase()}.png`
+                      }
+                      alt={team2Card.trim().toUpperCase()}
+                      style={{
+                        width: "12rem",
+                        height: "auto",
+                        objectFit: "contain",
+                        border: "2px solid white",
+                        borderRadius: "0.25rem",
+                        marginTop: "0.5rem",
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <button
+              onClick={handleSubmitCards}
+              style={{
+                marginTop: "0.5rem",
+                padding: "0.75rem 1.5rem",
+                backgroundColor: "#059669",
+                color: "white",
+                fontSize: "1.25rem",
+                fontWeight: "bold",
+                borderRadius: "0.5rem",
+              }}
+            >
+              {t.submitCards}
+            </button>
+          </motion.div>
+        )}
+
+        {/* Q&A PHASE (only show questions + scoreboard/card count). 
+            Hide scenario/hint/timer. 
+        */}
         <AnimatePresence>
-          {/* Q&A PHASE */}
           {showQuestionPhase && !gameOver && (
             <motion.div
               key="questionPhase"
@@ -4963,7 +5271,7 @@ function GameContent() {
                 flexDirection: "column",
                 alignItems: "center",
                 gap: "1rem",
-                marginTop: "1rem",
+                marginTop: "5rem", // push down below scoreboard
                 width: "100%",
                 maxWidth: "40rem",
               }}
@@ -4973,13 +5281,18 @@ function GameContent() {
                 style={{
                   width: "100%",
                   padding: "1rem",
-                  backgroundColor: "rgba(31,41,55,0.8)",
                   borderRadius: "0.5rem",
+                  // If answered, color green or red, else dark gray
+                  backgroundColor: team1Confirmed
+                    ? team1AnswerCorrect
+                      ? "rgba(34,197,94,0.8)" // green
+                      : "rgba(239,68,68,0.8)" // red
+                    : "rgba(31,41,55,0.8)",
                 }}
               >
                 <h3
                   style={{
-                    fontSize: "1.1rem",
+                    fontSize: "1.3rem",
                     fontWeight: "bold",
                     marginBottom: "0.5rem",
                   }}
@@ -4991,7 +5304,9 @@ function GameContent() {
                       : team1Question.questionEn
                     : ""}
                 </h3>
-                <p style={{ marginBottom: "0.5rem" }}>{t.answerQuestion}</p>
+                <p style={{ marginBottom: "0.5rem", fontSize: "1rem" }}>
+                  {t.answerQuestion}
+                </p>
                 <div
                   style={{
                     display: "grid",
@@ -5007,11 +5322,12 @@ function GameContent() {
                           key={letter}
                           onClick={() => handleAnswer("team1", letter)}
                           style={{
-                            padding: "0.5rem",
+                            padding: "0.75rem",
                             backgroundColor: "white",
                             color: "#1e3a8a",
                             borderRadius: "9999px",
                             fontWeight: "bold",
+                            fontSize: "1rem",
                             border:
                               team1Answer === letter
                                 ? "4px solid #1e3a8a"
@@ -5049,10 +5365,10 @@ function GameContent() {
                       marginTop: "0.5rem",
                       fontSize: "1rem",
                       fontWeight: "bold",
-                      color: "#1e3a8a",
+                      color: "#ffffff",
                     }}
                   >
-                    {team1Bonus ? t.extraCardMsg : t.noBonusMsg}
+                    {team1AnswerCorrect ? t.extraCardMsg : t.noBonusMsg}
                   </motion.div>
                 )}
               </div>
@@ -5062,13 +5378,17 @@ function GameContent() {
                 style={{
                   width: "100%",
                   padding: "1rem",
-                  backgroundColor: "rgba(31,41,55,0.8)",
                   borderRadius: "0.5rem",
+                  backgroundColor: team2Confirmed
+                    ? team2AnswerCorrect
+                      ? "rgba(34,197,94,0.8)" // green
+                      : "rgba(239,68,68,0.8)" // red
+                    : "rgba(31,41,55,0.8)",
                 }}
               >
                 <h3
                   style={{
-                    fontSize: "1.1rem",
+                    fontSize: "1.3rem",
                     fontWeight: "bold",
                     marginBottom: "0.5rem",
                   }}
@@ -5080,7 +5400,9 @@ function GameContent() {
                       : team2Question.questionEn
                     : ""}
                 </h3>
-                <p style={{ marginBottom: "0.5rem" }}>{t.answerQuestion}</p>
+                <p style={{ marginBottom: "0.5rem", fontSize: "1rem" }}>
+                  {t.answerQuestion}
+                </p>
                 <div
                   style={{
                     display: "grid",
@@ -5096,11 +5418,12 @@ function GameContent() {
                           key={letter}
                           onClick={() => handleAnswer("team2", letter)}
                           style={{
-                            padding: "0.5rem",
+                            padding: "0.75rem",
                             backgroundColor: "white",
                             color: "#1e3a8a",
                             borderRadius: "9999px",
                             fontWeight: "bold",
+                            fontSize: "1rem",
                             border:
                               team2Answer === letter
                                 ? "4px solid #1e3a8a"
@@ -5138,250 +5461,13 @@ function GameContent() {
                       marginTop: "0.5rem",
                       fontSize: "1rem",
                       fontWeight: "bold",
-                      color: "#1e3a8a",
+                      color: "#ffffff",
                     }}
                   >
-                    {team2Bonus ? t.extraCardMsg : t.noBonusMsg}
+                    {team2AnswerCorrect ? t.extraCardMsg : t.noBonusMsg}
                   </motion.div>
                 )}
               </div>
-            </motion.div>
-          )}
-
-          {/* WAIT PHASE */}
-          {!showQuestionPhase && !gameOver && timeLeft > 0 && (
-            <motion.div
-              key="waitPhase"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "1rem",
-                marginTop: "1rem",
-              }}
-            >
-              <div
-                style={{
-                  padding: "1rem",
-                  backgroundColor: "rgba(234,179,8,0.9)",
-                  color: "#1f2937",
-                  borderRadius: "0.5rem",
-                  textAlign: "center",
-                  maxWidth: "30rem",
-                }}
-              >
-                <h2
-                  style={{
-                    fontSize: "1.5rem",
-                    fontWeight: "bold",
-                    marginBottom: "0.5rem",
-                  }}
-                >
-                  {lang === "fr" ? "Veuillez patienter!" : "Please Wait!"}
-                </h2>
-                <p style={{ fontSize: "1rem" }}>{t.waitForTimerOrSkip}</p>
-              </div>
-            </motion.div>
-          )}
-
-          {/* CARD ENTRY PHASE */}
-          {inCardEntryMode && (
-            <motion.div
-              key="cardInputPhase"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "1rem",
-                marginTop: "1rem",
-              }}
-            >
-              <h2 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
-                {lang === "fr"
-                  ? "Sélectionnez vos cartes!"
-                  : "Select Your Cards!"}
-              </h2>
-
-              {cardError && (
-                <div
-                  style={{
-                    color: "#f87171",
-                    fontWeight: "bold",
-                    fontSize: "1.25rem",
-                    textAlign: "center",
-                  }}
-                >
-                  {cardError}
-                </div>
-              )}
-
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: "1rem",
-                  justifyContent: "center",
-                }}
-              >
-                {/* Team 1 input */}
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    backgroundColor: "#ffffff",
-                    padding: "1rem",
-                    borderRadius: "0.5rem",
-                    border: "1px solid #1e3a8a",
-                  }}
-                >
-                  <span
-                    style={{
-                      color: "#1e3a8a",
-                      fontWeight: "bold",
-                      marginBottom: "0.5rem",
-                      fontSize: "1rem",
-                    }}
-                  >
-                    {team1Name.toUpperCase()}
-                  </span>
-                  <label
-                    style={{
-                      color: "#1e3a8a",
-                      fontWeight: "bold",
-                      marginBottom: "0.25rem",
-                      fontSize: "1rem",
-                    }}
-                  >
-                    {t.cardIdLabel}
-                  </label>
-                  <input
-                    type="text"
-                    placeholder={t.cardPlaceholder}
-                    value={team1Card}
-                    onChange={(e) => setTeam1Card(e.target.value)}
-                    style={{
-                      padding: "0.5rem",
-                      fontSize: "1rem",
-                      borderRadius: "0.25rem",
-                      border: "1px solid #1e3a8a",
-                      width: "12rem",
-                      outline: "none",
-                      color: "#1e3a8a",
-                      backgroundColor: "#ffffff",
-                    }}
-                  />
-                  {team1Card.trim() && (
-                    <div style={{ marginTop: "0.5rem" }}>
-                      <img
-                        src={
-                          lang === "fr"
-                            ? `/cards/FRgng1503${team1Card.trim().toUpperCase()}.png`
-                            : `/cards/ENgng1503${team1Card.trim().toUpperCase()}.png`
-                        }
-                        alt={team1Card.trim().toUpperCase()}
-                        style={{
-                          width: "12rem",
-                          height: "auto",
-                          objectFit: "contain",
-                          border: "2px solid white",
-                          borderRadius: "0.25rem",
-                          marginTop: "0.5rem",
-                        }}
-                      />
-                    </div>
-                  )}
-                </div>
-
-                {/* Team 2 input */}
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    backgroundColor: "#ffffff",
-                    padding: "1rem",
-                    borderRadius: "0.5rem",
-                    border: "1px solid #1e3a8a",
-                  }}
-                >
-                  <span
-                    style={{
-                      color: "#1e3a8a",
-                      fontWeight: "bold",
-                      marginBottom: "0.5rem",
-                      fontSize: "1rem",
-                    }}
-                  >
-                    {team2Name.toUpperCase()}
-                  </span>
-                  <label
-                    style={{
-                      color: "#1e3a8a",
-                      fontWeight: "bold",
-                      marginBottom: "0.25rem",
-                      fontSize: "1rem",
-                    }}
-                  >
-                    {t.cardIdLabel}
-                  </label>
-                  <input
-                    type="text"
-                    placeholder={t.cardPlaceholder}
-                    value={team2Card}
-                    onChange={(e) => setTeam2Card(e.target.value)}
-                    style={{
-                      padding: "0.5rem",
-                      fontSize: "1rem",
-                      borderRadius: "0.25rem",
-                      border: "1px solid #1e3a8a",
-                      width: "12rem",
-                      outline: "none",
-                      color: "#1e3a8a",
-                      backgroundColor: "#ffffff",
-                    }}
-                  />
-                  {team2Card.trim() && (
-                    <div style={{ marginTop: "0.5rem" }}>
-                      <img
-                        src={
-                          lang === "fr"
-                            ? `/cards/FRgng1503${team2Card.trim().toUpperCase()}.png`
-                            : `/cards/ENgng1503${team2Card.trim().toUpperCase()}.png`
-                        }
-                        alt={team2Card.trim().toUpperCase()}
-                        style={{
-                          width: "12rem",
-                          height: "auto",
-                          objectFit: "contain",
-                          border: "2px solid white",
-                          borderRadius: "0.25rem",
-                          marginTop: "0.5rem",
-                        }}
-                      />
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <button
-                onClick={handleSubmitCards}
-                style={{
-                  marginTop: "0.5rem",
-                  padding: "0.75rem 1.5rem",
-                  backgroundColor: "#059669",
-                  color: "white",
-                  fontSize: "1.25rem",
-                  fontWeight: "bold",
-                  borderRadius: "0.5rem",
-                }}
-              >
-                {t.submitCards}
-              </button>
             </motion.div>
           )}
         </AnimatePresence>
@@ -5414,6 +5500,7 @@ function GameContent() {
                         fontSize: "2rem",
                         fontWeight: "bold",
                         marginBottom: "1rem",
+                        color: "#ffffff",
                       }}
                     >
                       {t.winnerText} {team1Name.toUpperCase()}
@@ -5437,6 +5524,7 @@ function GameContent() {
                         fontSize: "2rem",
                         fontWeight: "bold",
                         marginBottom: "1rem",
+                        color: "#ffffff",
                       }}
                     >
                       {t.winnerText} {team2Name.toUpperCase()}
@@ -5459,6 +5547,7 @@ function GameContent() {
                       fontSize: "2rem",
                       fontWeight: "bold",
                       marginBottom: "1rem",
+                      color: "#ffffff",
                     }}
                   >
                     {t.tieText}
@@ -5643,4 +5732,3 @@ export default function GamePage() {
     </Suspense>
   );
 }
-// END
