@@ -74,7 +74,7 @@ function TutorialContent() {
       setCurrentSlide(currentSlide + 1);
     } else {
       // When all slides are done, redirect to the game page
-      router.push("/game");
+      router.push("/runthrough?lang=" + lang);
     }
   }
 

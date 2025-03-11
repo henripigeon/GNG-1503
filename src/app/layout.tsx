@@ -1,6 +1,7 @@
 import "./globals.css";
 import React from "react";
 import Header from "./header"; // Adjust the path if needed
+import { Analytics } from "@vercel/analytics/react"
 import Link from "next/link";
 
 export const metadata = {

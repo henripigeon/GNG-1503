@@ -892,7 +892,7 @@ function FireGame({
           Move with W, A, S, D. SPACE near a fire (2s) to extinguish, E to plant.
         </p>
         <p style={{ fontStyle: "italic", color: "#777", marginTop: "10px" }}>
-          6 fires => 12 actions => 25 points total
+          6 fires = 12 actions = 25 points total
         </p>
       </div>
 
