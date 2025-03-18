@@ -596,7 +596,7 @@ function CardsInfoContent() {
                 <div className="mt-4">
                   {/* Conditional image path based on language */}
                   <img
-                    src={`/cards/${lang === "en" ? "ENgng1503" : "FRgng1503"}${card.id}.png`}
+                    src={`/Cards/${lang === "en" ? "ENgng1503" : "FRgng1503"}${card.id}.png`}
                     alt={lang === "fr" ? card.nameFr : card.nameEn}
                     className="w-full object-contain"
                   />

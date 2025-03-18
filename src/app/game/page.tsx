@@ -83,17 +83,7 @@ const newScenarioRankings: { [id: number]: string[] } = {
         "H36", "F91", "E79", "I58", "J80", "K92", "C35", "B13", "D57", "H56",
         "J12", "A90", "B23", "K23"
   ],
-  6 : [
-    "V78", "T34", "S12", "R89", "U56", "I78", "E89", "A12", "A13", "Q16",
-    "M12", "Z90", "F45", "G67", "E23", "H89", "R38", "L45", "Q67", "P45",
-    "J90", "T82", "W90", "X23", "K34", "L56", "Z67", "N90", "M78", "Y45",
-    "Q90", "U94", "S60", "W34", "X56", "V17", "Y78", "W39", "X61", "V12",
-    "R23", "S45", "T67", "U89", "P78", "N34", "O56", "O23", "M37", "N59",
-    "O81", "P93", "G14", "H36", "F91", "E79", "I58", "J80", "K92", "C35",
-    "B13", "D57", "H56", "J12", "A90", "B23", "G34", "C45", "D67", "B34",
-    "C56", "D78", "K23", "F12"
-  ],
-  7: [
+  6: [
     "A90", "B23", "L45", "V78", "T34", "S12", "R89", "U56", "E79", "Q67",
     "P45", "J90", "O23", "U94", "M12", "Q16", "A12", "A13", "O56", "Z90",
     "W90", "X23", "N90", "K34", "L56", "Z67", "M78", "Y45", "Q90", "S45",
@@ -103,17 +93,7 @@ const newScenarioRankings: { [id: number]: string[] } = {
     "H36", "F91", "I58", "J80", "K92", "C35", "B13", "D57", "H56", "J12",
     "K23", "P93", "I78", "N34"
   ],
-  8 : [
-    "V78", "T34", "S12", "R89", "U56", "I78", "E89", "A12", "A13", "Q16",
-    "M12", "Z90", "F45", "G67", "E23", "H89", "R38", "L45", "Q67", "P45",
-    "J90", "T82", "W90", "X23", "K34", "L56", "Z67", "N90", "M78", "Y45",
-    "Q90", "U94", "S60", "W34", "X56", "V17", "Y78", "W39", "X61", "V12",
-    "R23", "S45", "T67", "U89", "P78", "N34", "O56", "O23", "M37", "N59",
-    "O81", "P93", "G14", "H36", "F91", "E79", "I58", "J80", "K92", "C35",
-    "B13", "D57", "H56", "J12", "A90", "B23", "G34", "C45", "D67", "B34",
-    "C56", "D78", "K23", "F12"
-  ],
-  9 : [
+  7 : [
     "W90", "X23", "F12", "G34", "C45", "K23", "D67", "B34", "C56", "D78",
     "E89", "Q67", "T67", "U89", "Y78", "R23", "S45", "X56", "V12", "Y45",
     "O23", "P78", "P45", "M12", "A12", "Q16", "A13", "O56", "S60", "V17",
@@ -123,7 +103,7 @@ const newScenarioRankings: { [id: number]: string[] } = {
     "O81", "P93", "F91", "E79", "I58", "J80", "K92", "C35", "B13", "D57",
     "R38", "V78", "X61", "W39"
   ],
-  10 : [
+  8 : [
     "V78", "M12", "S60", "V17", "A12", "Q16", "A13", "O56", "R23", "U56",
     "W90", "X23", "T34", "S12", "R89", "Y45", "P45", "Q67", "M78", "K34",
     "L56", "Z67", "N90", "Q90", "G67", "E23", "F45", "H89", "Z90", "G34",
@@ -133,17 +113,7 @@ const newScenarioRankings: { [id: number]: string[] } = {
     "H36", "F91", "E79", "I58", "J80", "K92", "C35", "B13", "D57", "R38",
     "J90", "E89", "N34", "O23"
   ],
-  11 : [
-    "U56", "X56", "W90", "X23", "T34", "S12", "R89", "V78", "R23", "M78",
-    "K34", "L56", "N90", "Z67", "Q90", "D67", "G34", "C45", "B34", "C56",
-    "D78", "T67", "U89", "S45", "Q67", "Y45", "O23", "P45", "M12", "A12",
-    "Q16", "A13", "O56", "S60", "V17", "Z90", "T82", "E23", "G67", "F45",
-    "H89", "W34", "Y78", "P78", "R38", "V12", "I78", "L45", "E89", "F12",
-    "U94", "N34", "W39", "X61", "H56", "J12", "A90", "B23", "N59", "O81",
-    "P93", "G14", "H36", "F91", "E79", "I58", "J80", "K92", "C35", "B13",
-    "D57", "M37", "K23", "J90"
-  ],
-  12 : [
+  9 : [
     "W90", "X23", "F12", "G67", "E23", "F45", "H89", "T82", "Z67", "K34",
     "L56", "N90", "M78", "V12", "Q16", "A12", "A13", "M12", "S60", "Z90",
     "Q67", "U89", "T67", "B34", "C56", "D78", "G34", "C45", "K23", "D67",
@@ -153,17 +123,7 @@ const newScenarioRankings: { [id: number]: string[] } = {
     "R38", "Q16", "E79", "I58", "J80", "K92", "C35", "B13", "D57", "O81",
     "P93", "G14", "H36", "N34",
   ],
-  13 : [
-    "J12", "H56", "W90", "X23", "U56", "F12", "G67", "E23", "F45", "H89",
-    "T34", "S12", "R89", "A12", "Q16", "M12", "S60", "V17", "Z67", "K34",
-    "L56", "N90", "M78", "W39", "N34", "A90", "B23", "P45", "Q67", "R23",
-    "X56", "G34", "C45", "K23", "D67", "B34", "C56", "D78", "E89", "V78",
-    "Y45", "T82", "V12", "S45", "T67", "U89", "O23", "Y78", "Q90", "W34",
-    "X61", "M37", "N59", "O81", "P93", "F91", "E79", "I58", "J80", "K92",
-    "C35", "B13", "D57", "Z90", "H36", "O56", "U94", "P78", "R38", "I78",
-    "L45", "A13", "G14", "J90"
-  ],
-  14 : [
+  10 : [
     "W90", "X23", "U56", "F12", "K34", "L56", "N90", "M78", "Z67", "X56",
     "G67", "E23", "F45", "H89", "T82", "M12", "A12", "Q16", "A13", "O56",
     "V12", "R23", "V17", "S60", "Z90", "U94", "Q67", "P45", "J90", "I78",
@@ -173,7 +133,7 @@ const newScenarioRankings: { [id: number]: string[] } = {
     "H36", "E79", "I58", "J80", "K92", "C35", "B13", "D57", "G14", "F91",
     "O81", "N34", "V78", "L45"
   ],
-  15 : [
+  11 : [
     "R38", "K23", "U89", "E89", "I78", "B34", "C56", "D78", "G34", "C45",
     "D67", "W90", "X23", "F12", "O23", "V78", "S60", "Z90", "Q67", "T67",
     "X56", "Y78", "P93", "R23", "S45", "M12", "A12", "Q16", "A13", "O56",
@@ -183,9 +143,9 @@ const newScenarioRankings: { [id: number]: string[] } = {
     "J12", "A90", "B23", "N34", "P78", "H36", "D57", "K92", "C35", "P93",
     "J80", "L45", "Y45", "W39"
   ],
-  16 : [
-    "J90", "P45", "Q67", "O23", "S45", "T34", "S12", "R89", "V78", "U56", "L45",
-    "M12", "A12", "A13", "Q16", "O56", "Y45", "U94", "V12", "Z90", "G67",
+  12 : [
+    "J90", "P45", "Q67", "O23", "S45", "T34", "S12", "R89", "V78", "U56", 
+    "L45", "M12", "A12", "A13", "Q16", "O56", "Y45", "U94", "V12", "Z90", "G67",
     "E23", "F45", "H89", "T82", "W90", "X23", "M78", "K34", "L56", "N90",
     "Z67", "Q90", "R23", "X56", "W34", "X61", "G34", "C45", "K23", "D67",
     "B34", "C56", "D78", "T67", "U89", "R38", "S60", "V17", "Y78", "W39",
@@ -193,7 +153,7 @@ const newScenarioRankings: { [id: number]: string[] } = {
     "E79", "I58", "J80", "K92", "C35", "P93", "G14", "H36", "F91", "O81",
     "B13", "D57", "N34"
   ],
-  17 : [
+  13 : [
     "Z90", "V78", "T34", "S12", "R89", "U56", "A12", "A13", "Q16", "M12",
     "O56", "V17", "S60", "Q67", "P45", "U94", "W90", "X23", "Z67", "K34",
     "L56", "N90", "M78", "Y45", "V12", "R23", "Q90", "S45", "T67", "U89",
@@ -203,17 +163,7 @@ const newScenarioRankings: { [id: number]: string[] } = {
     "G14", "H36", "F91", "I58", "J80", "K92", "C35", "B13", "D57", "J12",
     "A90", "B23", "H56"
   ],
-  18 : [
-    "V78", "T34", "S12", "R89", "U56", "K34", "L56", "M78", "I78", "E89",
-    "Z67", "F45", "G67", "E23", "H89", "T82", "W90", "X23", "M12", "A12",
-    "A13", "Q16", "Z90", "N90", "Q67", "P45", "J90", "S60", "Q90", "R23",
-    "Y78", "W34", "X56", "V17", "U94", "V12", "Y45", "G34", "C45", "K23",
-    "D67", "B34", "C56", "D78", "F12", "R38", "T67", "U89", "S45", "P78",
-    "N59", "O81", "P93", "M37", "G14", "H36", "F91", "E79", "I58", "J80",
-    "K92", "C35", "B13", "D57", "H56", "J12", "A90", "B23", "O56", "L45",
-    "Q16", "X61", "O23", "N34"
-  ],
-  19 : [
+  14 : [
     "H56", "J12", "N34", "A12", "O56", "U56", "W90", "X23", "F12", "T82", "A13",
     "G67", "E23", "F45", "H89", "Z67", "K34", "L56", "N90", "M78", "Q16",
     "M12", "S60", "V17", "Q67", "P45", "Y45", "R23", "T34", "S12", "R89", "J90",
@@ -223,7 +173,7 @@ const newScenarioRankings: { [id: number]: string[] } = {
     "J80", "K92", "C35", "B13", "D57", "H36", "G14", "M37", "O81",
     "R38"
   ],
-  20 : [
+  15 : [
     "A12", "Q16", "A13", "M12", "O56", "U94", "V12", "P45", "Q67", "Y45", "V78",
     "W90", "X23", "R23", "J90", "T34", "S12", "R89", "T82", "E23", "G67",
     "F45", "H89", "L45", "Q90", "I78", "E89", "B34", "C56", "D78", "D67",
@@ -233,7 +183,7 @@ const newScenarioRankings: { [id: number]: string[] } = {
     "K92", "C35", "B13", "D57", "O81", "P93", "H36", "R38", "V17", "S60",
     "P78", "O23", "Z90"
   ],
-  21 : [
+  16 : [
     "F12", "W90", "X23", "T82", "G67", "E23", "F45", "H89", "Q16", "Z67",
     "K34", "L56", "N90", "M78", "A12", "A13", "M12", "S60", "R23", "U56", "N59",
     "Y78", "Q90", "W34", "X56", "G34", "C45", "K23", "D67", "B34", "C56", "V78",
@@ -242,15 +192,6 @@ const newScenarioRankings: { [id: number]: string[] } = {
     "H36", "F91", "E79", "I58", "J80", "K92", "C35", "B13", "D57", "O81", "J12", "H56", "I78", "M37",
     "P93", "Z90" 
   ],
-  22 : [
-    "W90", "X23", "F12", "K23", "T82", "G67", "E23", "F45", "H89", "Z67",
-    "M78", "N90", "K34", "L56", "Q16", "A12", "A13", "M12", "S60", "V17",
-    "Y78", "R23", "U56", "P45", "Q67", "G34", "C45", "D67", "B34", "C56",
-    "D78", "T67", "U89", "S45", "X56", "W34", "Q90", "X61", "R38", "V12",
-    "O56", "L45", "B23", "A90", "J12", "H56", "G14", "H36", "F91", "E79",
-    "I58", "J80", "K92", "C35", "B13", "D57", "O81", "M37", "N59", "P93",
-    "W39", "U94", "S12", "R89", "T34", "E89", "I78", "J90", "N34", "O23", "P78", "V78", "Y45", "Z90"
-  ]
 };
 
 
@@ -4171,157 +4112,115 @@ interface ScenarioData {
 const scenarioList: ScenarioData[] = [
   {
     id: 1,
-    shortHintFr: "La région est dévastée. Répare les dégâts ou fais en sorte que ce soit pire.",
-    shortHintEn: "The area is devastated. Repair the damage or make it worse.",
+    shortHintFr: "La région est dévastée. Les tornades surviennent généralement quand l'air est chaude et humide.",
+    shortHintEn: " The area is devastated. Tornadoes usually occur when the air is warm and humid. Are there any actions that make the air warmer?",
     descFr: "Une tornade a frappé la ville, détruisant des maisons et des arbres.",
     descEn: "A tornado hit the city, destroying homes and trees."
   },
   {
     id: 2,
-    shortHintFr: "Les bâtiments sont cassés. Répare ou fais en sorte que ce soit pire.",
-    shortHintEn: "Buildings are broken. Repair or make it worse.",
+    shortHintFr: " Les bâtiments sont cassés et les routes bloquées. Quelles actions peut-on poser pour réduire les changements climatiques?",
+    shortHintEn: "Buildings are broken and roads are blocked. What actions can be taken to reduce climate change?",
     descFr: "Un grand séisme a secoué la région, cassant des routes et des bâtiments.",
     descEn: "A big earthquake shook the region, breaking roads and buildings."
   },
   {
     id: 3,
-    shortHintFr: "L'eau envahit tout. Aide à protéger ou fais en sorte que ce soit pire.",
-    shortHintEn: "Water is flooding everything. Help protect or make it worse.",
+    shortHintFr: " L'eau a tout envahi. Les inondations sont des catastrophes naturelles. Qu'est-ce qui cause ces catastrophes naturelles?",
+    shortHintEn: "Water is flooding everything. Floods are natural disasters. What causes these natural disasters?",
     descFr: "Il a beaucoup plu, et les rivières ont débordé, noyant des villes entières. Les gens ont dû quitter leurs maisons et les champs ont été inondés.",
     descEn: "It rained a lot, and the rivers overflowed, flooding entire cities. People had to leave their homes, and fields were flooded."
   },
   {
     id: 4,
-    shortHintFr: "Les arbres sont coupés. Replante des arbres ou fais en sorte que ce soit pire.",
-    shortHintEn: "Trees are cut down. Replant trees or make it worse.",
+    shortHintFr: "Les arbres sont coupés. Pourquoi sont-ils coupés? Que fabrique-t-on avec des arbres? ( bois, papier etc…) ",
+    shortHintEn: "Trees are cut down. Why are they cut down? What is made from trees? (wood, paper, etc.)",
     descFr: "Des arbres ont été coupés pour faire de la place pour des maisons. Cela a détruit les maisons des animaux et endommagé la terre.",
     descEn: "Trees were cut down to make room for houses. This destroyed animal homes and damaged the land."
   },
   {
     id: 5,
-    shortHintFr: "Les vents et l'eau détruisent tout. Protège les habitants ou fais en sorte que ce soit pire.",
-    shortHintEn: "Wind and water are destroying everything. Protect the people or make it worse.",
+    shortHintFr: "Les vents et l'eau détruisent tout. Qu’est ce qui cause ce genre de catastrophes naturelles? ",
+    shortHintEn: "Wind and water are destroying everything. What causes these kinds of natural disasters? ",
     descFr: "Un ouragan puissant a frappé, détruisant des maisons et emportant tout sur son passage. L'eau a submergé les rues, et tout est désormais en ruines.",
     descEn: "A powerful hurricane hit, destroying homes and sweeping everything away. Water flooded the streets, and everything is now in ruins."
   },
   {
     id: 6,
-    shortHintFr: "Un grand impact a créé des dégâts. Répare ou fais en sorte que ce soit pire.",
-    shortHintEn: "A big impact has caused damage. Repair or make it worse.",
-    descFr: "Une grosse météorite a frappé la Terre, laissant un grand trou et envoyant des pierres dans l'air. Cela a perturbé la vie des animaux et des plantes.",
-    descEn: "A big meteorite hit the Earth, leaving a big hole and sending rocks into the air. It disrupted the life of animals and plants around it."
+    shortHintFr: "L'eau est rare et les récoltes sont en danger. Comment peut-on économiser de l’eau?",
+    shortHintEn: "Water is scarce, and crops are in danger. How can we save water?",
+    descFr: "Il ne pleut pas assez, et le niveau d’eau des rivières et des lacs diminue. Cela rend difficile la culture des plantes et l'accès à l'eau.",
+    descEn: "There is not enough rain, and the water level in rivers and lakes is dropping. This makes it difficult to grow plants and access water."
   },
   {
     id: 7,
-    shortHintFr: "L'eau est rare et les récoltes sont en danger. Aide à économiser ou fais en sorte que ce soit pire.",
-    shortHintEn: "Water is scarce, and crops are in danger. Help save water or make it worse.",
-    descFr: "Il ne pleut pas assez, et les rivières et lacs sont presque vides. Cela rend difficile la culture des plantes et l'accès à l'eau.",
-    descEn: "It isn’t raining enough, and rivers and lakes are almost empty. This makes it hard to grow plants and get water."
+    shortHintFr: "Les ressources sont épuisées. Pourquoi elles sont épuisées?",
+    shortHintEn: "Resources are gone. Why are they gone? ",
+    descFr: "Il n'y a pas assez d'eau ni de matières pour tout le monde. Cela crée des conflits entre les gens pour ces ressources.",
+    descEn: "It isn’t raining enough, and rivers and lakes are almost empty. This makes it hard to grow plants and get waterThere isn’t enough water or materials for everyone. This creates conflicts between people for these resources."
   },
   {
     id: 8,
-    shortHintFr: "La lave détruit tout. Protège les habitants ou fais en sorte que ce soit pire.",
-    shortHintEn: "Lava is destroying everything. Protect the people or make it worse.",
-    descFr: "Un volcan est entré en éruption, libérant de la lave et des cendres. Les maisons sont menacées et les routes sont coupées.",
-    descEn: "A volcano erupted, spewing lava and ash. Homes are threatened and roads are cut off."
+    shortHintFr: "Des animaux disparaissent. Quelles actions font disparaître ces animaux?",
+    shortHintEn: "Animals are disappearing. What actions are causing these animals to disappear?",
+    descFr: "Des animaux comme les zèbres et les rhinocéros sont en voie d’extinction. Cela a perturbé la nature et a rendu difficile la survie d'autres animaux.",
+    descEn: "Animals like zebras and rhinos are on the verge of extinction. This has disrupted nature and made it difficult for other animals to survive."
   },
   {
     id: 9,
-    shortHintFr: "Les ressources sont épuisées. Trouve des solutions ou fais en sorte que ce soit pire.",
-    shortHintEn: "Resources are gone. Find solutions or make it worse.",
-    descFr: "Il n'y a pas assez d'eau ni de matières pour tout le monde. Cela crée des conflits entre les gens pour ces ressources.",
-    descEn: "There isn’t enough water or materials for everyone. This creates conflicts between people for these resources."
+    shortHintFr: "L'air est pollué. Qu’est-ce qui pollue l’air?( maison, voiture..)",
+    shortHintEn: "The air is polluted. What pollutes the air? (house, car, etc.) ",
+    descFr: "L'air dans les grandes villes est sale et les gens ont du mal à respirer. Cela rend beaucoup de gens malades.",
+    descEn: "The air in big cities is dirty and people are having trouble breathing. It makes many people sick."
   },
   {
     id: 10,
-    shortHintFr: "Des animaux disparaissent. Protège-les ou fais en sorte que ce soit pire.",
-    shortHintEn: "Animals are disappearing. Protect them or make it worse.",
-    descFr: "Des animaux comme les zèbres et les rhinocéros ont disparu. Cela a perturbé la nature et rendu difficile la survie d'autres animaux.",
-    descEn: "Animals like zebras and rhinos have disappeared. This has disturbed nature and made it hard for other animals to survive."
+    shortHintFr: "Le bruit est trop fort. Qu’est-ce qui fait du bruit dans une ville? (construction, avion, voiture etc)",
+    shortHintEn: "The noise is too loud. What makes noise in a city? (construction, airplane etc.)",
+    descFr: "La pollution sonore est présente dans plusieurs grandes villes. Le bruit empêche les gens de se reposer et les rend stressés.",
+    descEn: " Noise pollution is present in many big cities. Noise prevents people from resting and makes them stressed."
   },
   {
     id: 11,
-    shortHintFr: "La maladie se propage. Aide à soigner les malades ou fais en sorte que ce soit pire.",
-    shortHintEn: "The disease is spreading. Help treat the sick or make it worse.",
-    descFr: "Beaucoup de gens sont malades à cause du Covid. Les écoles et magasins sont fermés, et les hôpitaux sont pleins.",
-    descEn: "Many people are sick because of Covid. Schools and stores are closed, and hospitals are full of patients."
-  },
-  {
-    id: 12,
-    shortHintFr: "L'air est pollué. Aide à le nettoyer ou fais en sorte que ce soit pire.",
-    shortHintEn: "The air is polluted. Help clean it or make it worse.",
-    descFr: "L'air dans les grandes villes est sale et les gens ont du mal à respirer. Cela rend beaucoup de gens malades.",
-    descEn: "The air in big cities is dirty, and people are having trouble breathing. It makes many people sick."
-  },
-  {
-    id: 13,
-    shortHintFr: "Les lumières artificielles empêchent de voir les étoiles. Éteins les lumières ou fais en sorte que ce soit pire.",
-    shortHintEn: "Artificial lights block the stars. Turn off the lights or make it worse.",
-    descFr: "Les lumières de la ville cachent les étoiles et dérangent les animaux qui vivent la nuit.",
-    descEn: "City lights hide the stars and disturb animals that live at night."
-  },
-  {
-    id: 14,
-    shortHintFr: "Le bruit est trop fort. Réduis le bruit ou fais en sorte que ce soit pire.",
-    shortHintEn: "The noise is too loud. Reduce the noise or make it worse.",
-    descFr: "Le bruit des voitures et des machines empêche les gens de se reposer et les rend stressés.",
-    descEn: "Noise from cars and machines keeps people from resting and makes them stressed."
-  },
-  {
-    id: 15,
-    shortHintFr: "Les océans sont pollués. Nettoie les océans ou fais en sorte que ce soit pire.",
-    shortHintEn: "The oceans are polluted. Clean the oceans or make it worse.",
+    shortHintFr: " Les océans sont pollués de déchets. D'où proviennent ces déchets? Comment peut-on améliorer la situation?",
+    shortHintEn: "The oceans are polluted with waste. Where does this waste come from? How can the situation be improved?",
     descFr: "Les océans sont remplis de déchets comme des plastiques, ce qui tue beaucoup d'animaux marins.",
     descEn: "The oceans are full of trash like plastics, which is killing many sea animals."
   },
   {
-    id: 16,
-    shortHintFr: "Il manque de la nourriture. Aide à fournir de la nourriture ou fais en sorte que ce soit pire.",
-    shortHintEn: "There is no food. Help provide food or make it worse.",
+    id: 12,
+    shortHintFr: "Il manque de la nourriture. D'où provient la nourriture? Qu’est-ce qu’il faut à une plante pour grandir?",
+    shortHintEn: "There is a lack of food. Where does food come from? What does a plant need to grow?",
     descFr: "Une grande famine a frappé un pays, et beaucoup de gens n'ont pas assez à manger.",
     descEn: "A big famine hit a country, and many people don’t have enough food."
   },
   {
-    id: 17,
-    shortHintFr: "Les incendies se propagent. Éteins les feux ou fais en sorte que ce soit pire.",
-    shortHintEn: "The fires are spreading. Put out the fires or make it worse.",
+    id: 13,
+    shortHintFr: "Les incendies se propagent. Qu’est-ce qui cause les feux de forêts? ( chaleur dû aux changements climatiques..)",
+    shortHintEn: "The fires are spreading. What causes wildfires?  (heat due to climate change..)",
     descFr: "Des feux de forêt ont brûlé de grandes forêts, détruisant des maisons et mettant en danger des animaux.",
     descEn: "Wildfires burned big forests, destroying homes and putting animals in danger."
   },
   {
-    id: 18,
-    shortHintFr: "La neige bloque tout. Aide à déblayer ou fais en sorte que ce soit pire.",
-    shortHintEn: "Snow is blocking everything. Help clear it or make it worse.",
-    descFr: "Un blizzard a bloqué les routes et fait tomber des arbres. Les gens sont coincés chez eux sans électricité.",
-    descEn: "A blizzard blocked roads and knocked down trees. People are stuck at home without electricity."
-  },
-  {
-    id: 19,
-    shortHintFr: "Il fait trop chaud. Aide à se rafraîchir ou fais en sorte que ce soit pire.",
-    shortHintEn: "It’s too hot. Help cool down or make it worse.",
+    id: 14,
+    shortHintFr: "Il fait trop chaud. Pourquoi il fait plus chaud? ( changements climatiques)",
+    shortHintEn: "It’s too hot. Why is it getting hotter? (climate change)",
     descFr: "Une chaleur extrême touche la ville. Les gens ont du mal à respirer et les enfants et les personnes âgées sont en danger.",
     descEn: "Extreme heat is hitting the city. People are having trouble breathing, and children and the elderly are in danger."
   },
   {
-    id: 20,
-    shortHintFr: "Le sol est emporté. Protège la terre ou fais en sorte que ce soit pire.",
-    shortHintEn: "The soil is being washed away. Protect the land or make it worse.",
+    id: 15,
+    shortHintFr: "Le sol est emporté. Qu’est ce qui peut perturber les sols?( détruit des arbres) Pensez à tout ce qui est construit sur le sol.",
+    shortHintEn: "The soil is being washed away. What can disturb the soil? (destroys trees) Think of everything that is built on the soil.",
     descFr: "Le vent et l'eau ont emporté la terre des champs. Cela rend difficile la culture des plantes et diminue la nourriture disponible.",
     descEn: "Wind and water have washed away the soil from fields. This makes it hard to grow plants and reduces available food."
   },
   {
-    id: 21,
-    shortHintFr: "Les glaciers fondent, faisant monter la mer. Aide à ralentir ou fais en sorte que ce soit pire.",
-    shortHintEn: "The glaciers are melting, raising the sea. Help slow it down or make it worse.",
+    id: 16,
+    shortHintFr: "Les glaciers fondent, faisant monter la mer. Y a t-il des animaux qui habitent sur les glaciers? Quand est-ce que la glace fond? ( chaleur..) ",
+    shortHintEn: "The glaciers are melting, raising the sea. Are there animals that live on glaciers? When does the ice melt? (heat..)",
     descFr: "Les glaciers fondent rapidement, et l'eau monte, inondant les villes près de la mer.",
     descEn: "Glaciers are melting quickly, and the water is rising, flooding cities near the sea."
-  },
-  {
-    id: 22,
-    shortHintFr: "La couche d'ozone est endommagée. Aide à la réparer ou fais en sorte que ce soit pire.",
-    shortHintEn: "The ozone layer is damaged. Help repair it or make it worse.",
-    descFr: "La couche d'ozone a été abîmée, laissant plus de rayons du soleil atteindre la Terre. Cela rend les gens plus malades et abîme les cultures.",
-    descEn: "The ozone layer was damaged, letting more sunlight reach the Earth. This makes people sicker and harms crops."
   },
 ];
 
@@ -5152,8 +5051,8 @@ function GameContent() {
                     <img
                       src={
                         lang === "fr"
-                          ? `/cards/FRgng1503${team1Card.trim().toUpperCase()}.png`
-                          : `/cards/ENgng1503${team1Card.trim().toUpperCase()}.png`
+                          ? `/Cards/FRgng1503${team1Card.trim().toUpperCase()}.png`
+                          : `/Cards/ENgng1503${team1Card.trim().toUpperCase()}.png`
                       }
                       alt={team1Card.trim().toUpperCase()}
                       style={{
@@ -5221,8 +5120,8 @@ function GameContent() {
                     <img
                       src={
                         lang === "fr"
-                          ? `/cards/FRgng1503${team2Card.trim().toUpperCase()}.png`
-                          : `/cards/ENgng1503${team2Card.trim().toUpperCase()}.png`
+                          ? `/Cards/FRgng1503${team2Card.trim().toUpperCase()}.png`
+                          : `/Cards/ENgng1503${team2Card.trim().toUpperCase()}.png`
                       }
                       alt={team2Card.trim().toUpperCase()}
                       style={{

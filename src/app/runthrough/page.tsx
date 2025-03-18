@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 interface WalkthroughStep {
   title: { en: string; fr: string };
   description: { en: string; fr: string };
-  imageSrc?: string; // optional image for the step
+  imageSrc?: string;
 }
 
 const walkthroughSteps: WalkthroughStep[] = [
@@ -20,7 +20,7 @@ const walkthroughSteps: WalkthroughStep[] = [
       en: "This box shows your team's current card count. Answer bonus questions correctly to earn extra cards during the game!",
       fr: "Ce compteur affiche le nombre de cartes que possède votre équipe. Répondez correctement aux questions bonus pour gagner des cartes supplémentaires durant la partie !",
     },
-    imageSrc: "/images/IMAGE1.png",
+    imageSrc: "/IMAGE1.png",
   },
   {
     title: { en: "Score Table & Timer", fr: "Tableau des scores & minuterie" },
@@ -28,7 +28,7 @@ const walkthroughSteps: WalkthroughStep[] = [
       en: "Here you see the round number, overall score, and a countdown timer. You can skip the timer if you’re ready or end the game when you wish.",
       fr: "Ici, vous voyez le numéro de manche, le score global et le compte à rebours. Vous pouvez passer le minuteur si vous êtes prêts ou terminer la partie si besoin.",
     },
-    imageSrc: "/images/IMAGE2.png",
+    imageSrc: "/IMAGE2.png",
   },
   {
     title: { en: "Language Switch", fr: "Changement de langue" },
@@ -36,7 +36,7 @@ const walkthroughSteps: WalkthroughStep[] = [
       en: "Use this button to toggle between English and French. If you have trouble understanding a word, try the other language!",
       fr: "Utilisez ce bouton pour passer de l’anglais au français. Si vous avez du mal à comprendre un mot, essayez dans l’autre langue !",
     },
-    imageSrc: "/images/IMAGE3.png",
+    imageSrc: "/IMAGE3.png",
   },
   {
     title: { en: "Scenario & Hint", fr: "Scénario & conseils" },
@@ -44,7 +44,7 @@ const walkthroughSteps: WalkthroughStep[] = [
       en: "The scenario describes the environmental challenge you’ll face. Use the hint if you need extra guidance, or ignore it if you feel confident.",
       fr: "Le scénario décrit le problème environnemental auquel vous serez confrontés. Utilisez le conseil si vous avez besoin d’aide, sinon, jouez votre carte en toute confiance.",
     },
-    imageSrc: "/images/IMAGE4.png",
+    imageSrc: "/IMAGE4.png",
   },
   {
     title: { en: "Card Input", fr: "Saisie des cartes" },
@@ -52,7 +52,7 @@ const walkthroughSteps: WalkthroughStep[] = [
       en: "Each team enters the ID of their chosen card here. Double-check your card before submitting and remember to pick up a new card afterward!",
       fr: "Chaque équipe saisit l’ID de la carte choisie ici. Vérifiez bien votre carte avant de la soumettre et n’oubliez pas de prendre une nouvelle carte par la suite !",
     },
-    imageSrc: "/images/IMAGE5.png",
+    imageSrc: "/IMAGE5.png",
   },
   {
     title: { en: "Bonus Question", fr: "Question bonus" },
@@ -60,13 +60,13 @@ const walkthroughSteps: WalkthroughStep[] = [
       en: "After card submission, you’ll answer a bonus question related to your card. Answer correctly to earn an extra card for the next round!",
       fr: "Après la soumission des cartes, vous répondrez à une question bonus liée à votre carte. Répondez correctement pour gagner une carte supplémentaire pour la prochaine manche !",
     },
-    imageSrc: "/images/IMAGE6.png",
+    imageSrc: "/IMAGE6.png",
   },
   {
     title: { en: "Practice Round Simulation", fr: "Simulation de manche d'entraînement" },
     description: {
       en: "Now you’ll simulate one full round. A fake scenario appears, teams enter fake card IDs, answer fake bonus questions, and a winner is declared.",
-      fr: "Maintenant, vous allez simuler une manche complète. Un faux scénario apparaît, les équipes saisissent des fausses cartes, répondent à des questions bonus et un vainqueur est annoncé.",
+      fr: "Maintenant, vous allez simuler une manche complète. Un faux scénario apparaît, les équipes saisissent des fausses cartes, répondent aux questions bonus et un vainqueur est annoncé.",
     },
   },
   {
@@ -129,81 +129,19 @@ const fakeQuestionTeam2: FakeQuestion = {
 // -----------------------------------------------------------------------------
 const uiTranslations = {
   en: {
-    sectionLabel: "Section:",
-    team1Label: "Team 1",
-    team2Label: "Team 2",
-    scenario: "Scenario",
-    hints: "Hints",
-    hintsText: "Think long-term before choosing a card!",
-    cardIdLabel: "CARD ID",
-    cardPlaceholder: "Enter your card ID",
-    skipRound: "Skip Timer",
-    endGame: "End Game",
-    endGameConfirm: "Are you sure you want to end the game now?",
-    submitCards: "Submit Cards",
-    answerQuestion: "Answer the following question:",
-    confirmAnswer: "Confirm Answer",
-    extraCardMsg: "Correct! You earn an extra bonus card next round!",
-    noBonusMsg: "Incorrect. No bonus awarded.",
-    roundScore: "Round",
-    overallScore: "Score",
-    newRoundMsg: "New Round!",
-    cardReuseError: "You have already used this card!",
-    winnerText: "Round Winner:",
-    tieText: "Tie!",
-    finalWinnerText: "Winner of the Game:",
-    finalCertified: "is a Certified Earth Helper!",
-    finalStats: "Final Score",
-    finalOk: "OK",
     teamXCards: "CARDS",
-    waitForTimerOrSkip:
-      "Please wait for the timer to finish or click Skip to proceed to card selection.",
-    invalidCardsError: "Invalid card(s) for this scenario.",
-    noQuestionDataError: "No question data for one or both cards.",
-    waitTimerError: "Wait until the timer ends or skip the round first!",
-    bothTeamsCardError: "Both teams must enter a card.",
+    // ... (other translations)
   },
   fr: {
-    sectionLabel: "Classe:",
-    team1Label: "Équipe 1",
-    team2Label: "Équipe 2",
-    scenario: "Scénario",
-    hints: "Conseils",
-    hintsText: "Pensez à long terme avant de choisir une carte!",
-    cardIdLabel: "ID de la Carte",
-    cardPlaceholder: "Entrez l'ID de votre carte",
-    skipRound: "Passer la tour",
-    endGame: "Terminer la Partie",
-    endGameConfirm: "Êtes-vous sûr de vouloir terminer la partie maintenant ?",
-    submitCards: "Valider les cartes",
-    answerQuestion: "Répondez à la question suivante:",
-    confirmAnswer: "Confirmer la réponse",
-    extraCardMsg: "Correct ! Vous gagnez une carte bonus pour la prochaine manche !",
-    noBonusMsg: "Incorrect. Aucun bonus n'est attribué.",
-    roundScore: "Ronde",
-    overallScore: "Score",
-    newRoundMsg: "Nouvelle Ronde!",
-    cardReuseError: "Vous avez déjà utilisé cette carte !",
-    winnerText: "Vainqueur de la manche :",
-    tieText: "Égalité!",
-    finalWinnerText: "Vainqueur du jeu :",
-    finalCertified: "est certifié Protecteur de la Terre !",
-    finalStats: "Score Final",
-    finalOk: "OK",
     teamXCards: "CARTES",
-    waitForTimerOrSkip:
-      "Veuillez attendre la fin du minuteur ou cliquer sur Passer pour accéder à la sélection de carte.",
-    invalidCardsError: "Carte(s) invalide(s) pour ce scénario.",
-    noQuestionDataError: "Pas de données de question pour une ou les deux cartes.",
-    waitTimerError: "Attendez la fin du minuteur ou passez la manche d'abord!",
-    bothTeamsCardError: "Les deux équipes doivent saisir une carte.",
+    // ... (other translations)
   },
 };
 
 // -----------------------------------------------------------------------------
-// RunThrough Component
+// Main RunThrough Content Component (contains your simulation and walkthrough UI)
 // -----------------------------------------------------------------------------
-export default function RunThrough() {
+function RunThroughContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -229,8 +167,8 @@ export default function RunThrough() {
   const [simulated, setSimulated] = useState(false);
   const [simulationResult, setSimulationResult] = useState("");
 
-  // Simulation round states (fake round mimicking the real game UI)
-  const [timeLeft, setTimeLeft] = useState(10); // shorter timer for simulation
+  // Simulation round states
+  const [timeLeft, setTimeLeft] = useState(10);
   const [team1Card, setTeam1Card] = useState("");
   const [team2Card, setTeam2Card] = useState("");
   const [cardError, setCardError] = useState("");
@@ -242,16 +180,15 @@ export default function RunThrough() {
   const [team1AnswerCorrect, setTeam1AnswerCorrect] = useState(false);
   const [team2AnswerCorrect, setTeam2AnswerCorrect] = useState(false);
 
-  // For simulation, use our fake scenario and fake questions
+  // Use fake scenario & questions for simulation
   const scenario = fakeScenario;
   const scenarioDescription = lang === "fr" ? scenario.descFr : scenario.descEn;
   const scenarioHint = lang === "fr" ? scenario.shortHintFr : scenario.shortHintEn;
 
-  // Fake questions for simulation (we use our defined fakeQuestionTeam1 and fakeQuestionTeam2)
   const [team1Question] = useState(fakeQuestionTeam1);
   const [team2Question] = useState(fakeQuestionTeam2);
 
-  // Timer countdown for simulation (only in card input phase)
+  // Timer countdown for simulation
   useEffect(() => {
     if (!showQuestionPhase && step === 6 && timeLeft > 0) {
       const timer = setTimeout(() => setTimeLeft((prev) => prev - 1), 1000);
@@ -259,7 +196,6 @@ export default function RunThrough() {
     }
   }, [timeLeft, showQuestionPhase, step]);
 
-  // Handle simulation card submission
   const handleSubmitCards = () => {
     if (timeLeft > 0) {
       setCardError(lang === "fr" ? "Veuillez attendre la fin du minuteur." : "Please wait for the timer to finish.");
@@ -270,17 +206,14 @@ export default function RunThrough() {
       return;
     }
     setCardError("");
-    // In simulation, we directly move to the Q&A phase (questions are fake)
     setShowQuestionPhase(true);
   };
 
-  // Handle answer selection
   const handleAnswer = (team: "team1" | "team2", answer: string) => {
     if (team === "team1") setTeam1Answer(answer);
     else setTeam2Answer(answer);
   };
 
-  // Confirm answer for simulation
   const confirmAnswer = (team: "team1" | "team2") => {
     if (team === "team1") {
       const correctKey = lang === "fr" ? team1Question.correctFr : team1Question.correctEn;
@@ -295,11 +228,9 @@ export default function RunThrough() {
     }
   };
 
-  // When both teams confirm their answers, simulate a fake outcome after 2 seconds
   useEffect(() => {
     if (showQuestionPhase && team1Confirmed && team2Confirmed && !simulated) {
       setTimeout(() => {
-        // For simulation, we randomly choose a winner (or tie)
         const rand = Math.random();
         if (rand < 0.45)
           setSimulationResult(lang === "fr" ? "Vainqueur de la manche : ÉQUIPE 1" : "Round Winner: TEAM 1");
@@ -312,7 +243,6 @@ export default function RunThrough() {
     }
   }, [showQuestionPhase, team1Confirmed, team2Confirmed, lang, simulated]);
 
-  // Reset simulation state when leaving simulation step
   const resetSimulation = () => {
     setTeam1Card("");
     setTeam2Card("");
@@ -329,25 +259,16 @@ export default function RunThrough() {
     setSimulationResult("");
   };
 
-  // Walkthrough navigation
   const handleNext = () => {
-    // When leaving simulation step (step 6), reset simulation state
-    if (step === 6) {
-      resetSimulation();
-    }
-    if (step < totalSteps - 1) {
-      setStep(step + 1);
-    }
+    if (step === 6) resetSimulation();
+    if (step < totalSteps - 1) setStep(step + 1);
   };
 
   const handleBack = () => {
-    if (step > 0) {
-      setStep(step - 1);
-    }
+    if (step > 0) setStep(step - 1);
   };
 
   const handleStartGame = () => {
-    // Navigate to the real game page (adjust route as needed)
     router.push("/game");
   };
 
@@ -366,10 +287,13 @@ export default function RunThrough() {
         alignItems: "center",
       }}
     >
-      {/* Top-right Language Switch */}
+      {/* Language Switch */}
       <div style={{ position: "absolute", top: "1rem", right: "1rem", display: "flex", gap: "0.5rem" }}>
         <button
-          onClick={() => { setLang("en"); localStorage.setItem("selectedLang", "en"); }}
+          onClick={() => {
+            setLang("en");
+            localStorage.setItem("selectedLang", "en");
+          }}
           style={{
             padding: "0.5rem",
             backgroundColor: lang === "en" ? "#10b981" : "#6b7280",
@@ -383,7 +307,10 @@ export default function RunThrough() {
           EN
         </button>
         <button
-          onClick={() => { setLang("fr"); localStorage.setItem("selectedLang", "fr"); }}
+          onClick={() => {
+            setLang("fr");
+            localStorage.setItem("selectedLang", "fr");
+          }}
           style={{
             padding: "0.5rem",
             backgroundColor: lang === "fr" ? "#10b981" : "#6b7280",
@@ -398,7 +325,7 @@ export default function RunThrough() {
         </button>
       </div>
 
-      {/* Main Walkthrough Content */}
+      {/* Walkthrough Content */}
       <div
         style={{
           maxWidth: "600px",
@@ -429,16 +356,20 @@ export default function RunThrough() {
           {walkthroughSteps[step].description[lang]}
         </p>
 
-        {/* If on the simulation step (step index 6), show the fake round simulation UI */}
+        {/* Simulation UI */}
         {step === 6 && (
           <div>
-            {/* Scoreboard (static fake values) */}
+            {/* Fake Scoreboard */}
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "1rem" }}>
               <div style={{ backgroundColor: "#ffffff", padding: "0.5rem 1rem", borderRadius: "0.5rem", color: "#1e3a8a" }}>
-                <h2 style={{ fontSize: "1rem", fontWeight: "bold" }}>{lang === "fr" ? "ÉQUIPE 1" : "TEAM 1"}: 5 CARDS</h2>
+                <h2 style={{ fontSize: "1rem", fontWeight: "bold" }}>
+                  {lang === "fr" ? "ÉQUIPE 1" : "TEAM 1"}: 5 {uiTranslations[lang].teamXCards}
+                </h2>
               </div>
               <div style={{ backgroundColor: "#ffffff", padding: "0.5rem 1rem", borderRadius: "0.5rem", color: "#1e3a8a" }}>
-                <h2 style={{ fontSize: "1rem", fontWeight: "bold" }}>{lang === "fr" ? "ÉQUIPE 2" : "TEAM 2"}: 5 CARDS</h2>
+                <h2 style={{ fontSize: "1rem", fontWeight: "bold" }}>
+                  {lang === "fr" ? "ÉQUIPE 2" : "TEAM 2"}: 5 {uiTranslations[lang].teamXCards}
+                </h2>
               </div>
             </div>
 
@@ -477,12 +408,14 @@ export default function RunThrough() {
                   <h4 style={{ fontSize: "1rem", fontWeight: "bold", marginBottom: "0.25rem" }}>
                     {lang === "fr" ? "Conseil" : "Hint"}
                   </h4>
-                  <p style={{ fontSize: "0.8rem", fontStyle: "italic" }}>{lang === "fr" ? fakeScenario.shortHintFr : fakeScenario.shortHintEn}</p>
+                  <p style={{ fontSize: "0.8rem", fontStyle: "italic" }}>
+                    {lang === "fr" ? fakeScenario.shortHintFr : fakeScenario.shortHintEn}
+                  </p>
                 </motion.div>
               </>
             )}
 
-            {/* Card Input for Simulation */}
+            {/* Card Input */}
             {!showQuestionPhase && (
               <motion.div
                 key="cardInputPhase"
@@ -507,7 +440,6 @@ export default function RunThrough() {
                   </div>
                 )}
                 <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
-                  {/* Team 1 input */}
                   <div style={{ display: "flex", flexDirection: "column", backgroundColor: "#ffffff", padding: "1rem", borderRadius: "0.5rem", border: "1px solid #1e3a8a" }}>
                     <span style={{ color: "#1e3a8a", fontWeight: "bold", marginBottom: "0.5rem" }}>
                       {lang === "fr" ? "ÉQUIPE 1" : "TEAM 1"}
@@ -523,7 +455,6 @@ export default function RunThrough() {
                       style={{ padding: "0.5rem", borderRadius: "0.25rem", border: "1px solid #1e3a8a", width: "10rem", outline: "none", color: "#1e3a8a" }}
                     />
                   </div>
-                  {/* Team 2 input */}
                   <div style={{ display: "flex", flexDirection: "column", backgroundColor: "#ffffff", padding: "1rem", borderRadius: "0.5rem", border: "1px solid #1e3a8a" }}>
                     <span style={{ color: "#1e3a8a", fontWeight: "bold", marginBottom: "0.5rem" }}>
                       {lang === "fr" ? "ÉQUIPE 2" : "TEAM 2"}
@@ -559,7 +490,7 @@ export default function RunThrough() {
               </motion.div>
             )}
 
-            {/* Q&A Phase for Simulation */}
+            {/* Q&A Phase */}
             <AnimatePresence>
               {showQuestionPhase && (
                 <motion.div
@@ -577,7 +508,6 @@ export default function RunThrough() {
                     maxWidth: "40rem",
                   }}
                 >
-                  {/* Fake Q&A for TEAM 1 */}
                   <div
                     style={{
                       width: "100%",
@@ -597,7 +527,7 @@ export default function RunThrough() {
                       {lang === "fr" ? "Répondez à la question suivante:" : "Answer the following question:"}
                     </p>
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.5rem" }}>
-                      { (lang === "fr" ? fakeQuestionTeam1.optionsFr : fakeQuestionTeam1.optionsEn).map((option, idx) => {
+                      {(lang === "fr" ? fakeQuestionTeam1.optionsFr : fakeQuestionTeam1.optionsEn).map((option, idx) => {
                         const letter = String.fromCharCode(97 + idx);
                         return (
                           <button
@@ -649,7 +579,6 @@ export default function RunThrough() {
                     )}
                   </div>
 
-                  {/* Fake Q&A for TEAM 2 */}
                   <div
                     style={{
                       width: "100%",
@@ -669,7 +598,7 @@ export default function RunThrough() {
                       {lang === "fr" ? "Répondez à la question suivante:" : "Answer the following question:"}
                     </p>
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.5rem" }}>
-                      { (lang === "fr" ? fakeQuestionTeam2.optionsFr : fakeQuestionTeam2.optionsEn).map((option, idx) => {
+                      {(lang === "fr" ? fakeQuestionTeam2.optionsFr : fakeQuestionTeam2.optionsEn).map((option, idx) => {
                         const letter = String.fromCharCode(97 + idx);
                         return (
                           <button
@@ -792,5 +721,16 @@ export default function RunThrough() {
         </div>
       </div>
     </div>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// Export RunThrough Component Wrapped in Suspense
+// -----------------------------------------------------------------------------
+export default function RunThrough() {
+  return (
+    <Suspense fallback={<div style={{ color: "white", padding: "2rem" }}>Loading...</div>}>
+      <RunThroughContent />
+    </Suspense>
   );
 }

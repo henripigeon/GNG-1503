@@ -18,7 +18,7 @@ const translations = {
         "You will face two halves (Fire + Ocean), each worth 50 points. Your total can reach 100 points if you do everything perfectly!",
       description2: `1) Forest Fire (Game + Questions)
    • Move with W, A, S, D
-   • SPACE near a fire for 2s to extinguish
+   • SPACE near a fire to extinguish
    • E near an extinguished fire to plant a tree
    • Then read Fire info slides & answer questions
 
@@ -53,6 +53,16 @@ Aim for 100 points!`,
       next: "Next",
       finish: "Finish",
     },
+    fireGame: {
+      header: "Forest Fire (25 points)",
+      instructions:
+        "Move with W, A, S, D. SPACE near a fire to extinguish, E to plant.\n6 fires = 12 actions = 25 points total",
+    },
+    oceanGame: {
+      header: "Ocean Cleanup (25 points)",
+      instructions:
+        "Move with W, A, S, D. Collect trash (+5 points each), avoid fish/turtles (-5 points each).",
+    },
   },
   fr: {
     setup: {
@@ -66,15 +76,15 @@ Aim for 100 points!`,
       description1:
         "Vous allez relever deux moitiés (Feu + Océan), chacune valant 50 points. Vous pouvez atteindre 100 points si vous faites tout parfaitement !",
       description2: `1) Incendie de Forêt (Jeu + Questions)
-   • Z, Q, S, D pour se déplacer
-   • ESPACE près d'un feu (2s) pour l'éteindre
+   • W, A, S, D pour se déplacer
+   • ESPACE près d'un feu pour l'éteindre
    • E près d'un feu éteint pour planter un arbre
    • Ensuite, lisez les infos Feu et répondez aux questions
 
 2) Nettoyage de l'Océan (Jeu + Questions)
-   • Z, Q, S, D
+   • W, A, S, D
    • Ramassez les déchets (+5 points chacun)
-   • Évitez les poissons ou tortues (-5). Essayez de garder un score parfait !
+   • Évitez les poissons ou tortues (-5 points chacun). Essayez de garder un score parfait !
 
 Visez 100 points !`,
       startButton: "Commencer la Mission Finale",
@@ -102,6 +112,16 @@ Visez 100 points !`,
       next: "Suivant",
       finish: "Terminer",
     },
+    fireGame: {
+      header: "Incendie de Forêt (25 points)",
+      instructions:
+        "Utilisez W, A, S, D pour vous déplacer. ESPACE près d'un feu pour éteindre, E pour planter.\n6 feux = 12 actions = 25 points total",
+    },
+    oceanGame: {
+      header: "Nettoyage de l'Océan (25 points)",
+      instructions:
+        "Utilisez W, A, S, D pour vous déplacer. Ramassez les déchets (+5 points chacun), évitez les poissons/tortues (-5 points chacun).",
+    },
   },
 } as const;
 
@@ -118,38 +138,26 @@ interface Slide {
 /* 
    2) Full sets of Fire / Ocean slides in both languages, 
    with big text & 5 question slides each.
-
-   Paste your entire big text & question slides here 
-   EXACTLY as you have them. For brevity, I'm showing an example.
-   Make sure you replace them with your full text if you want it all.
+   (Example slides included)
 */
 
 /* ============= FIRE ENGLISH ============= */
 const fireSlidesEn: Slide[] = [
   {
     title: "Why Do Forest Fires Happen?",
-    content: `Forest fires happen when dry plants, trees, and leaves catch fire. Here’s why this happens:
-Hot, Dry Weather: When there is no rain for a long time, trees and grass become dry, making them easy to burn.
-Global Warming: Rising temperatures make forests drier and cause more wildfires.
-Strong Winds: Wind spreads fire quickly from one tree to another.
-Human Mistakes: Most wildfires start because of people—not nature.
-`,
+    content:
+      "Forest fires happen when dry plants, trees, and leaves catch fire. Here’s why this happens:\nHot, Dry Weather: When there is no rain for a long time, trees and grass become dry, making them easy to burn.\nGlobal Warming: Rising temperatures make forests drier and cause more wildfires.\nStrong Winds: Wind spreads fire quickly from one tree to another.\nHuman Mistakes: Most wildfires start because of people—not nature.",
   },
   {
     title: "How Are They Caused?",
-    content: `Campfires Not Put Out: Even small leftover embers can start a big fire.
-Dropped Matches or Lighters: A tiny flame can grow into a huge wildfire.
-Fireworks or Sparklers: If used in dry areas, they can ignite fires.
-`,
+    content:
+      "Campfires Not Put Out: Even small leftover embers can start a big fire.\nDropped Matches or Lighters: A tiny flame can grow into a huge wildfire.\nFireworks or Sparklers: If used in dry areas, they can ignite fires.",
   },
   {
     title: "How Can You Help Prevent Forest Fires?",
-    content: `Put Out Campfires: If camping, remind adults to pour water on fires before leaving.
-Follow Fire Warnings: If there’s a fire ban, remind your family not to light a fire.
-Pick Up Trash: Glass bottles and plastic can focus sunlight and start a fire.
-`,
+    content:
+      "Put Out Campfires: If camping, remind adults to pour water on fires before leaving.\nFollow Fire Warnings: If there’s a fire ban, remind your family not to light a fire.\nPick Up Trash: Glass bottles and plastic can focus sunlight and start a fire.",
   },
-  // 5 question slides (example)
   {
     title: "Forest Fire Question 1",
     content: "What makes trees and plants dry and easy to catch fire?",
@@ -202,30 +210,19 @@ Pick Up Trash: Glass bottles and plastic can focus sunlight and start a fire.
 const fireSlidesFr: Slide[] = [
   {
     title: "Pourquoi les feux de forêt se produisent-ils ?",
-    content: `Les feux de forêt se déclenchent lorsque des plantes, des arbres et des feuilles sèches prennent feu. Voici pourquoi cela arrive :
-Temps chaud et sec : Lorsque la pluie ne tombe pas pendant longtemps, les arbres et l'herbe deviennent secs et faciles à brûler.
-Réchauffement climatique : La hausse des températures assèche les forêts et augmente les incendies.
-Vents forts : Le vent propage rapidement le feu d’un arbre à l’autre.
-Erreurs humaines : La plupart des feux de forêt sont causés par les gens et non par la nature.
-`,
+    content:
+      "Les feux de forêt se déclenchent lorsque des plantes, des arbres et des feuilles sèches prennent feu. Voici pourquoi cela arrive :\nTemps chaud et sec : Lorsque la pluie ne tombe pas pendant longtemps, les arbres et l'herbe deviennent secs et faciles à brûler.\nRéchauffement climatique : La hausse des températures assèche les forêts et augmente les incendies.\nVents forts : Le vent propage rapidement le feu d’un arbre à l’autre.\nErreurs humaines : La plupart des feux de forêt sont causés par les gens et non par la nature.",
   },
   {
     title: "Comment sont-ils causés ?",
-    content: `Feux de camp mal éteints : Même de petites braises restantes peuvent allumer un grand incendie.
-Mégots de cigarettes : Les jeter dans l’herbe sèche peut déclencher un feu.
-Feux d’artifice : Utilisés dans des zones sèches, ils peuvent provoquer un incendie.
-`,
+    content:
+      "Feux de camp mal éteints : Même de petites braises restantes peuvent allumer un grand incendie.\nMégots de cigarettes : Les jeter dans l’herbe sèche peut déclencher un feu.\nFeux d’artifice : Utilisés dans des zones sèches, ils peuvent provoquer un incendie.",
   },
   {
     title: "Comment pouvez-vous aider à prévenir les feux de forêt ?",
-    content: `Même en tant qu'enfant, vous pouvez aider !
-Éteignez les feux de camp : Si vous campez, rappelez aux adultes de verser de l'eau sur le feu avant de partir.
-Respectez les avertissements d’incendie : S'il y a une interdiction de feu, rappelez à votre famille de ne pas allumer de feu.
-Ramassez les déchets : Les bouteilles en verre et le plastique peuvent concentrer la lumière du soleil et déclencher un incendie.
-Signalez la fumée : Si vous voyez de la fumée dans une forêt, dites-le à un adulte.
-`,
+    content:
+      "Même en tant qu'enfant, vous pouvez aider !\nÉteignez les feux de camp : Si vous campez, rappelez aux adultes de verser de l'eau sur le feu avant de partir.\nRespectez les avertissements d’incendie : S'il y a une interdiction de feu, rappelez à votre famille de ne pas allumer de feu.\nRamassez les déchets : Les bouteilles en verre et le plastique peuvent concentrer la lumière du soleil et déclencher un incendie.\nSignalez la fumée : Si vous voyez de la fumée dans une forêt, dites-le à un adulte.",
   },
-  // 5 question slides
   {
     title: "Question Feu de Forêt 1",
     content:
@@ -281,32 +278,19 @@ Signalez la fumée : Si vous voyez de la fumée dans une forêt, dites-le à un 
 const oceanSlidesEn: Slide[] = [
   {
     title: "Why Do Oceans Get Polluted?",
-    content: `The ocean gets dirty when people’s trash, chemicals, and waste enter the water. Here’s why this happens:
-Plastic Waste: Items like bottles, bags, and straws don’t break down and end up in the ocean.
-Oil Spills: Ships sometimes leak oil into the ocean, making the water toxic for sea animals.
-Chemicals from Homes: Soap, cleaners, and fertilizers wash into rivers and lead to ocean pollution.
-Littering: Trash thrown on the ground often gets washed into waterways and the ocean.
-Fishing Waste: Lost fishing nets and other waste trap and harm sea animals.
-`,
+    content:
+      "The ocean gets dirty when people’s trash, chemicals, and waste enter the water. Here’s why this happens:\nPlastic Waste: Items like bottles, bags, and straws don’t break down and end up in the ocean.\nOil Spills: Ships sometimes leak oil into the ocean, making the water toxic for sea animals.\nChemicals from Homes: Soap, cleaners, and fertilizers wash into rivers and lead to ocean pollution.\nLittering: Trash thrown on the ground often gets washed into waterways and the ocean.\nFishing Waste: Lost fishing nets and other waste trap and harm sea animals.",
   },
   {
     title: "How Are Oceans Polluted?",
-    content: `People Throwing Trash: Garbage left on the beach or ground eventually reaches the ocean.
-Factories Dumping Waste: Some industries release harmful chemicals into rivers that flow into the sea.
-Too Much Plastic Use: Single-use plastics like straws and wrappers end up in the ocean.
-Washing Chemicals Down the Drain: Cleaning products and fertilizers used at home can pollute water.
-`,
+    content:
+      "People Throwing Trash: Garbage left on the beach or ground eventually reaches the ocean.\nFactories Dumping Waste: Some industries release harmful chemicals into rivers that flow into the sea.\nToo Much Plastic Use: Single-use plastics like straws and wrappers end up in the ocean.\nWashing Chemicals Down the Drain: Cleaning products and fertilizers used at home can pollute water.",
   },
   {
     title: "How Can You Help Keep the Ocean Clean?",
-    content: `Use Less Plastic: Choose reusable bottles, bags, and containers.
-Throw Trash in the Bin: Always put garbage in the right place.
-Recycle: Help sort plastics and cans to keep them out of the ocean.
-Use Eco-Friendly Products: Choose soaps and cleaners that don’t harm the environment.
-Join a Cleanup: If you visit a park, river, or beach, pick up any trash you see.
-`,
+    content:
+      "Use Less Plastic: Choose reusable bottles, bags, and containers.\nThrow Trash in the Bin: Always put garbage in the right place.\nRecycle: Help sort plastics and cans to keep them out of the ocean.\nUse Eco-Friendly Products: Choose soaps and cleaners that don’t harm the environment.\nJoin a Cleanup: If you visit a park, river, or beach, pick up any trash you see.",
   },
-  // 5 question slides
   {
     title: "Ocean Pollution Question 1",
     content: "What is the biggest cause of ocean pollution?",
@@ -360,30 +344,18 @@ Join a Cleanup: If you visit a park, river, or beach, pick up any trash you see.
 const oceanSlidesFr: Slide[] = [
   {
     title: "Pourquoi les océans sont-ils pollués ?",
-    content: `Les océans deviennent sales lorsque les déchets, les produits chimiques et les ordures des gens y pénètrent. Voici pourquoi cela arrive :
-Déchets plastiques : Les bouteilles, sacs et pailles ne se décomposent pas et finissent dans l’océan.
-Produits chimiques des maisons : Les savons, nettoyants et engrais se retrouvent dans l’eau et polluent l’océan.
-Déchets jetés par terre : Les ordures laissées au sol finissent souvent dans l’eau.
-Déchets de pêche : Les filets et autres déchets de pêche piègent et blessent les animaux marins.
-`,
+    content:
+      "Les océans deviennent sales lorsque les déchets, les produits chimiques et les ordures des gens y pénètrent. Voici pourquoi cela arrive :\nDéchets plastiques : Les bouteilles, sacs et pailles ne se décomposent pas et finissent dans l’océan.\nProduits chimiques des maisons : Les savons, nettoyants et engrais se retrouvent dans l’eau et polluent l’océan.\nDéchets jetés par terre : Les ordures laissées au sol finissent souvent dans l’eau.\nDéchets de pêche : Les filets et autres déchets de pêche piègent et blessent les animaux marins.",
   },
   {
     title: "Comment les océans sont-ils pollués ?",
-    content: `La pollution survient lorsque :
-• Les déchets sont transportés par le vent et la pluie
-• Les usines déversent des produits chimiques
-• L'usage excessif de plastique
-• Les produits ménagers polluent l'eau
-`,
+    content:
+      "La pollution survient lorsque :\n• Les déchets sont transportés par le vent et la pluie\n• Les usines déversent des produits chimiques\n• L'usage excessif de plastique\n• Les produits ménagers polluent l'eau",
   },
   {
     title: "Comment garder l'océan propre ?",
-    content: `Utilisez moins de plastique : Préférez des bouteilles et sacs réutilisables.
-Jetez les déchets à la poubelle : Ne laissez jamais d'ordures au sol.
-Recyclez : Aidez à trier les plastiques et canettes pour éviter qu’ils finissent dans l’eau.
-Utilisez des produits écologiques : Choisissez des savons et nettoyants respectueux de l’environnement.
-Participez à un nettoyage : Si vous visitez un parc, une rivière ou une plage, ramassez les déchets que vous trouvez.
-`,
+    content:
+      "Utilisez moins de plastique : Préférez des bouteilles et sacs réutilisables.\nJetez les déchets à la poubelle : Ne laissez jamais d'ordures au sol.\nRecyclez : Aidez à trier les plastiques et canettes pour éviter qu’ils finissent dans l’eau.\nUtilisez des produits écologiques : Choisissez des savons et nettoyants respectueux de l’environnement.\nParticipez à un nettoyage : Si vous visitez un parc, une rivière ou une plage, ramassez les déchets que vous trouvez.",
   },
   {
     title: "Question Océan 1",
@@ -445,11 +417,11 @@ function getFireSlides(lang: Language): Slide[] {
 }
 function getOceanSlides(lang: Language): Slide[] {
   return lang === "en" ? oceanSlidesEn : oceanSlidesFr;
+}
 
 /* ======================================
    2) Flow States + Helper
 ====================================== */
-}
 type GameState =
   | "setup"
   | "intro"
@@ -513,7 +485,8 @@ export default function Page() {
 
   return (
     <div style={{ width: "100%", height: "100%", overflow: "hidden" }}>
-      <style>{`
+      <style>
+        {`
         /* Hide default Next.js bar => no black bar */
         header, nav {
           display: none !important;
@@ -566,7 +539,8 @@ export default function Page() {
           50% { transform: translateY(-10px); }
           100% { transform: translateY(0); }
         }
-      `}</style>
+        `}
+      </style>
 
       <button className="lang-toggle" onClick={toggleLanguage}>
         {translations[language].language}
@@ -656,7 +630,7 @@ export default function Page() {
         />
       )}
 
-      {/* CERTIFICATE => centered, red warning, more readable */}
+      {/* CERTIFICATE */}
       {gameState === "certificate" && (
         <CompletionCertificate
           rawScore={finalScore}
@@ -669,7 +643,7 @@ export default function Page() {
 }
 
 /* ======================================
-   FireGame (with decorative trees, 25/25 fix)
+   FireGame (with decorative trees, instant extinguish, smoother movement)
 ====================================== */
 interface FireGameProps {
   language: Language;
@@ -687,6 +661,7 @@ function FireGame({
   onFinish,
   totalScore,
 }: FireGameProps) {
+  const text = translations[language];
   const [doneFire, setDoneFire] = useState(false);
 
   const [fires, setFires] = useState<Array<{ x: number; y: number; status: FireStatus }>>([]);
@@ -736,7 +711,7 @@ function FireGame({
     setForestTrees(newTrees);
   }, [setScoreFireGame]);
 
-  // movement
+  // smoother movement: update every 16ms (~60fps)
   useEffect(() => {
     const interval = setInterval(() => {
       setFirefighterPos((prev) => {
@@ -744,56 +719,47 @@ function FireGame({
         const newY = Math.max(0, Math.min(100, prev.y + firefighterDir.y));
         return { x: newX, y: newY };
       });
-    }, 100);
+    }, 16);
     return () => clearInterval(interval);
   }, [firefighterDir]);
 
-  // extinguish fires
-  const [extinguishTimers, setExtinguishTimers] = useState<{ [idx: number]: NodeJS.Timeout }>({});
+  // instant extinguish fires (no delay)
   useEffect(() => {
     fires.forEach((f, idx) => {
       if (f.status === "burning") {
         const dist = distance(f.x, f.y, firefighterPos.x, firefighterPos.y);
-        if (dist < 5 && isHoseOn && !extinguishTimers[idx]) {
-          const timer = setTimeout(() => {
-            setFires((prev) => {
-              const copy = [...prev];
-              if (copy[idx].status === "burning") {
-                copy[idx].status = "extinguished";
-                setExtinguishCount((c) => {
-                  const newE = c + 1;
-                  recalcFireScore(newE, plantCount);
-                  return newE;
-                });
-              }
-              return copy;
-            });
-            setExtinguishTimers((t) => {
-              const newT = { ...t };
-              delete newT[idx];
-              return newT;
-            });
-          }, 2000);
-          setExtinguishTimers((t) => ({ ...t, [idx]: timer }));
+        if (dist < 5 && isHoseOn) {
+          setFires((prev) => {
+            const copy = [...prev];
+            if (copy[idx].status === "burning") {
+              copy[idx].status = "extinguished";
+              setExtinguishCount((c) => {
+                const newE = c + 1;
+                recalcFireScore(newE, plantCount);
+                return newE;
+              });
+            }
+            return copy;
+          });
         }
       }
     });
-  }, [fires, firefighterPos, isHoseOn, extinguishTimers, plantCount]);
+  }, [fires, firefighterPos, isHoseOn, plantCount]);
 
   function handleKeyDown(e: React.KeyboardEvent) {
     const k = e.key.toLowerCase();
     switch (k) {
       case "w":
-        setFirefighterDir({ x: 0, y: -2 });
+        setFirefighterDir({ x: 0, y: -0.5 });
         break;
       case "a":
-        setFirefighterDir({ x: -2, y: 0 });
+        setFirefighterDir({ x: -0.5, y: 0 });
         break;
       case "s":
-        setFirefighterDir({ x: 0, y: 2 });
+        setFirefighterDir({ x: 0, y: 0.5 });
         break;
       case "d":
-        setFirefighterDir({ x: 2, y: 0 });
+        setFirefighterDir({ x: 0.5, y: 0 });
         break;
       case " ":
         setIsHoseOn(true);
@@ -875,7 +841,7 @@ function FireGame({
         </p>
       </div>
 
-      {/* instructions */}
+      {/* Game header and instructions (language sensitive) */}
       <div
         style={{
           maxWidth: "800px",
@@ -887,16 +853,15 @@ function FireGame({
           textAlign: "center",
         }}
       >
-        <h3 style={{ color: "#e67e22", marginBottom: "10px" }}>Forest Fire (25 points)</h3>
+        <h3 style={{ color: "#e67e22", marginBottom: "10px" }}>
+          {translations[language].fireGame.header}
+        </h3>
         <p style={{ fontWeight: "bold", color: "#444", margin: 0 }}>
-          Move with W, A, S, D. SPACE near a fire (2s) to extinguish, E to plant.
-        </p>
-        <p style={{ fontStyle: "italic", color: "#777", marginTop: "10px" }}>
-          6 fires = 12 actions = 25 points total
+          {translations[language].fireGame.instructions}
         </p>
       </div>
 
-      {/* playable area with decorative trees */}
+      {/* Playable area with decorative trees */}
       <div
         style={{
           position: "relative",
@@ -909,7 +874,7 @@ function FireGame({
           overflow: "hidden",
         }}
       >
-        {/* decorative trees */}
+        {/* Decorative trees */}
         {forestTrees.map((t, i) => (
           <div
             key={i}
@@ -925,7 +890,7 @@ function FireGame({
           </div>
         ))}
 
-        {/* fires */}
+        {/* Fires */}
         {fires.map((f, i) => (
           <div
             key={i}
@@ -1034,7 +999,8 @@ function QuestionSlideshow({
 
   return (
     <div style={{ width: "100%", height: "100%", backgroundColor: "#fff", position: "relative" }}>
-      <style>{`
+      <style>
+        {`
         .quiz-button {
           padding: 14px 18px;
           border-radius: 6px;
@@ -1055,9 +1021,10 @@ function QuestionSlideshow({
           background-color: #ffeaea !important;
           color: #990000 !important;
         }
-      `}</style>
+        `}
+      </style>
 
-      {/* pinned scoreboard top-left */}
+      {/* Pinned scoreboard */}
       <div
         style={{
           position: "absolute",
@@ -1181,7 +1148,7 @@ function QuestionSlideshow({
 }
 
 /* ======================================
-   OceanGame (extra fish/turtles, 25/25)
+   OceanGame (with extra fish/turtles, 25/25)
 ====================================== */
 interface OceanGameProps {
   language: Language;
@@ -1197,6 +1164,7 @@ function OceanGame({
   onFinish,
   totalScore,
 }: OceanGameProps) {
+  const text = translations[language];
   const [doneOcean, setDoneOcean] = useState(false);
 
   const [boatPos, setBoatPos] = useState({ x: 50, y: 50 });
@@ -1249,7 +1217,7 @@ function OceanGame({
     return () => clearInterval(interval);
   }, [boatDir]);
 
-  // collect trash => +5, fish => -5
+  // collect trash => +5, fish/turtles => -5
   useEffect(() => {
     setOceanDebris((prev) =>
       prev.map((d) => {
@@ -1346,6 +1314,7 @@ function OceanGame({
         </p>
       </div>
 
+      {/* Game header and instructions (language sensitive) */}
       <div
         style={{
           maxWidth: "800px",
@@ -1358,10 +1327,10 @@ function OceanGame({
         }}
       >
         <h3 style={{ color: "#2980b9", marginBottom: "10px" }}>
-          Ocean Cleanup (25 points)
+          {translations[language].oceanGame.header}
         </h3>
         <p style={{ fontWeight: "bold", color: "#444", margin: 0 }}>
-          Move with W, A, S, D. Collect trash (+5), avoid fish/turtles (-5).
+          {translations[language].oceanGame.instructions}
         </p>
       </div>
 
@@ -1377,7 +1346,7 @@ function OceanGame({
           overflow: "hidden",
         }}
       >
-        {/* trash */}
+        {/* Trash */}
         {oceanDebris.map((t) =>
           !t.collected ? (
             <div
@@ -1394,7 +1363,7 @@ function OceanGame({
             </div>
           ) : null
         )}
-        {/* fish/turtles */}
+        {/* Fish/Turtles */}
         {oceanAnimals.map((a) => (
           <div
             key={a.id}
@@ -1410,7 +1379,7 @@ function OceanGame({
             {a.char}
           </div>
         ))}
-        {/* boat */}
+        {/* Boat */}
         <div
           style={{
             position: "absolute",
@@ -1428,7 +1397,7 @@ function OceanGame({
 }
 
 /* ======================================
-   8) CompletionCertificate (centered, red warning, more readable)
+   CompletionCertificate (centered, red warning, more readable)
 ====================================== */
 interface CompletionProps {
   rawScore: number;
