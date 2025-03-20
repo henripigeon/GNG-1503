@@ -4270,7 +4270,7 @@ const uiTranslations = {
     hintsText: "Pensez à long terme avant de choisir une carte!",
     cardIdLabel: "ID de la Carte",
     cardPlaceholder: "Entrez l'ID de votre carte",
-    skipRound: "Passer la tour",
+    skipRound: "Passer le minuteur",
     endGame: "Terminer la Partie",
     endGameConfirm: "Êtes-vous sûr de vouloir terminer la partie maintenant ?",
     submitCards: "Valider les cartes",
