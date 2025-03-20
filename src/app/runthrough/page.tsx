@@ -15,14 +15,6 @@ interface WalkthroughStep {
 
 const walkthroughSteps: WalkthroughStep[] = [
   {
-    title: { en: "Card Counter", fr: "Compteur de cartes" },
-    description: {
-      en: "This box shows your team's current card count. Answer bonus questions correctly to earn extra cards during the game!",
-      fr: "Ce compteur affiche le nombre de cartes que possède votre équipe. Répondez correctement aux questions bonus pour gagner des cartes supplémentaires durant la partie !",
-    },
-    imageSrc: "/IMAGE1.png",
-  },
-  {
     title: { en: "Score Table & Timer", fr: "Tableau des scores & minuterie" },
     description: {
       en: "Here you see the round number, overall score, and a countdown timer. You can skip the timer if you’re ready or end the game when you wish.",
@@ -57,8 +49,8 @@ const walkthroughSteps: WalkthroughStep[] = [
   {
     title: { en: "Bonus Question", fr: "Question bonus" },
     description: {
-      en: "After card submission, you’ll answer a bonus question related to your card. Answer correctly to earn an extra card for the next round!",
-      fr: "Après la soumission des cartes, vous répondrez à une question bonus liée à votre carte. Répondez correctement pour gagner une carte supplémentaire pour la prochaine manche !",
+      en: "After card submission, you’ll answer a bonus question related to your card. Answer correctly to earn an extra point!",
+      fr: "Après la soumission des cartes, vous répondrez à une question bonus liée à votre carte. Répondez correctement pour gagner un point supplémentaire!",
     },
     imageSrc: "/IMAGE6.png",
   },

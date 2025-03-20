@@ -15,16 +15,18 @@ const translations = {
     team2Count: "Number of Members (Team 2)",
     teamMember: "Member Name",
     startGame: "Start Game",
+    fillRequiredFields: "Please fill out the grade and both team names!"
   },
   fr: {
     title: "Configuration des Équipes",
-    sectionLabel: "Année",
+    sectionLabel: "Niveau",
     team1Name: "Nom de l'Équipe 1",
     team2Name: "Nom de l'Équipe 2",
     team1Count: "Nombre de membres (Équipe 1)",
     team2Count: "Nombre de membres (Équipe 2)",
     teamMember: "Nom du membre",
     startGame: "Commencer le Jeu",
+    fillRequiredFields: "Veuillez remplir le niveau et les noms des deux équipes !"
   },
 };
 
@@ -41,13 +43,24 @@ function GameSetupContent() {
   const [team2Count, setTeam2Count] = useState<number>(0);
   const [team1Members, setTeam1Members] = useState<string[]>([]);
   const [team2Members, setTeam2Members] = useState<string[]>([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    setTeam1Members(Array(team1Count).fill(""));
+    // Limit to maximum 4 members
+    const limitedCount = Math.min(4, team1Count);
+    setTeam1Members(Array(limitedCount).fill(""));
+    if (team1Count > 4) {
+      setTeam1Count(4);
+    }
   }, [team1Count]);
 
   useEffect(() => {
-    setTeam2Members(Array(team2Count).fill(""));
+    // Limit to maximum 4 members
+    const limitedCount = Math.min(4, team2Count);
+    setTeam2Members(Array(limitedCount).fill(""));
+    if (team2Count > 4) {
+      setTeam2Count(4);
+    }
   }, [team2Count]);
 
   const updateTeam1Member = (index: number, value: string) => {
@@ -69,9 +82,11 @@ function GameSetupContent() {
   const handleStartGame = () => {
     // Ensuring that the grade (section) and both team names are filled before proceeding.
     if (!section || !team1Name || !team2Name) {
-      alert("Please fill out the grade and both team names!");
+      setError(t.fillRequiredFields);
       return;
     }
+    
+    setError("");
     router.push(
       `/tutorial?lang=${lang}&section=${encodeURIComponent(
         section
@@ -83,55 +98,111 @@ function GameSetupContent() {
     );
   };
 
+  const inputStyle = {
+    width: "100%",
+    padding: "12px",
+    borderRadius: "8px",
+    border: "1px solid #ddd",
+    backgroundColor: "white",
+    transition: "all 0.2s ease",
+    fontSize: "16px",
+    boxShadow: "0 1px 3px rgba(0,0,0,0.05) inset"
+  };
+
+  const labelStyle = {
+    display: "block",
+    fontWeight: "600",
+    marginBottom: "8px",
+    fontSize: "16px",
+    color: "#444"
+  };
+
   return (
     <div
       style={{
         minHeight: "100vh",
-        backgroundImage: "url('/earth-split-bg2.jpg'), linear-gradient(red, red)",
+        backgroundImage: "url('/earth-split-bg2.jpg'), linear-gradient(to bottom, rgba(46, 204, 113, 0.2), rgba(39, 174, 96, 0.4))",
+        backgroundBlendMode: "overlay",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        color: "black",
+        color: "#333",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        padding: "20px",
+        padding: "40px 20px",
         boxSizing: "border-box",
+        fontFamily: "'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, sans-serif",
+        overflow: "auto"
       }}
     >
       <motion.div
         style={{
-          backgroundColor: "rgba(255,255,255,0.9)",
-          borderRadius: "12px",
-          padding: "20px",
-          maxWidth: "800px",
+          backgroundColor: "rgba(255,255,255,0.95)",
+          borderRadius: "20px",
+          padding: "36px",
+          maxWidth: "900px",
           width: "100%",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+          boxShadow: "0 10px 30px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.06)",
+          border: "1px solid rgba(230, 230, 230, 0.7)"
         }}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 0.5 }}
       >
-        <h1 style={{ fontSize: "2rem", marginBottom: "16px", textAlign: "center" }}>
+        <motion.h1 
+          style={{ 
+            fontSize: "2.5rem", 
+            marginBottom: "28px", 
+            textAlign: "center",
+            color: "#1e8449",
+            fontWeight: "700",
+            letterSpacing: "-0.5px"
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.8 }}
+        >
           {t.title}
-        </h1>
+        </motion.h1>
+
+        {error && (
+          <motion.div 
+            style={{
+              padding: "12px 16px",
+              backgroundColor: "#ffebee",
+              color: "#c62828",
+              borderRadius: "8px",
+              marginBottom: "20px",
+              textAlign: "center",
+              fontWeight: "500"
+            }}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {error}
+          </motion.div>
+        )}
 
         {/* Grade/Section */}
-        <div style={{ marginBottom: "16px" }}>
-          <label style={{ display: "block", fontWeight: "bold", marginBottom: "8px" }}>
+        <div style={{ marginBottom: "24px" }}>
+          <label style={labelStyle}>
             {t.sectionLabel}
           </label>
           <select
             value={section}
             onChange={(e) => setSection(e.target.value)}
             style={{
-              width: "100%",
-              padding: "10px",
-              borderRadius: "6px",
-              border: "1px solid #ccc",
+              ...inputStyle,
+              cursor: "pointer",
+              appearance: "none",
+              backgroundImage: "url('data:image/svg+xml;utf8,<svg fill=\"black\" height=\"24\" viewBox=\"0 0 24 24\" width=\"24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 10l5 5 5-5z\"/><path d=\"M0 0h24v24H0z\" fill=\"none\"/></svg>')",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "right 12px center"
             }}
           >
-            <option value="">Select grade</option>
+            <option value="">{lang === "fr" ? "Sélectionner niveau" : "Select grade"}</option>
             <option value="4th">4th</option>
             <option value="5th">5th</option>
             <option value="6th">6th</option>
@@ -139,11 +210,31 @@ function GameSetupContent() {
           </select>
         </div>
 
-        <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
+        <div style={{ 
+          display: "flex", 
+          flexDirection: "row",
+          gap: "32px",
+          marginBottom: "20px"
+        }}>
           {/* Team 1 */}
-          <div style={{ flex: "1 1 300px" }}>
-            <div style={{ marginBottom: "16px" }}>
-              <label style={{ display: "block", fontWeight: "bold", marginBottom: "8px" }}>
+          <div style={{ 
+            flex: 1,
+            backgroundColor: "rgba(212, 239, 223, 0.6)", 
+            padding: "24px",
+            borderRadius: "12px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+            border: "1px solid rgba(130, 204, 161, 0.3)"
+          }}>
+            <h2 style={{ 
+              fontSize: "1.4rem", 
+              marginBottom: "20px", 
+              color: "#2e7d32",
+              fontWeight: "600" 
+            }}>
+              Team 1
+            </h2>
+            <div style={{ marginBottom: "20px" }}>
+              <label style={labelStyle}>
                 {t.team1Name}
               </label>
               <input
@@ -151,35 +242,26 @@ function GameSetupContent() {
                 value={team1Name}
                 onChange={(e) => setTeam1Name(e.target.value)}
                 placeholder={t.team1Name}
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  borderRadius: "6px",
-                  border: "1px solid #ccc",
-                }}
+                style={inputStyle}
               />
             </div>
-            <div style={{ marginBottom: "16px" }}>
-              <label style={{ display: "block", fontWeight: "bold", marginBottom: "8px" }}>
+            <div style={{ marginBottom: "20px" }}>
+              <label style={labelStyle}>
                 {t.team1Count}
               </label>
               <input
                 type="number"
                 min={0}
+                max={4}
                 value={team1Count}
-                onChange={(e) => setTeam1Count(Number(e.target.value))}
+                onChange={(e) => setTeam1Count(Math.min(4, Number(e.target.value)))}
                 placeholder="0"
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  borderRadius: "6px",
-                  border: "1px solid #ccc",
-                }}
+                style={inputStyle}
               />
             </div>
             {team1Members.map((member, idx) => (
               <div key={idx} style={{ marginBottom: "16px" }}>
-                <label style={{ display: "block", fontWeight: "bold", marginBottom: "8px" }}>
+                <label style={labelStyle}>
                   {t.teamMember} {idx + 1}
                 </label>
                 <input
@@ -187,21 +269,31 @@ function GameSetupContent() {
                   value={member}
                   onChange={(e) => updateTeam1Member(idx, e.target.value)}
                   placeholder={`${t.teamMember} ${idx + 1}`}
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    borderRadius: "6px",
-                    border: "1px solid #ccc",
-                  }}
+                  style={inputStyle}
                 />
               </div>
             ))}
           </div>
 
           {/* Team 2 */}
-          <div style={{ flex: "1 1 300px" }}>
-            <div style={{ marginBottom: "16px" }}>
-              <label style={{ display: "block", fontWeight: "bold", marginBottom: "8px" }}>
+          <div style={{ 
+            flex: 1,
+            backgroundColor: "rgba(232, 245, 233, 0.6)", 
+            padding: "24px",
+            borderRadius: "12px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+            border: "1px solid rgba(165, 214, 167, 0.3)"
+          }}>
+            <h2 style={{ 
+              fontSize: "1.4rem", 
+              marginBottom: "20px", 
+              color: "#388e3c",
+              fontWeight: "600" 
+            }}>
+              Team 2
+            </h2>
+            <div style={{ marginBottom: "20px" }}>
+              <label style={labelStyle}>
                 {t.team2Name}
               </label>
               <input
@@ -209,35 +301,26 @@ function GameSetupContent() {
                 value={team2Name}
                 onChange={(e) => setTeam2Name(e.target.value)}
                 placeholder={t.team2Name}
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  borderRadius: "6px",
-                  border: "1px solid #ccc",
-                }}
+                style={inputStyle}
               />
             </div>
-            <div style={{ marginBottom: "16px" }}>
-              <label style={{ display: "block", fontWeight: "bold", marginBottom: "8px" }}>
+            <div style={{ marginBottom: "20px" }}>
+              <label style={labelStyle}>
                 {t.team2Count}
               </label>
               <input
                 type="number"
                 min={0}
+                max={4}
                 value={team2Count}
-                onChange={(e) => setTeam2Count(Number(e.target.value))}
+                onChange={(e) => setTeam2Count(Math.min(4, Number(e.target.value)))}
                 placeholder="0"
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  borderRadius: "6px",
-                  border: "1px solid #ccc",
-                }}
+                style={inputStyle}
               />
             </div>
             {team2Members.map((member, idx) => (
               <div key={idx} style={{ marginBottom: "16px" }}>
-                <label style={{ display: "block", fontWeight: "bold", marginBottom: "8px" }}>
+                <label style={labelStyle}>
                   {t.teamMember} {idx + 1}
                 </label>
                 <input
@@ -245,37 +328,51 @@ function GameSetupContent() {
                   value={member}
                   onChange={(e) => updateTeam2Member(idx, e.target.value)}
                   placeholder={`${t.teamMember} ${idx + 1}`}
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    borderRadius: "6px",
-                    border: "1px solid #ccc",
-                  }}
+                  style={inputStyle}
                 />
               </div>
             ))}
           </div>
         </div>
 
-        <button
+        <motion.button
           onClick={handleStartGame}
           style={{
             width: "100%",
-            marginTop: "24px",
-            padding: "12px",
-            backgroundColor: "#2980b9",
+            marginTop: "36px",
+            padding: "18px",
+            backgroundColor: "#27ae60",
             color: "#fff",
-            fontWeight: "bold",
-            borderRadius: "9999px",
+            fontWeight: "600",
+            fontSize: "18px",
+            borderRadius: "14px",
             border: "none",
             cursor: "pointer",
-            boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+            boxShadow: "0 4px 15px rgba(39, 174, 96, 0.3)",
+            transition: "all 0.3s ease",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "10px"
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#3498db")}
-          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#2980b9")}
+          whileHover={{ 
+            backgroundColor: "#2ecc71",
+            transform: "translateY(-2px)",
+            boxShadow: "0 6px 20px rgba(39, 174, 96, 0.4)"
+          }}
+          whileTap={{ 
+            transform: "translateY(0px)",
+            boxShadow: "0 2px 5px rgba(0,0,0,0.15)"
+          }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
         >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
           {t.startGame}
-        </button>
+        </motion.button>
       </motion.div>
     </div>
   );
@@ -283,7 +380,38 @@ function GameSetupContent() {
 
 export default function GameSetupPage() {
   return (
-    <Suspense fallback={<div style={{ color: "black", padding: "20px" }}>Loading...</div>}>
+    <Suspense fallback={
+      <div style={{ 
+        color: "black", 
+        padding: "20px", 
+        display: "flex", 
+        justifyContent: "center", 
+        alignItems: "center",
+        height: "100vh"
+      }}>
+        <div style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center"
+        }}>
+          <div style={{
+            width: "40px",
+            height: "40px",
+            border: "4px solid rgba(0,0,0,0.1)",
+            borderTopColor: "#2980b9",
+            borderRadius: "50%",
+            animation: "spin 1s linear infinite",
+            marginBottom: "16px"
+          }}></div>
+          <style jsx>{`
+            @keyframes spin {
+              to { transform: rotate(360deg); }
+            }
+          `}</style>
+          <p style={{ fontWeight: "500" }}>Loading...</p>
+        </div>
+      </div>
+    }>
       <GameSetupContent />
     </Suspense>
   );

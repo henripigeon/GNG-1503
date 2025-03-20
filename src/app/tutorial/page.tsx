@@ -9,23 +9,15 @@ const tutorialTranslations = {
   en: [
     {
       title: "🎮 How to Play",
-      content: `⏳ Step 1: The Countdown Begins!\n\nA 90-second timer will start. During this time, discuss with your team and decide which card to play.\nYour goal is to choose the best action to help the Earth!`,
+      content: `⏳ Step 1: The Countdown Begins!\n\nA 90-second timer will start. During this time, discuss with your team and decide which card to play.\nYour goal is to choose the best action to help the Earth considering the scenario!`,
     },
     {
       title: "🃏 Step 2: Play a Card",
-      content: `Each turn, your team will choose a card.\nCards will give you different choices—some are good for the planet, and some are not!\nThink carefully and pick the best one.`,
+      content: `Each turn, your team will choose a card.\nCards will give you different choices—some are good for the planet, and some are less!\nThink carefully and pick the best one.`,
     },
     {
       title: "❓ Step 3: Answer a Question",
       content: `After picking a card, your team must answer an environmental question.\nIf you get it right, you earn bonus points! 🎉`,
-    },
-    {
-      title: "🌍 Step 4: Watch the Earth Change!",
-      content: `The game will show how your choice affects the planet.\nKeep an eye on the progress bars—they show things like pollution levels, biodiversity, and Earth’s lifespan.`,
-    },
-    {
-      title: "🔁 Step 5: Next Team’s Turn",
-      content: `Now, the other team plays!\nBoth teams keep playing and learning until the game ends.`,
     },
     {
       title: "🏆 Winning the Game",
@@ -35,7 +27,7 @@ const tutorialTranslations = {
   fr: [
     {
       title: "🎮 Comment Jouer",
-      content: `⏳ Étape 1 : Le compte à rebours commence !\n\nUn minuteur de 90 secondes démarrera. Pendant ce temps, discutez en équipe et décidez quelle carte jouer.\nVotre objectif est de choisir la meilleure action pour aider la Terre !`,
+      content: `⏳ Étape 1 : Le compte à rebours commence !\n\nUn minuteur de 90 secondes démarrera. Pendant ce temps, discutez en équipe et décidez quelle carte jouer.\nVotre objectif est de choisir la meilleure action pour aider la Terre considérant le scénario!`,
     },
     {
       title: "🃏 Étape 2 : Jouer une Carte",
@@ -44,14 +36,6 @@ const tutorialTranslations = {
     {
       title: "❓ Étape 3 : Répondez à une Question",
       content: `Après avoir choisi une carte, votre équipe devra répondre à une question environnementale.\nSi vous répondez correctement, vous gagnez des points bonus ! 🎉`,
-    },
-    {
-      title: "🌍 Étape 4 : Regardez la Terre Changer !",
-      content: `Le jeu montrera comment votre choix affecte la planète.\nGardez un œil sur les barres de progression – elles indiquent des informations telles que les niveaux de pollution, la biodiversité et la durée de vie de la Terre.`,
-    },
-    {
-      title: "🔁 Étape 5 : Au tour de l'autre équipe",
-      content: `Maintenant, c'est au tour de l'autre équipe !\nLes deux équipes continuent à jouer et à apprendre jusqu'à la fin du jeu.`,
     },
     {
       title: "🏆 Gagner le Jeu",

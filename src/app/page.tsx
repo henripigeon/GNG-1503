@@ -92,14 +92,15 @@ export default function HomePage() {
           position: "relative",
           zIndex: 10,
           width: "100%",
-          maxWidth: "400px",
+          maxWidth: "650px",
           margin: "0 20px",
-          padding: "30px",
+          padding: "35px",
           background: "rgba(255, 255, 255, 0.95)",
-          borderRadius: "12px",
+          borderRadius: "16px",
           textAlign: "center",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+          boxShadow: "0 10px 25px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.2) inset",
           color: "#000",
+          backdropFilter: "blur(10px)",
         }}
       >
         <motion.div
@@ -107,49 +108,93 @@ export default function HomePage() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8 }}
         >
-          {/* Show both languages for the title/description, or just pick one */}
-          <h2 style={{ fontSize: "2rem", fontWeight: 700, marginBottom: "16px" }}>
+          <h2 style={{ 
+            fontSize: "2.5rem", 
+            fontWeight: 700, 
+            marginBottom: "20px",
+            background: "linear-gradient(135deg, #27ae60, #2980b9)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            textShadow: "0px 1px 1px rgba(255,255,255,0.5)",
+            letterSpacing: "0.5px"
+          }}>
             {landingTranslations.en.welcome} / {landingTranslations.fr.welcome}
           </h2>
-          <p style={{ fontSize: "1rem", marginBottom: "24px" }}>
-            {landingTranslations.en.chooseLang}
-            <br />
-            {landingTranslations.fr.chooseLang}
-          </p>
+
+          <div style={{
+            borderTop: "1px solid rgba(0,0,0,0.1)",
+            borderBottom: "1px solid rgba(0,0,0,0.1)",
+            padding: "12px 0",
+            marginBottom: "28px"
+          }}>
+            <p style={{ 
+              fontSize: "1.1rem", 
+              lineHeight: "1.5",
+              fontWeight: "400",
+              color: "#333"
+            }}>
+              {landingTranslations.en.chooseLang}
+            </p>
+            <p style={{ 
+              fontSize: "1.1rem", 
+              lineHeight: "1.5",
+              fontWeight: "400",
+              color: "#333",
+              fontStyle: "italic"
+            }}>
+              {landingTranslations.fr.chooseLang}
+            </p>
+          </div>
 
           {/* Buttons to choose English or French */}
-          <div style={{ display: "flex", justifyContent: "center", gap: "16px" }}>
+          <div style={{ display: "flex", justifyContent: "center", gap: "20px" }}>
             <button
               onClick={() => handleChooseLang("en")}
               style={{
-                padding: "12px 20px",
+                padding: "14px 24px",
                 backgroundColor: "#27ae60",
                 border: "none",
                 borderRadius: "9999px",
                 color: "#fff",
-                fontSize: "1rem",
+                fontSize: "1.1rem",
+                fontWeight: "600",
                 cursor: "pointer",
-                transition: "transform 0.2s",
+                transition: "all 0.3s ease",
+                boxShadow: "0 4px 6px rgba(39, 174, 96, 0.3)"
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
-              onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.05)";
+                e.currentTarget.style.boxShadow = "0 6px 10px rgba(39, 174, 96, 0.4)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+                e.currentTarget.style.boxShadow = "0 4px 6px rgba(39, 174, 96, 0.3)";
+              }}
             >
               {landingTranslations.en.english}
             </button>
             <button
               onClick={() => handleChooseLang("fr")}
               style={{
-                padding: "12px 20px",
+                padding: "14px 24px",
                 backgroundColor: "#2980b9",
                 border: "none",
                 borderRadius: "9999px",
                 color: "#fff",
-                fontSize: "1rem",
+                fontSize: "1.1rem",
+                fontWeight: "600",
                 cursor: "pointer",
-                transition: "transform 0.2s",
+                transition: "all 0.3s ease",
+                boxShadow: "0 4px 6px rgba(41, 128, 185, 0.3)"
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
-              onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.05)";
+                e.currentTarget.style.boxShadow = "0 6px 10px rgba(41, 128, 185, 0.4)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+                e.currentTarget.style.boxShadow = "0 4px 6px rgba(41, 128, 185, 0.3)";
+              }}
             >
               {landingTranslations.fr.french}
             </button>
@@ -179,32 +224,51 @@ export default function HomePage() {
               style={{
                 background: "#fff",
                 color: "#000",
-                borderRadius: "8px",
-                padding: "24px",
-                maxWidth: "300px",
+                borderRadius: "12px",
+                padding: "28px",
+                maxWidth: "320px",
                 width: "90%",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+                boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
                 textAlign: "center",
               }}
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.8 }}
             >
-              <h2 style={{ fontSize: "1.25rem", fontWeight: "600", marginBottom: "16px" }}>
+              <h2 style={{ 
+                fontSize: "1.5rem", 
+                fontWeight: "600", 
+                marginBottom: "18px",
+                color: pendingLang === "fr" ? "#2980b9" : "#27ae60"
+              }}>
                 {t.confirmTitle}
               </h2>
-              <p style={{ marginBottom: "24px", fontSize: "0.95rem" }}>
+              <p style={{ 
+                marginBottom: "28px", 
+                fontSize: "1.05rem",
+                lineHeight: "1.5"
+              }}>
                 {t.confirmMessage}
               </p>
-              <div style={{ display: "flex", justifyContent: "space-around" }}>
+              <div style={{ display: "flex", justifyContent: "center", gap: "16px" }}>
                 <button
                   onClick={cancelLanguage}
                   style={{
-                    padding: "8px 12px",
-                    backgroundColor: "#ccc",
+                    padding: "10px 18px",
+                    backgroundColor: "#f1f1f1",
+                    color: "#555",
                     border: "none",
-                    borderRadius: "4px",
+                    borderRadius: "6px",
+                    fontSize: "1rem",
+                    fontWeight: "500",
                     cursor: "pointer",
+                    transition: "background-color 0.2s",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "#e0e0e0";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "#f1f1f1";
                   }}
                 >
                   {t.cancelButton}
@@ -212,12 +276,24 @@ export default function HomePage() {
                 <button
                   onClick={confirmLanguage}
                   style={{
-                    padding: "8px 12px",
-                    backgroundColor: "#2980b9",
+                    padding: "10px 18px",
+                    backgroundColor: pendingLang === "fr" ? "#2980b9" : "#27ae60",
                     color: "#fff",
                     border: "none",
-                    borderRadius: "4px",
+                    borderRadius: "6px",
+                    fontSize: "1rem",
+                    fontWeight: "500",
                     cursor: "pointer",
+                    transition: "all 0.2s",
+                    boxShadow: `0 3px 6px ${pendingLang === "fr" ? "rgba(41, 128, 185, 0.3)" : "rgba(39, 174, 96, 0.3)"}`,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                    e.currentTarget.style.boxShadow = `0 5px 8px ${pendingLang === "fr" ? "rgba(41, 128, 185, 0.4)" : "rgba(39, 174, 96, 0.4)"}`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow = `0 3px 6px ${pendingLang === "fr" ? "rgba(41, 128, 185, 0.3)" : "rgba(39, 174, 96, 0.3)"}`;
                   }}
                 >
                   {t.confirmButton}

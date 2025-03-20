@@ -116,7 +116,7 @@ const newScenarioRankings: { [id: number]: string[] } = {
   9 : [
     "W90", "X23", "F12", "G67", "E23", "F45", "H89", "T82", "Z67", "K34",
     "L56", "N90", "M78", "V12", "Q16", "A12", "A13", "M12", "S60", "Z90",
-    "Q67", "U89", "T67", "B34", "C56", "D78", "G34", "C45", "K23", "D67",
+    "Q67", "U89", "T67", "B34", "C56", "D78", "J90", "G34", "C45", "K23", "D67",
     "E89", "U56", "R23", "X61", "T34", "S12", "R89", "W34", "Y78", "Q90",
     "H56", "J12", "M37", "F91", "A90", "B23", "L45", "O23", "N59", "I78",
     "S45", "U94", "V17", "P45", "O56", "P78", "Y45", "V78", "X56", "W39",
@@ -129,12 +129,12 @@ const newScenarioRankings: { [id: number]: string[] } = {
     "V12", "R23", "V17", "S60", "Z90", "U94", "Q67", "P45", "J90", "I78",
     "E89", "B34", "C56", "D78", "G34", "C45", "K23", "D67", "S45", "T67",
     "U89", "Y78", "Q90", "W34", "X61", "R38", "O23", "N59", "M37", "P78",
-    "R89", "S12", "T34", "H56", "J12", "A90", "B23", "Y45", "P93", "M78",
-    "H36", "E79", "I58", "J80", "K92", "C35", "B13", "D57", "G14", "F91",
+    "R89", "S12", "T34", "H56", "J12", "A90", "B23", "Y45", "P93", "H36",
+    "E79", "I58", "J80", "K92", "C35", "B13", "D57", "G14", "F91",
     "O81", "N34", "V78", "L45"
   ],
   11 : [
-    "R38", "K23", "U89", "E89", "I78", "B34", "C56", "D78", "G34", "C45",
+    "R38", "K23", "U89", "E89", "I78", "B34", "C56", "D78", "J90", "G34", "C45",
     "D67", "W90", "X23", "F12", "O23", "V78", "S60", "Z90", "Q67", "T67",
     "X56", "Y78", "P93", "R23", "S45", "M12", "A12", "Q16", "A13", "O56",
     "V17", "M78", "K34", "L56", "Z67", "N90", "G67", "E23", "F45", "H89",
@@ -158,7 +158,7 @@ const newScenarioRankings: { [id: number]: string[] } = {
     "O56", "V17", "S60", "Q67", "P45", "U94", "W90", "X23", "Z67", "K34",
     "L56", "N90", "M78", "Y45", "V12", "R23", "Q90", "S45", "T67", "U89",
     "W34", "X56", "Y78", "T82", "E23", "G67", "F45", "H89", "W39", "X61",
-    "P78", "G34", "C45", "K23", "D67", "B34", "C56", "D78", "F12", "I78",
+    "P78", "J90", "G34", "C45", "K23", "D67", "B34", "C56", "D78", "F12", "I78",
     "L45", "E89", "R38", "N34", "O23", "N59", "M37", "O81", "P93", "E79",
     "G14", "H36", "F91", "I58", "J80", "K92", "C35", "B13", "D57", "J12",
     "A90", "B23", "H56"
@@ -4241,7 +4241,7 @@ const uiTranslations = {
     submitCards: "Submit Cards",
     answerQuestion: "Answer the following question:",
     confirmAnswer: "Confirm Answer",
-    extraCardMsg: "Correct! You earn an extra bonus card next round!",
+    extraCardMsg: "Correct! You earn an extra bonus point!",
     noBonusMsg: "Incorrect. No bonus awarded.",
     roundScore: "Round",
     overallScore: "Score",
@@ -4276,7 +4276,7 @@ const uiTranslations = {
     submitCards: "Valider les cartes",
     answerQuestion: "Répondez à la question suivante:",
     confirmAnswer: "Confirmer la réponse",
-    extraCardMsg: "Correct ! Vous gagnez une carte bonus pour la prochaine manche !",
+    extraCardMsg: "Correct ! Vous gagnez un point  bonus pour la prochaine manche !",
     noBonusMsg: "Incorrect. Aucun bonus n'est attribué.",
     roundScore: "Ronde",
     overallScore: "Score",
@@ -4319,6 +4319,8 @@ function getRandomQuestionForCard(cardId: string): CardQuestion | null {
   }
   return null;
 }
+
+
 // BEGINNING FROM function GameContent() ONWARDS
 // (Ensure you've already defined uiTranslations, scenarioList, newScenarioRankings, etc. above this.)
 function GameContent() {
@@ -4364,9 +4366,7 @@ function GameContent() {
   const [team1Wins, setTeam1Wins] = useState(0);
   const [team2Wins, setTeam2Wins] = useState(0);
 
-  // Card counts
-  const [team1CardCount, setTeam1CardCount] = useState(5);
-  const [team2CardCount, setTeam2CardCount] = useState(5);
+  // (Card count removed)
 
   // Used cards (only appended after round finishes)
   const [usedCardsTeam1, setUsedCardsTeam1] = useState<string[]>([]);
@@ -4475,8 +4475,7 @@ function GameContent() {
       return;
     }
 
-    // We only check if it's valid scenario card, not if it's "already used" here
-    // The "used" logic is now handled after awarding the round.
+    // We only check if it's a valid scenario card, not if it's "already used" here.
     setCardError("");
     triggerQuestionPhase();
   }
@@ -4545,7 +4544,6 @@ function GameContent() {
       const c2 = team2Card.trim().toUpperCase();
 
       // Mark these cards as used, but only once per round
-      // (If there's a tie, awardRound might be called twice, so we guard against duplicates)
       setUsedCardsTeam1((prev) =>
         prev.includes(c1) ? prev : [...prev, c1]
       );
@@ -4564,11 +4562,11 @@ function GameContent() {
       } else {
         setRoundWinner("tie");
       }
-      // Bonus cards
-      if (team1Bonus) setTeam1CardCount((prev) => prev + 1);
-      if (team2Bonus) setTeam2CardCount((prev) => prev + 1);
+      // Bonus: if a team answered correctly, award an extra point
+      if (team1Bonus) setTeam1Wins((prev) => prev + 1);
+      if (team2Bonus) setTeam2Wins((prev) => prev + 1);
 
-      // Show round winner
+      // Show round winner overlay and transition to next round
       setShowRoundWinner(true);
       setTimeout(() => {
         setShowRoundWinner(false);
@@ -4598,7 +4596,7 @@ function GameContent() {
     [team1Bonus, team2Bonus, team1Card, team2Card, initialTime]
   );
 
-  // Decide round winner after both confirm Q
+  // Decide round winner after both teams confirm answers
   useEffect(() => {
     if (
       showQuestionPhase &&
@@ -4617,7 +4615,7 @@ function GameContent() {
       const idx2 = ranking.indexOf(c2);
 
       if (idx1 < 0 || idx2 < 0) {
-        // tie if both invalid
+        // Tie if both invalid
         awardRound("team1", true);
         awardRound("team2", true);
       } else if (idx1 < idx2) {
@@ -4625,7 +4623,7 @@ function GameContent() {
       } else if (idx2 < idx1) {
         awardRound("team2");
       } else {
-        // tie
+        // Tie
         awardRound("team1", true);
         awardRound("team2", true);
       }
@@ -4641,7 +4639,7 @@ function GameContent() {
     awardRound,
   ]);
 
-  // Final winner
+  // Final winner based on overall score
   const winningTeam =
     team1Wins > team2Wins ? team1Name : team2Wins > team1Wins ? team2Name : null;
 
@@ -4736,59 +4734,28 @@ function GameContent() {
         className="flex flex-col items-center w-full px-4 py-6 space-y-6 relative"
         style={{ marginTop: "3rem" }}
       >
-        {/* CARD COUNTS & SCOREBOARD (always visible unless game over) */}
+        {/* SCOREBOARD (always visible unless game over) */}
         {!gameOver && (
-          <>
-            {/* Card counts (top-left) */}
-            <div
-              style={{
-                position: "absolute",
-                top: "1rem",
-                left: "1rem",
-                backgroundColor: "#ffffff",
-                padding: "0.5rem 1rem",
-                borderRadius: "0.5rem",
-                border: "1px solid #1e3a8a",
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.25rem",
-                color: "#1e3a8a",
-              }}
-            >
-              <h2 style={{ fontSize: "1rem", fontWeight: "bold" }}>
-                {team1Name.toUpperCase()}: {team1CardCount} {t.teamXCards}
-              </h2>
-              <h2 style={{ fontSize: "1rem", fontWeight: "bold" }}>
-                {team2Name.toUpperCase()}: {team2CardCount} {t.teamXCards}
-              </h2>
-            </div>
-
-            {/* Round / Score (top-center) */}
-            <div
-              style={{
-                position: "absolute",
-                top: "1rem",
-                left: "50%",
-                transform: "translateX(-50%)",
-                backgroundColor: "rgba(0,0,0,0.7)",
-                padding: "0.5rem 1rem",
-                borderRadius: "0.5rem",
-                textAlign: "center",
-                minWidth: "16rem",
-              }}
-            >
-              <p style={{ fontSize: "1.2rem", fontWeight: "bold", margin: 0 }}>
-                {t.roundScore}: {roundsPlayed}/{totalRounds} — {t.overallScore}:{" "}
-                {team1Wins} - {team2Wins}
-              </p>
-            </div>
-          </>
+          <div
+            style={{
+              position: "absolute",
+              top: "1rem",
+              left: "50%",
+              transform: "translateX(-50%)",
+              backgroundColor: "rgba(0,0,0,0.7)",
+              padding: "0.5rem 1rem",
+              borderRadius: "0.5rem",
+              textAlign: "center",
+              minWidth: "16rem",
+            }}
+          >
+            <p style={{ fontSize: "1.2rem", fontWeight: "bold", margin: 0 }}>
+              {t.roundScore}: {roundsPlayed}/{totalRounds} — {t.overallScore}: {team1Wins} - {team2Wins}
+            </p>
+          </div>
         )}
 
-        {/* 
-          TIMER / SKIP / ENDGAME
-          (Hide this entire block in question phase)
-        */}
+        {/* TIMER / SKIP / ENDGAME */}
         {!gameOver && !inCardEntryMode && !showQuestionPhase && (
           <div
             style={{
@@ -4833,13 +4800,9 @@ function GameContent() {
           </div>
         )}
 
-        {/* 
-          SCENARIO + COLLAPSIBLE HINT 
-          (Hide both if question phase or if gameOver or if in card entry mode)
-        */}
+        {/* SCENARIO + COLLAPSIBLE HINT */}
         {!gameOver && !inCardEntryMode && !showQuestionPhase && (
           <>
-            {/* Scenario box first */}
             <motion.div
               style={{
                 padding: "1rem",
@@ -4860,7 +4823,6 @@ function GameContent() {
               <p style={{ fontSize: "0.9rem" }}>{scenarioDescription}</p>
             </motion.div>
 
-            {/* Collapsible Hints */}
             <motion.div
               style={{
                 padding: "1rem",
@@ -4895,13 +4857,7 @@ function GameContent() {
                     cursor: "pointer",
                   }}
                 >
-                  {showHints
-                    ? lang === "fr"
-                      ? "Fermer"
-                      : "Hide"
-                    : lang === "fr"
-                    ? "Ouvrir"
-                    : "Show"}
+                  {showHints ? (lang === "fr" ? "Fermer" : "Hide") : (lang === "fr" ? "Ouvrir" : "Show")}
                 </button>
               </div>
               {showHints && (
@@ -4909,9 +4865,7 @@ function GameContent() {
                   <p style={{ fontSize: "0.8rem", marginBottom: "0.25rem" }}>{t.hintsText}</p>
                   {currentScenario && (
                     <p style={{ fontStyle: "italic", fontSize: "0.8rem" }}>
-                      {lang === "fr"
-                        ? currentScenario.shortHintFr
-                        : currentScenario.shortHintEn}
+                      {lang === "fr" ? currentScenario.shortHintFr : currentScenario.shortHintEn}
                     </p>
                   )}
                 </div>
@@ -4920,7 +4874,7 @@ function GameContent() {
           </>
         )}
 
-        {/* WAIT PHASE: "Please wait" message if timeLeft>0, no question, no game over, not in card entry */}
+        {/* WAIT PHASE */}
         {!showQuestionPhase && !gameOver && !inCardEntryMode && timeLeft > 0 && (
           <motion.div
             key="waitPhase"
@@ -4971,7 +4925,7 @@ function GameContent() {
               flexDirection: "column",
               alignItems: "center",
               gap: "1rem",
-              marginTop: "6rem", // extra top margin so it sits lower
+              marginTop: "6rem",
             }}
           >
             <h2 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
@@ -5155,9 +5109,7 @@ function GameContent() {
           </motion.div>
         )}
 
-        {/* Q&A PHASE (only show questions + scoreboard/card count). 
-            Hide scenario/hint/timer. 
-        */}
+        {/* Q&A PHASE */}
         <AnimatePresence>
           {showQuestionPhase && !gameOver && (
             <motion.div
@@ -5170,7 +5122,7 @@ function GameContent() {
                 flexDirection: "column",
                 alignItems: "center",
                 gap: "1rem",
-                marginTop: "5rem", // push down below scoreboard
+                marginTop: "5rem",
                 width: "100%",
                 maxWidth: "40rem",
               }}
@@ -5181,11 +5133,10 @@ function GameContent() {
                   width: "100%",
                   padding: "1rem",
                   borderRadius: "0.5rem",
-                  // If answered, color green or red, else dark gray
                   backgroundColor: team1Confirmed
                     ? team1AnswerCorrect
-                      ? "rgba(34,197,94,0.8)" // green
-                      : "rgba(239,68,68,0.8)" // red
+                      ? "rgba(34,197,94,0.8)"
+                      : "rgba(239,68,68,0.8)"
                     : "rgba(31,41,55,0.8)",
                 }}
               >
@@ -5280,8 +5231,8 @@ function GameContent() {
                   borderRadius: "0.5rem",
                   backgroundColor: team2Confirmed
                     ? team2AnswerCorrect
-                      ? "rgba(34,197,94,0.8)" // green
-                      : "rgba(239,68,68,0.8)" // red
+                      ? "rgba(34,197,94,0.8)"
+                      : "rgba(239,68,68,0.8)"
                     : "rgba(31,41,55,0.8)",
                 }}
               >
