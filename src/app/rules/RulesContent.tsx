@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 export default function RulesContent() {
   const searchParams = useSearchParams();
-  const lang = (searchParams.get("lang") as "en" | "fr") || "en"; // Ensure TypeScript safety
+  const lang = (searchParams.get("lang") as "en" | "fr") || "en"; 
 
   const rules: Record<"en" | "fr", { title: string; objective: string; defenders: string; destroyers: string; setup: string; winning: string; win_defenders: string; win_destroyers: string }> = {
     en: {

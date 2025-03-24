@@ -1,14 +1,32 @@
+// -----------------------------------------------------------------------------
+// File Header & ESLint Configuration
+// "use client"; indicates that the file is executed on the client side.
+// The eslint-disable comment prevents Next.js from warning about using the <img>
+// tag directly instead of Next.js' <Image> component. This is intentional for this project.
+// -----------------------------------------------------------------------------
 "use client";
-
 /* eslint-disable @next/next/no-img-element */ // Disable Next.js warning for <img>
 
+
+
+// -----------------------------------------------------------------------------
+// Import Statements
+// These import React hooks and components (useState, useEffect, useCallback, Suspense),
+// Next.js navigation hooks (useSearchParams, useRouter), and animation tools (motion, AnimatePresence)
+// from Framer Motion. They enable UI rendering, state management, routing, and animations.
+// -----------------------------------------------------------------------------
 import React, { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 
 
-// UTILITY: Shuffle an array in place
+// -----------------------------------------------------------------------------
+// Utility Function: shuffle
+// This generic function randomly shuffles an array in place using the Fisher-Yates algorithm.
+// It is used to randomize the order of scenarios (or other data) for game unpredictability.
+// -----------------------------------------------------------------------------
+
 function shuffle<T>(array: T[]): T[] {
   let currentIndex = array.length, randomIndex;
   while (currentIndex !== 0) {
@@ -22,6 +40,13 @@ function shuffle<T>(array: T[]): T[] {
   return array;
 }
 
+// -----------------------------------------------------------------------------
+// Interface: ScenarioData & newScenarioRankings Constant
+// ScenarioData defines the structure for scenario objects (id, hints, descriptions in both languages).
+// newScenarioRankings maps each scenario id to an ordered list of valid card IDs.
+// The lower the index in the ranking, the higher the ranking for that scenario.
+// -----------------------------------------------------------------------------
+
 interface ScenarioData {
   id: number;
   shortHintFr: string;
@@ -29,9 +54,8 @@ interface ScenarioData {
   descFr: string;
   descEn: string;
 }
-// --- NEW RANKING DATA ---
-// For each scenario ID, only the cards listed here are valid.
-// Ranking order: lower index means higher ranking.
+
+
 const newScenarioRankings: { [id: number]: string[] } = {
   1: [
     "V78", "T34", "S12", "R89", "U56", "I78", "A12", "Q16", "M12", "A13",
@@ -194,7 +218,13 @@ const newScenarioRankings: { [id: number]: string[] } = {
   ],
 };
 
-
+// -----------------------------------------------------------------------------
+// Card Questions Data
+// The cardQuestions object holds Q&A data for each card.
+// Each entry (keyed by a card ID or its variant like "A12-1") includes a question,
+// multiple options, and the correct answer for both English and French.
+// This data is used during the question phase of the game.
+// -----------------------------------------------------------------------------
 interface CardQuestion {
   questionEn: string;
   optionsEn: string[];
@@ -204,8 +234,6 @@ interface CardQuestion {
   correctFr: string;
 }
 
-
-// --- CARD QUESTIONS (without IDs) ---
 const cardQuestions: { [id: string]: {
   questionEn: string;
   optionsEn: string[];
@@ -4101,6 +4129,12 @@ const cardQuestions: { [id: string]: {
 
 };
 
+// -----------------------------------------------------------------------------
+// Scenario List
+// scenarioList is an array of scenario objects that describe various crisis situations.
+// Each scenario includes an id, short hint (in both languages) for quick clues,
+// and a detailed description to set the stage for the round.
+// -----------------------------------------------------------------------------
 interface ScenarioData {
   id: number;
   shortHintFr: string;
@@ -4108,7 +4142,6 @@ interface ScenarioData {
   descFr: string;
   descEn: string;
 }
-
 const scenarioList: ScenarioData[] = [
   {
     id: 1,
@@ -4224,7 +4257,246 @@ const scenarioList: ScenarioData[] = [
   },
 ];
 
+// -----------------------------------------------------------------------------
+// Dictionary Terms
+// This object contains glossary terms with definitions in English and French.
+// It is used by the Dictionary Modal component to provide users with clear,
+// easy-to-understand explanations of key terms related to the game and environmental topics.
+// -----------------------------------------------------------------------------
+const dictionaryTerms = {
+  en: [
+    {
+      term: "Hydraulic energy",
+      definition: "Hydraulic energy comes from the movement of water that causes big wheels to spin. The motion of these wheels creates energy that gets transformed into electricity."
+    },
+    {
+      term: "Nuclear energy",
+      definition: "Nuclear energy is produced by breaking really small elements called atoms. This action creates a lot of heat that can become electricity."
+    },
+    {
+      term: "Field ploughing",
+      definition: "Field ploughing is an agricultural method that prepares the soil before sowing seeds. Machines are often used to turn the soil, which enriches the soil with several nutrients."
+    },
+    {
+      term: "Waste consignment",
+      definition: "Waste consignment is a system that encourages recycling by offering money when waste is returned to a collection point."
+    },
+    {
+      term: "Carbon tax",
+      definition: "Carbon tax is an amount of money that is imposed by the government on the production of CO2 and greenhouse gas emissions."
+    },
+    {
+      term: "Community gardens",
+      definition: "Community gardens are shared spaces where residents can grow fruits, vegetables, or plants in a local and eco-responsible manner."
+    },
+    {
+      term: "Rainwater harvesting bin",
+      definition: "A rainwater harvesting bin collects water when it rains in order to use it for tasks such as watering your plants instead of using clean drinking water, a precious and limited resource."
+    },
+    {
+      term: "CO2",
+      definition: "A gas that is present in the air, it is usually formed when material is burned. When there is too much of it in the environment, this gas contributes to global warming (cars and electricity with fossil fuels are things that produce CO2)"
+    },
+    {
+      term: "Eco-friendly clothing",
+      definition: "Eco-friendly or sustainable clothing is made of long-lasting materials using processes designed to reduce the consumption of water, energy, and toxic chemicals. The objective is to reduce the negative impacts on the environment."
+    },
+    {
+      term: "Thermal isolation",
+      definition: "Thermal isolation helps maintain the pleasant temperature of a building by properly isolating it with insulating materials. This is done to reduce the need for heating and cooling."
+    },
+    {
+      term: "Electronic waste",
+      definition: "Electronic waste refers to electronic devices that are thrown away, like cellphones, televisions, and more only to release toxic products into the environment. In addition, they waste precious resources, and use lots of energy to make."
+    },
+    {
+      term: "Industrial heat recovery",
+      definition: "Industrial processes can release a lot of heat. Instead of wasting it, the heat can be recovered and used to heat homes."
+    },
+    {
+      term: "Agriculture",
+      definition: "Agriculture helps preserve nature by minimizing the use of chemical products, saving water, and providing healthy nourishment for humans and animals."
+    }
+  ],
+  fr: [
+    {
+      term: "Énergie hydraulique",
+      definition: "L'énergie hydraulique est formée à partir du mouvement de l'eau qui fait tourner des grandes roues. Le mouvement de ces roues produit de l'énergie qui se fait transformer en électricité."
+    },
+    {
+      term: "Énergie nucléaire",
+      definition: "L'énergie nucléaire est produite en cassant de très petits éléments appelés des atomes. Cette action crée beaucoup de chaleur qui peut devenir l'électricité."
+    },
+    {
+      term: "Labourage des champs",
+      definition: "Le labourage des champs est une méthode agricole qui permet de préparer les sols avant de semer des graines. On utilise souvent des machines pour retourner la terre ce qui permet d'enrichir le sol avec plusieurs nutriments."
+    },
+    {
+      term: "Consignation des déchets",
+      definition: "La consignation des déchets, c'est un système qui encourage le recyclage en offrant de l'argent lorsqu'on rapporte des déchets à un point de collecte."
+    },
+    {
+      term: "Taxe sur le carbone",
+      definition: "La taxe sur le carbone est une somme d'argent qui est imposée par le gouvernement sur la production de CO2 et de gaz à effet de serre."
+    },
+    {
+      term: "Jardins communautaires",
+      definition: "Les jardins communautaires sont des espaces partagés où les habitants peuvent cultiver des fruits, légumes ou plantes de manière locale et écoresponsable."
+    },
+    {
+      term: "Bac récupération d'eau de pluie",
+      definition: "Un bac de récupération permet de collecter l'eau de pluie pour l'utiliser sur des tâches comme arroser les plantes à la place d'utiliser l'eau potable, une ressource précieuse et limitée."
+    },
+    {
+      term: "CO2",
+      definition: "Le CO2 est un gaz présent dans l'air généralement formé lorsque l'on brûle de la matière. Lorsqu'il y en a trop dans l'environnement, ce gaz contribue au réchauffement climatique (les voitures et certaines méthodes de production d'électricité sont des choses qui produisent du CO2)."
+    },
+    {
+      term: "Vêtements écoresponsables",
+      definition: "Les vêtements éco-responsables sont faits de matériaux durables à l'aide de processus qui réduisent la consommation d'eau, d'énergie et de produits toxiques. Ceci a pour but de réduire les impacts négatifs sur l'environnement."
+    },
+    {
+      term: "Isolation thermique",
+      definition: "L'isolation thermique permet de maintenir une température agréable d'un bâtiment en isolant correctement les bâtiments avec des matériaux isolants. Cela fait pour réduire la nécessité du chauffage et de l'air climatisé."
+    },
+    {
+      term: "Déchet électroniques",
+      definition: "Un déchet électronique fait référence aux appareils électroniques jetés, comme des téléphones cellulaires, des télévisions et plus, qui relâchent des produits toxiques dans l'environnement. De plus, les déchets électroniques gaspillent des ressources précieuses et ont besoin de beaucoup d'énergie pour être produit."
+    },
+    {
+      term: "Récupération chaleur industrielle",
+      definition: "Les procédés industriels peuvent dégager beaucoup de chaleur. Au lieu de la gaspiller, cette chaleur peut être récupérée afin de chauffer des logements."
+    },
+    {
+      term: "Agriculture",
+      definition: "L'agriculture favorise la préservation de la nature en minimisant l'utilisation de produits chimiques, en économisant l'eau et en fournissant une alimentation saine pour les humains et les animaux."
+    }
+  ]
+};
 
+
+
+// -----------------------------------------------------------------------------
+// Dictionary Modal Component
+// This component renders a modal overlay that displays the dictionary terms and definitions.
+// It appears when isOpen is true and covers the entire viewport with a semi-transparent background.
+// Users can click the overlay or the close button to dismiss the modal.
+// -----------------------------------------------------------------------------
+interface DictionaryModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  lang: 'en' | 'fr';
+}
+
+const DictionaryModal = ({ isOpen, onClose, lang }: DictionaryModalProps) => {
+  if (!isOpen) return null;
+
+  const terms = dictionaryTerms[lang] || [];
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: "rgba(0, 0, 0, 0.7)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        zIndex: 9999,
+        padding: "20px"
+      }}
+      onClick={onClose}
+    >
+      <div
+        style={{
+          backgroundColor: "#1f2937",
+          borderRadius: "8px",
+          maxWidth: "600px",
+          width: "100%",
+          maxHeight: "80vh",
+          overflowY: "auto",
+          padding: "20px",
+          color: "white",
+          border: "2px solid #10b981"
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "16px",
+            borderBottom: "1px solid #4b5563",
+            paddingBottom: "8px"
+          }}
+        >
+          <h2 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
+            {lang === "fr" ? "Dictionnaire" : "Dictionary"}
+          </h2>
+          <button
+            onClick={onClose}
+            style={{
+              background: "none",
+              border: "none",
+              fontSize: "1.5rem",
+              cursor: "pointer",
+              color: "white"
+            }}
+          >
+            ×
+          </button>
+        </div>
+
+        <div>
+          {terms.map((item, index) => (
+            <div
+              key={index}
+              style={{
+                marginBottom: "16px",
+                borderBottom: index < terms.length - 1 ? "1px solid #374151" : "none",
+                paddingBottom: "12px"
+              }}
+            >
+              <h3 style={{ fontSize: "1.2rem", fontWeight: "bold", color: "#10b981", marginBottom: "4px" }}>
+                {item.term}
+              </h3>
+              <p style={{ fontSize: "0.95rem", lineHeight: "1.4" }}>{item.definition}</p>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ textAlign: "center", marginTop: "16px" }}>
+          <button
+            onClick={onClose}
+            style={{
+              backgroundColor: "#10b981",
+              color: "white",
+              border: "none",
+              padding: "8px 16px",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontWeight: "bold"
+            }}
+          >
+            {lang === "fr" ? "Fermer" : "Close"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+
+// -----------------------------------------------------------------------------
+// UI Translations
+// uiTranslations contains localized text strings for all user interface elements,
+// supporting both English and French. This allows the game to switch languages seamlessly.
+// -----------------------------------------------------------------------------
 const uiTranslations = {
   en: {
     sectionLabel: "Section:",
@@ -4298,8 +4570,13 @@ const uiTranslations = {
   },
 };
 
+
+
 // -----------------------------------------------------------------------------
-// HELPER: Get a random question for a card
+// Helper Function: getRandomQuestionForCard
+// This function retrieves a random question for a given card ID.
+// It first checks for a direct match, and if not found, it looks for variants (e.g., A12-1, A12-2, A12-3).
+// If one or more variants exist, it randomly selects one; otherwise, it returns null.
 // -----------------------------------------------------------------------------
 function getRandomQuestionForCard(cardId: string): CardQuestion | null {
   if (cardQuestions[cardId]) {
@@ -4321,13 +4598,38 @@ function getRandomQuestionForCard(cardId: string): CardQuestion | null {
 }
 
 
-// BEGINNING FROM function GameContent() ONWARDS
-// (Ensure you've already defined uiTranslations, scenarioList, newScenarioRankings, etc. above this.)
+
+
+// -----------------------------------------------------------------------------
+// GameContent Component - Main Game Logic
+// This component handles the core functionality of the game.
+// It manages routing, language selection, game rounds, timer countdowns,
+// card submission, question phases, answer validation, round scoring, and final results.
+// It also integrates the Dictionary Modal and admin panel for additional features.
+// -----------------------------------------------------------------------------
 function GameContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // Language State
+
+
+// ---------------------------------------------------------------------------
+// Dictionary Modal State & Toggle Function
+// Manages whether the dictionary modal is open or closed.
+// The toggleDictionary function flips the state, allowing users to open or close the dictionary overlay.
+// ---------------------------------------------------------------------------
+const [isDictionaryOpen, setIsDictionaryOpen] = useState(false);
+
+// Add this function
+const toggleDictionary = () => {
+  setIsDictionaryOpen(!isDictionaryOpen);
+};
+
+// ---------------------------------------------------------------------------
+// Language Setup & Persistence
+// Initializes the language state based on the URL parameter (lang) or stored preference in localStorage.
+// Ensures the game displays text in either English or French consistently.
+// ---------------------------------------------------------------------------
   const [lang, setLang] = useState<"en" | "fr">("en");
 
   // On mount, check URL param first then localStorage
@@ -4350,14 +4652,25 @@ function GameContent() {
     localStorage.setItem("selectedLang", newLang);
   };
 
-  // Shortcuts for translations
+// ---------------------------------------------------------------------------
+// UI Translations & Team Names
+// Retrieves localized UI text from uiTranslations based on the current language.
+// Also extracts team names from URL parameters (with default values) for personalized game display.
+// ---------------------------------------------------------------------------
   const t = uiTranslations[lang];
 
   // Team names
   const team1Name = searchParams.get("team1") || (lang === "fr" ? "Équipe 1" : "Team 1");
   const team2Name = searchParams.get("team2") || (lang === "fr" ? "Équipe 2" : "Team 2");
 
-  // Game constants
+
+
+
+// ---------------------------------------------------------------------------
+// Game Constants & Round State
+// Defines constants like total rounds and initial timer values.
+// Manages state variables tracking rounds played, wins per team, and used cards to prevent reuse.
+// ---------------------------------------------------------------------------
   const totalRounds = 15;
   const initialTime = 90;
 
@@ -4366,16 +4679,20 @@ function GameContent() {
   const [team1Wins, setTeam1Wins] = useState(0);
   const [team2Wins, setTeam2Wins] = useState(0);
 
-  // (Card count removed)
 
   // Used cards (only appended after round finishes)
   const [usedCardsTeam1, setUsedCardsTeam1] = useState<string[]>([]);
   const [usedCardsTeam2, setUsedCardsTeam2] = useState<string[]>([]);
 
-  // Shuffle scenarios on mount
+
+
+  // ---------------------------------------------------------------------------
+// Scenario Shuffling & Timer Countdown
+// On component mount, scenarios are shuffled for randomness.
+// A timer countdown decreases the timeLeft every second until it reaches zero.
+// ---------------------------------------------------------------------------
   const [shuffledScenarios, setShuffledScenarios] = useState(scenarioList);
   useEffect(() => {
-    // Simple shuffle
     const arr = [...scenarioList];
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -4462,7 +4779,12 @@ function GameContent() {
     }
   }
 
-  // Submit cards
+  // ---------------------------------------------------------------------------
+// Card Submission & Question Phase Trigger
+// Validates card inputs from both teams.
+// If valid, triggers the question phase by retrieving random questions for the submitted cards.
+// Displays error messages if the timer has not expired, inputs are missing, or cards are invalid for the scenario.
+// ---------------------------------------------------------------------------
   function handleSubmitCards() {
     if (timeLeft > 0) {
       setCardError(t.waitTimerError);
@@ -4515,7 +4837,12 @@ function GameContent() {
     setShowQuestionPhase(true);
   }, [currentScenario, team1Card, team2Card, t]);
 
-  // Handle answers
+ // ---------------------------------------------------------------------------
+// Answer Handling & Confirmation
+// Manages users' answer selections and confirmation.
+// Once an answer is confirmed, it checks the response against the correct answer
+// (using the current language) and sets bonus flags if answered correctly.
+// ---------------------------------------------------------------------------
   function handleAnswer(team: "team1" | "team2", answer: string) {
     if (team === "team1") setTeam1Answer(answer);
     else setTeam2Answer(answer);
@@ -4537,7 +4864,15 @@ function GameContent() {
     }
   }
 
-  // Award round
+
+
+// ---------------------------------------------------------------------------
+// Awarding Rounds & Updating Scores
+// Determines the round winner based on card ranking for the current scenario.
+// Updates team scores, marks cards as used, and handles bonus points for correct answers.
+// Shows an overlay announcing the round winner before moving to the next round.
+// ---------------------------------------------------------------------------
+
   const awardRound = useCallback(
     (winner: "team1" | "team2", tie = false) => {
       const c1 = team1Card.trim().toUpperCase();
@@ -4639,7 +4974,13 @@ function GameContent() {
     awardRound,
   ]);
 
-  // Final winner based on overall score
+
+ // ---------------------------------------------------------------------------
+// Final Winner & Game Over Handling
+// When all rounds are played or the final certificate flag is set,
+// calculates which team won overall (or if there is a tie).
+// Provides a final certificate overlay with scores and a button to proceed to the next mini-game.
+// ---------------------------------------------------------------------------
   const winningTeam =
     team1Wins > team2Wins ? team1Name : team2Wins > team1Wins ? team2Name : null;
 
@@ -4650,7 +4991,14 @@ function GameContent() {
     router.push("/mini-game");
   }
 
-  // Admin force mini-game
+
+
+// ---------------------------------------------------------------------------
+// Admin Panel & Additional UI Controls
+// Contains an optional admin panel that allows for manual game control,
+// such as forcing the mini-game to start using an admin password.
+// Also handles collapsible hints and language switch buttons in the header.
+// ---------------------------------------------------------------------------
   function handleAdminForceStart() {
     if (adminPassword === "1234") {
       router.push("/mini-game");
@@ -4666,6 +5014,7 @@ function GameContent() {
 
   // We only allow card entry if timeLeft == 0 and not in question phase
   const inCardEntryMode = timeLeft <= 0 && !showQuestionPhase && !gameOver;
+
 
   return (
     <div
@@ -4696,6 +5045,48 @@ function GameContent() {
           zIndex: 9999,
         }}
       >
+
+{/* Dictionary Modal */}
+<DictionaryModal 
+  isOpen={isDictionaryOpen} 
+  onClose={() => setIsDictionaryOpen(false)} 
+  lang={lang} 
+/>
+
+        {/* Dictionary Button */}
+<button
+  onClick={toggleDictionary}
+  style={{
+    padding: "0.3rem 0.6rem",
+    backgroundColor: "#10b981",
+    borderRadius: "0.25rem",
+    color: "white",
+    fontWeight: "bold",
+    border: "none",
+    cursor: "pointer",
+    marginRight: "12px",
+    display: "flex",
+    alignItems: "center",
+    gap: "4px",
+  }}
+>
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width="16" 
+    height="16" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round"
+  >
+    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+  </svg>
+  {lang === "fr" ? "Dictionnaire" : "Dictionary"}
+</button>
+
         {/* Language Switch Buttons */}
         <div style={{ display: "flex", gap: "0.5rem" }}>
           <button
@@ -5574,6 +5965,14 @@ function GameContent() {
   );
 }
 
+
+
+
+// -----------------------------------------------------------------------------
+// GamePage Component - Main Page Export
+// This component wraps GameContent inside a Suspense component to provide a fallback UI
+// while the main game content loads. It serves as the entry point for the game page.
+// -----------------------------------------------------------------------------
 // MAIN PAGE EXPORT
 export default function GamePage() {
   return (

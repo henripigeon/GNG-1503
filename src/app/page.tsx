@@ -1,10 +1,18 @@
+// -----------------------------------------------------------------------------
+// File Header & Import Statements
+// "use client" ensures that this file is executed on the client side.
+// This file imports React, various hooks (useState, useEffect, Suspense) for state management,
+// Next.js navigation hooks (useSearchParams, useRouter) for handling URL parameters and routing,
+// and Framer Motion components (motion, AnimatePresence) to enable smooth animations.
+// -----------------------------------------------------------------------------
 "use client";
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Translations for the landing page
+
+
 const landingTranslations = {
   en: {
     welcome: "Welcome to EarthDual",
@@ -28,6 +36,15 @@ const landingTranslations = {
   },
 };
 
+
+// -----------------------------------------------------------------------------
+// HomePage Component - Landing Page for Language Selection
+// This component renders a landing page where the user chooses a language.
+// It displays a background image with a semi-transparent overlay and a centered card.
+// The card shows a welcome message and language selection buttons.
+// When a button is clicked, a confirmation modal appears; if confirmed,
+// the user is navigated to the game setup page with the selected language.
+// -----------------------------------------------------------------------------
 export default function HomePage() {
   const router = useRouter();
 

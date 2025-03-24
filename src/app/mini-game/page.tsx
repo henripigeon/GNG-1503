@@ -1,9 +1,18 @@
 "use client";
 import React, { useState, useEffect } from "react";
 
-/* ======================================
-   1) Translations & Slide Data
-====================================== */
+
+
+// =============================================================================
+// Translations & Slide Data
+// This section holds all the text strings and slide content for the game in both
+// English and French. The translations object contains localized text for setup,
+// introductions, instructions, game completion, certificates, and more.
+// The slide arrays (fireSlidesEn, fireSlidesFr, oceanSlidesEn, oceanSlidesFr) define
+// the big text slides and question slides used in the fire and ocean halves of the game.
+// Helper functions getFireSlides() and getOceanSlides() return the correct set of slides
+// based on the current language.
+// =============================================================================
 const translations = {
   en: {
     setup: {
@@ -419,9 +428,16 @@ function getOceanSlides(lang: Language): Slide[] {
   return lang === "en" ? oceanSlidesEn : oceanSlidesFr;
 }
 
-/* ======================================
-   2) Flow States + Helper
-====================================== */
+
+
+// =============================================================================
+//  Flow States + Helper
+// Defines the various game states as a union type (setup, intro, fireGame, etc.).
+// Also includes helper functions, such as 'distance', which calculates the Euclidean
+// distance between two points. This is used for collision or proximity checks within
+// the game (for instance, when determining if the firefighter is close enough to a fire).
+// =============================================================================
+
 type GameState =
   | "setup"
   | "intro"
@@ -435,9 +451,15 @@ function distance(x1: number, y1: number, x2: number, y2: number) {
   return Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
 }
 
-/* ======================================
-   3) Main Page
-====================================== */
+// =============================================================================
+// Main Page
+// This component manages the overall flow of the game by switching between various
+// game states: "setup", "intro", "fireGame", "fireSlides", "oceanGame", "oceanSlides",
+// and "certificate". It renders a language toggle button, the team setup screen,
+// an introduction screen, and conditionally renders game components such as FireGame,
+// QuestionSlideshow (for both fire and ocean), OceanGame, and the CompletionCertificate.
+// Inline styles (via a style tag) define global and component-specific CSS.
+// =============================================================================
 export default function Page() {
   const [language, setLanguage] = useState<Language>("en");
   const text = translations[language];
@@ -642,9 +664,18 @@ export default function Page() {
   );
 }
 
-/* ======================================
-   FireGame (with decorative trees, instant extinguish, smoother movement)
-====================================== */
+// =============================================================================
+// FireGame Component
+// Implements the Forest Fire game segment. This component:
+// • Spawns 6 fires at random positions and decorative trees.
+// • Tracks the firefighter's position and direction using key events (W, A, S, D).
+// • Allows the player to activate the hose (SPACE) to extinguish fires and press E
+//   to plant a tree near an extinguished fire.
+// • Uses the 'distance' helper to check proximity for extinguishing/planting.
+// • Recalculates the fire game score based on the number of extinguish and plant actions,
+//   capping the score at 25 points.
+// • Finishes the game when all fires are planted, then triggers the onFinish callback.
+// =============================================================================
 interface FireGameProps {
   language: Language;
   scoreFireGame: number;
@@ -711,7 +742,7 @@ function FireGame({
     setForestTrees(newTrees);
   }, [setScoreFireGame]);
 
-  // smoother movement: update every 16ms (~60fps)
+  // movement: update every 16ms (~60fps)
   useEffect(() => {
     const interval = setInterval(() => {
       setFirefighterPos((prev) => {
@@ -723,7 +754,7 @@ function FireGame({
     return () => clearInterval(interval);
   }, [firefighterDir]);
 
-  // instant extinguish fires (no delay)
+  // instant extinguish fires 
   useEffect(() => {
     fires.forEach((f, idx) => {
       if (f.status === "burning") {
@@ -925,9 +956,19 @@ function FireGame({
   );
 }
 
-/* ======================================
-   QuestionSlideshow (colored answers)
-====================================== */
+
+
+// =============================================================================
+// QuestionSlideshow Component
+// Displays a series of slides containing big text and questions for either the fire
+// or ocean section of the game. This component:
+// • Receives an array of Slide objects along with language and score state.
+// • Renders each slide's title, content, and (if provided) multiple-choice options.
+// • Handles answer selection, provides immediate feedback (correct/incorrect),
+//   and adjusts the score accordingly (awarding or deducting points).
+// • Provides navigation buttons (Previous, Next, or Finish) to move through the slides.
+// • Calls onFinish when the last slide is complete, transitioning to the next game phase.
+// =============================================================================
 interface QuestionSlideshowProps {
   slides: Slide[];
   language: Language;
@@ -1147,9 +1188,18 @@ function QuestionSlideshow({
   );
 }
 
-/* ======================================
-   OceanGame (with extra fish/turtles, 25/25)
-====================================== */
+
+
+// =============================================================================
+// OceanGame Component
+// Implements the Ocean Cleanup game segment. This component:
+// • Spawns 6 pieces of trash (debris) and a set of ocean animals (fish/turtles) at random positions.
+// • Controls the boat’s position and movement (using WASD keys) within the game area.
+// • Checks for collisions between the boat and trash (to collect and increase score)
+//   or boat and animals (to deduct points), using the 'distance' helper function.
+// • Updates the game score accordingly (capped at 25 points for the ocean half).
+// • Finishes the game once all trash is collected, then triggers the onFinish callback.
+// =============================================================================
 interface OceanGameProps {
   language: Language;
   scoreOceanGame: number;
@@ -1396,9 +1446,17 @@ function OceanGame({
   );
 }
 
-/* ======================================
-   CompletionCertificate (centered, red warning, more readable)
-====================================== */
+
+
+// =============================================================================
+// CompletionCertificate Component
+// Displays a certificate of achievement when the game is complete. This component:
+// • Receives the final raw score, current language, and team name as props.
+// • Caps the final score at 100 and formats it for display.
+// • Shows a congratulatory message, the final score, the current date (formatted according
+//   to language), and program details in a styled certificate layout.
+// • Uses inline styles to create a visually distinct certificate section.
+// =============================================================================
 interface CompletionProps {
   rawScore: number;
   language: Language;

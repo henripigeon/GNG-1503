@@ -1,3 +1,10 @@
+// -----------------------------------------------------------------------------
+// File Header & Import Statements
+// "use client" specifies that this file is to be executed on the client side.
+// The import statements bring in React hooks (useState, useEffect, Suspense), Next.js
+// navigation hooks (useRouter, useSearchParams), Framer Motion's animation tools (motion),
+// and React itself. These libraries support UI rendering, state management, routing, and animations.
+// -----------------------------------------------------------------------------
 "use client";
 
 import { Suspense, useState, useEffect } from "react";
@@ -5,6 +12,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import React from "react";
 
+
+
+// -----------------------------------------------------------------------------
+// Translations Object
+// Contains all the localized UI text strings for both English and French.
+// These keys (e.g., title, sectionLabel, team names, etc.) are used to dynamically display
+// the correct text based on the user's language selection.
+// -----------------------------------------------------------------------------
 const translations = {
   en: {
     title: "Team Setup",
@@ -30,12 +45,30 @@ const translations = {
   },
 };
 
+
+
+// -----------------------------------------------------------------------------
+// GameSetupContent Component - Team Setup Page
+// This component renders the team setup form for the game. It allows the user to:
+// • Select a grade/section (or level).
+// • Input team names and the number of team members (limited to 4 per team).
+// • Dynamically generate input fields for each team member’s name based on the specified count.
+// Upon submission, it validates the inputs and navigates to the tutorial page with the proper query parameters.
+// -----------------------------------------------------------------------------
 function GameSetupContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const lang = (searchParams.get("lang") as "en" | "fr") || "en";
   const t = translations[lang];
 
+
+
+  // -----------------------------------------------------------------------------
+// State Variables & Hooks Initialization
+// Initializes state for the section (grade), team names, team member counts, and team members arrays.
+// Also sets up an error message state and uses Next.js routing and search parameter hooks to determine
+// the language (defaulting to English if none is specified).
+// -----------------------------------------------------------------------------
   const [section, setSection] = useState("");
   const [team1Name, setTeam1Name] = useState("");
   const [team2Name, setTeam2Name] = useState("");
@@ -45,6 +78,13 @@ function GameSetupContent() {
   const [team2Members, setTeam2Members] = useState<string[]>([]);
   const [error, setError] = useState("");
 
+
+
+  // -----------------------------------------------------------------------------
+// useEffect: Team 1 Members Update
+// Ensures that the number of team member input fields for Team 1 is limited to 4.
+// Updates the team1Members array based on the current team1Count, and resets the count to 4 if exceeded.
+// -----------------------------------------------------------------------------
   useEffect(() => {
     // Limit to maximum 4 members
     const limitedCount = Math.min(4, team1Count);
@@ -54,6 +94,12 @@ function GameSetupContent() {
     }
   }, [team1Count]);
 
+
+  // -----------------------------------------------------------------------------
+// useEffect: Team 2 Members Update
+// Similar to Team 1, this effect ensures that the Team 2 member inputs are limited to 4.
+// It creates an array of empty strings for each team member and adjusts team2Count if it exceeds 4.
+// -----------------------------------------------------------------------------
   useEffect(() => {
     // Limit to maximum 4 members
     const limitedCount = Math.min(4, team2Count);
@@ -63,6 +109,14 @@ function GameSetupContent() {
     }
   }, [team2Count]);
 
+
+
+  // -----------------------------------------------------------------------------
+// Update Team Member Functions
+// updateTeam1Member and updateTeam2Member update the name of a team member at a specific index
+// in their respective arrays. This ensures that as the user types into the input fields,
+// the component state is updated accordingly.
+// -----------------------------------------------------------------------------
   const updateTeam1Member = (index: number, value: string) => {
     setTeam1Members((prev) => {
       const newArr = [...prev];
@@ -79,8 +133,16 @@ function GameSetupContent() {
     });
   };
 
+
+
+  // -----------------------------------------------------------------------------
+// handleStartGame Function
+// Validates that the required fields (grade/section and both team names) are filled.
+// If validation fails, it displays an error message. Otherwise, it constructs a URL query string
+// (including team member names) and navigates to the tutorial page.
+// -----------------------------------------------------------------------------
   const handleStartGame = () => {
-    // Ensuring that the grade (section) and both team names are filled before proceeding.
+    // Ensuring that the grade and both team names are filled before proceeding.
     if (!section || !team1Name || !team2Name) {
       setError(t.fillRequiredFields);
       return;
@@ -98,6 +160,12 @@ function GameSetupContent() {
     );
   };
 
+
+  // -----------------------------------------------------------------------------
+// Input & Label Style Objects
+// Defines the CSS styling for text inputs and labels.
+// These style objects are reused for consistency across the form elements.
+// -----------------------------------------------------------------------------
   const inputStyle = {
     width: "100%",
     padding: "12px",
@@ -378,6 +446,13 @@ function GameSetupContent() {
   );
 }
 
+
+
+// -----------------------------------------------------------------------------
+// GameSetupPage Component - Main Page Export
+// Wraps the GameSetupContent component within a Suspense component that shows a fallback loading indicator.
+// This ensures that the team setup page renders smoothly even if some content is loaded asynchronously.
+// -----------------------------------------------------------------------------
 export default function GameSetupPage() {
   return (
     <Suspense fallback={

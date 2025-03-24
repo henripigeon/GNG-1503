@@ -1,11 +1,43 @@
+// -----------------------------------------------------------------------------
+// File Header and Import Statements
+// This section ensures the code runs on the client-side (with "use client") and imports
+// the necessary modules from React, Next.js, and Framer Motion. These modules provide:
+// - React: For building UI components and managing state.
+// - Next.js: For routing and URL query parameter management.
+// - Framer Motion: For adding smooth animations to UI elements.
+// - Suspense: For handling lazy loading with a fallback UI.
+// -----------------------------------------------------------------------------
 "use client";
-import React from "react";
-
+import React, { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Suspense } from "react";
 
-// All Positive Cards (with IDs)
+
+// -----------------------------------------------------------------------------
+// getCategoryBgColor Function - Determine background color for card categories
+// This function receives a category string as input and returns a corresponding CSS class
+// that sets the background color. It styles the cards based on their category (e.g., recycling, energy).
+// -----------------------------------------------------------------------------
+  const getCategoryBgColor = (category: string) => {
+    switch(category) {
+      case 'recycling': return 'bg-blue-500';
+      case 'transport': return 'bg-blue-600';
+      case 'energy': return 'bg-blue-700';
+      case 'water': return 'bg-blue-400';
+      case 'community': return 'bg-indigo-500';
+      default: return 'bg-gray-500';
+    }
+  };
+
+
+// -----------------------------------------------------------------------------
+// positiveCards Array - Definition of Ecological Action Cards Data
+// This constant is an array that holds all the card objects used in the game. Each card contains:
+// - A unique ID.
+// - Names and descriptions in both French and English.
+// The array represents various positive ecological actions and serves as the data source for the card display.
+// -----------------------------------------------------------------------------
 const positiveCards = [
   [
     {
@@ -198,7 +230,7 @@ const positiveCards = [
   
     {
       "id": "C45",
-      "nameFr": "Bouteille d’eau réutilisable",
+      "nameFr": "Bouteille d'eau réutilisable",
       "nameEn": "Reusable Water Bottle",
       "descFr": "Utiliser une bouteille d'eau réutilisable pour éviter les déchets plastiques.",
       "descEn": "Use a reusable water bottle to avoid plastic waste."
@@ -300,7 +332,7 @@ const positiveCards = [
       "id": "Q90",
       "nameFr": "Isolation thermique",
       "nameEn": "Thermal Insulation",
-      "descFr": "Améliorer l’isolation des bâtiments pour réduire la consommation d’énergie.",
+      "descFr": "Améliorer l'isolation des bâtiments pour réduire la consommation d'énergie.",
       "descEn": "Improve building insulation to reduce energy consumption."
     },
   
@@ -328,7 +360,7 @@ const positiveCards = [
   
     {
       "id": "U89",
-      "nameFr": "Réduction de plastique dans l’océan",
+      "nameFr": "Réduction de plastique dans l'océan",
       "nameEn": "Reduce Ocean Plastic",
       "descFr": "Participer aux initiatives visant à réduire la pollution plastique dans les océans.",
       "descEn": "Participate in initiatives to reduce plastic pollution in the oceans."
@@ -344,7 +376,7 @@ const positiveCards = [
       "id": "W34",
       "nameFr": "Récupération de chaleur industrielle",
       "nameEn": "Industrial Heat Recovery",
-      "descFr": "Réutiliser la chaleur produite par les industries pour économiser de l’énergie.",
+      "descFr": "Réutiliser la chaleur produite par les industries pour économiser de l'énergie.",
       "descEn": "Reuse heat produced by industries to save energy."
     },
     {
@@ -358,7 +390,7 @@ const positiveCards = [
       "id": "Y78",
       "nameFr": "Réutilisation des matériaux de construction",
       "nameEn": "Reuse Construction Materials",
-      "descFr": "Recycler et réutiliser des matériaux de construction pour limiter l’extraction de ressources.",
+      "descFr": "Recycler et réutiliser des matériaux de construction pour limiter l'extraction de ressources.",
       "descEn": "Recycle and reuse construction materials to limit resource extraction."
     },
     {
@@ -369,81 +401,338 @@ const positiveCards = [
       "descEn": "Reforestation plans are a great way to help our planet and increase flora.",
     }
   ]
-    
 ];
 
+
+// -----------------------------------------------------------------------------
+// CardsInfoContent Component - Main Content for the Cards Information Page
+// This React component handles the display and interactivity of ecological action cards.
+// It includes features such as:
+// • Filtering cards by category and search term.
+// • Toggling between grid and list views.
+// • Localization support (English/French) using URL query parameters.
+// • Smooth animations provided by Framer Motion.
+// -----------------------------------------------------------------------------
 function CardsInfoContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const lang = (searchParams.get("lang") as "en" | "fr") || "en";
+  const [category, setCategory] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isGridView, setIsGridView] = useState(true);
+  
+ // -----------------------------------------------------------------------------
+// Categories Array - Define Filter Options for Ecological Action Cards
+// This array contains objects for each category filter option (e.g., energy, recycling, transport).
+// Each object includes an ID and localized labels (English and French) for display on the UI.
+// -----------------------------------------------------------------------------
+  const categories = [
+    { id: "all", labelEn: "All Cards", labelFr: "Toutes les Cartes" },
+    { id: "energy", labelEn: "Energy", labelFr: "Énergie" },
+    { id: "recycling", labelEn: "Recycling", labelFr: "Recyclage" },
+    { id: "transport", labelEn: "Transportation", labelFr: "Transport" },
+    { id: "water", labelEn: "Water Conservation", labelFr: "Conservation de l'Eau" },
+    { id: "community", labelEn: "Community", labelFr: "Communauté" },
+  ];
 
-  const pageTitle = lang === "fr" ? "Cartes" : "Cards";
+ // -----------------------------------------------------------------------------
+// getCategoryText Function - Retrieve Localized Text for a Category
+// This function returns the display text for a given category, based on the current language.
+// It ensures that category labels are shown in the correct language (English or French).
+// -----------------------------------------------------------------------------
+  const getCategoryText = (category: string) => {
+    switch(category) {
+      case 'recycling': return lang === 'fr' ? 'recyclage' : 'recycling';
+      case 'transport': return lang === 'fr' ? 'transport' : 'transport';
+      case 'energy': return lang === 'fr' ? 'énergie' : 'energy';
+      case 'water': return lang === 'fr' ? 'eau' : 'water';
+      case 'community': return lang === 'fr' ? 'communauté' : 'community';
+      default: return lang === 'fr' ? 'autre' : 'other';
+    }
+  };
+  
+// -----------------------------------------------------------------------------
+// categorizeCard Function - Determine the Category of a Card
+// This function analyzes the card's title and description (in the current language) to assign
+// a category identifier (e.g., "recycling", "energy"). It does so by checking for specific keywords
+// in the text, helping to automatically categorize each card based on its content.
+// -----------------------------------------------------------------------------
+  const categorizeCard = (card: { id: string; nameFr: string; nameEn: string; descFr: string; descEn: string }) => {
+    const title = lang === "fr" ? card.nameFr.toLowerCase() : card.nameEn.toLowerCase();
+    const desc = lang === "fr" ? card.descFr.toLowerCase() : card.descEn.toLowerCase();
+    const fullText = title + " " + desc;
+    
+    if (fullText.includes("recycl") || fullText.includes("waste") || fullText.includes("déchets") || fullText.includes("compost")) {
+      return "recycling";
+    } else if (fullText.includes("energy") || fullText.includes("énergie") || fullText.includes("solar") || 
+               fullText.includes("wind") || fullText.includes("nucléaire") || fullText.includes("éolienne") ||
+               fullText.includes("electricity") || fullText.includes("électricité")) {
+      return "energy";
+    } else if (fullText.includes("car") || fullText.includes("bus") || fullText.includes("train") || 
+               fullText.includes("vélo") || fullText.includes("bicycle") || fullText.includes("transport")) {
+      return "transport";
+    } else if (fullText.includes("water") || fullText.includes("eau") || fullText.includes("shower") || 
+               fullText.includes("douche") || fullText.includes("rain") || fullText.includes("pluie")) {
+      return "water";
+    } else if (fullText.includes("communit") || fullText.includes("communau") || fullText.includes("public") || 
+               fullText.includes("garden") || fullText.includes("jardin") || fullText.includes("awareness") ||
+               fullText.includes("sensibilis")) {
+      return "community";
+    }
+    return "other";
+  };
+
+// -----------------------------------------------------------------------------
+// Filter Cards Logic - Filter Cards by Category and Search Term
+// This section flattens the positiveCards array and filters it based on:
+// • The selected category (or 'all' if no specific filter is applied).
+// • The search term entered by the user (checking against the card's title, description, and ID).
+// It ensures that only cards matching both criteria are displayed.
+// -----------------------------------------------------------------------------
+  const filteredCards = positiveCards.flat().filter(card => {
+    const cardCategory = categorizeCard(card);
+    const matchesCategory = category === "all" || cardCategory === category;
+    
+    const searchMatches = (
+      (lang === "fr" ? card.nameFr : card.nameEn).toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (lang === "fr" ? card.descFr : card.descEn).toLowerCase().includes(searchTerm.toLowerCase()) ||
+      card.id.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    
+    return matchesCategory && searchMatches;
+  });
+
+  // -----------------------------------------------------------------------------
+// UI Text Variables - Define Dynamic Text Content Based on Language
+// This section sets up variables that store the localized text for various UI elements such as:
+// • Page title.
+// • Navigation button texts.
+// • Search input placeholder.
+// • View toggle button text.
+// These variables change based on the current language (English or French).
+// -----------------------------------------------------------------------------
+  const pageTitle = lang === "fr" ? "Cartes d'Action Écologique" : "Ecological Action Cards";
   const backButtonText = lang === "fr" ? "Retour à l'accueil" : "Back to Home";
-  const toggleButtonText = lang === "fr" ? "Passer en anglais" : "Switch to French";
+  const toggleButtonText = lang === "fr" ? "Passer en français" : "Switch to English";
+  const searchPlaceholder = lang === "fr" ? "Rechercher des cartes ou IDs..." : "Search cards or IDs...";
+  const viewToggleText = lang === "fr" 
+    ? (isGridView ? "Vue liste" : "Vue grille") 
+    : (isGridView ? "List View" : "Grid View");
+
+
+// -----------------------------------------------------------------------------
+// toggleLanguage Function - Switch Between English and French
+// This function toggles the current language setting by modifying the URL query parameters.
+// It preserves any existing query parameters and updates the 'lang' value,
+// ensuring the page content is reloaded in the selected language.
+// -----------------------------------------------------------------------------
 
   const toggleLanguage = () => {
     const newLang = lang === "en" ? "fr" : "en";
-    router.push(`/cards?lang=${newLang}`);
+    const currentQuery = Object.fromEntries([...searchParams.entries()]);
+    const newQuery = { ...currentQuery, lang: newLang };
+    const queryString = new URLSearchParams(newQuery).toString();
+    router.push(`/cards?${queryString}`);
+  };
+
+// -----------------------------------------------------------------------------
+// Animation Variants - Define Animations for Containers and Cards
+// These objects configure the appearance and transition effects using Framer Motion:
+// • containerVariants: Manages the overall fade-in effect with a staggered reveal of child elements.
+// • cardVariants: Controls the fade-in and upward motion for individual cards.
+// -----------------------------------------------------------------------------
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.5 } }
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-r from-blue-500 to-green-500 text-gray-800 font-sans">
-      <div className="relative z-10 p-8 flex flex-col min-h-screen">
+    <div className="relative min-h-screen bg-gradient-to-br from-blue-600 to-blue-400 text-gray-800 font-sans">
+      <div className="relative z-10 p-4 md:p-8 flex flex-col min-h-screen max-w-7xl mx-auto">
         {/* Top Bar */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
+          <div className="flex gap-2">
+            <button
+              onClick={() => router.push("/")}
+              className="px-4 py-2 bg-white text-blue-700 rounded-full shadow-lg hover:shadow-xl transition flex items-center gap-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clipRule="evenodd" />
+              </svg>
+              {backButtonText}
+            </button>
+            <button
+              onClick={toggleLanguage}
+              className="px-4 py-2 bg-white text-blue-700 rounded-full shadow-lg hover:shadow-xl transition"
+            >
+              {toggleButtonText}
+            </button>
+          </div>
+          
+          <div className="relative w-full md:w-64">
+            <input
+              type="text"
+              placeholder={searchPlaceholder}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full px-4 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md"
+              aria-label={lang === "fr" ? "Rechercher par titre, description ou ID" : "Search by title, description or ID"}
+            />
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 absolute right-3 top-2.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          
           <button
-            onClick={() => router.push("/")}
-            className="px-6 py-3 bg-white text-gray-800 font-bold rounded-full shadow-md hover:shadow-xl transition"
+            onClick={() => setIsGridView(!isGridView)}
+            className="px-4 py-2 bg-white text-blue-700 rounded-full shadow-lg hover:shadow-xl transition flex items-center gap-2"
           >
-            {backButtonText}
-          </button>
-          <button
-            onClick={toggleLanguage}
-            className="px-6 py-3 bg-white text-gray-800 font-bold rounded-full shadow-md hover:shadow-xl transition"
-          >
-            {toggleButtonText}
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            {viewToggleText}
           </button>
         </div>
-        <h1 className="text-5xl font-extrabold text-center mb-10">{pageTitle}</h1>
-        {/* Card Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {positiveCards.flat().map((card, idx) => (
-            <motion.div
-              key={idx}
-              className="relative bg-white bg-opacity-20 p-6 rounded-xl shadow-lg hover:scale-105 transition-transform duration-300"
-              whileHover={{ scale: 1.05 }}
+        
+        <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-6 text-white drop-shadow-lg">
+          {pageTitle}
+        </h1>
+        
+        {/* Category Tabs */}
+        <div className="flex flex-wrap justify-center gap-2 mb-8">
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              className={`px-4 py-2 rounded-full font-medium transition-all ${
+                category === cat.id 
+                  ? "bg-white text-blue-600 shadow-lg" 
+                  : "bg-blue-500 text-white hover:bg-blue-600"
+              }`}
+              onClick={() => setCategory(cat.id)}
             >
-              {/* Number Badge */}
-              <div className="absolute -top-3 -left-3 w-8 h-8 bg-gray-800 text-white rounded-full flex items-center justify-center text-lg font-bold shadow-md">
-                {idx + 1}
-              </div>
-              <h3 className="text-3xl font-extrabold mb-3 border-b-2 border-white pb-2">
-                {lang === "fr" ? card.nameFr : card.nameEn}
-              </h3>
-              <p className="text-xl leading-relaxed">
-                {lang === "fr" ? card.descFr : card.descEn}
-              </p>
-              {card.id && (
-                <div className="mt-4">
-                  {/* Conditional image path based on language */}
-                  <img
-                    src={`/Cards/${lang === "en" ? "ENgng1503" : "FRgng1503"}${card.id}.png`}
-                    alt={lang === "fr" ? card.nameFr : card.nameEn}
-                    className="w-full object-contain"
-                  />
-                </div>
-              )}
-            </motion.div>
+              {lang === "fr" ? cat.labelFr : cat.labelEn}
+            </button>
           ))}
         </div>
+        
+        {/* Result count */}
+        <p className="text-white font-semibold text-center mb-6">
+          {filteredCards.length} {lang === "fr" ? "cartes trouvées" : "cards found"}
+        </p>
+
+        {/* Card Grid/List */}
+        <AnimatePresence mode="wait">
+          <motion.div 
+            key={isGridView ? "grid" : "list"}
+            initial="hidden"
+            animate="show"
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className={isGridView 
+              ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" 
+              : "flex flex-col gap-4"
+            }
+            variants={containerVariants}
+          >
+            {filteredCards.map((card, idx) => {
+              const cardCategory = categorizeCard(card);
+              const categoryColor = getCategoryBgColor(cardCategory);
+              
+              return (
+                <motion.div
+                  key={card.id}
+                  className={isGridView 
+                    ? "bg-blue-100 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300" 
+                    : "bg-blue-100 rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row hover:shadow-xl transition-all duration-300"
+                  }
+                  variants={cardVariants}
+                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                >
+                  {/* Card Image */}
+                  <div className={isGridView ? "w-full h-48" : "w-full md:w-1/3 h-40 md:h-auto"}>
+                    <div className="w-full h-full relative overflow-hidden bg-white">
+                      <img
+                        src={`/Cards/${lang === "en" ? "ENgng1503" : "FRgng1503"}${card.id}.png`}
+                        alt={lang === "fr" ? card.nameFr : card.nameEn}
+                        className="w-full h-full object-contain p-2"
+                        onError={(e) => {
+                          e.currentTarget.src = "/api/placeholder/200/200";
+                          e.currentTarget.alt = "Image unavailable";
+                        }}
+                      />
+                      {/* Overlay category badge */}
+                      <div className={`absolute top-2 left-2 ${getCategoryBgColor(cardCategory)} text-white text-xs font-bold px-2 py-1 rounded-full`}>
+                        {getCategoryText(cardCategory)}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Card Content */}
+                  <div className={isGridView ? "p-5" : "p-5 md:w-2/3"}>
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="text-xl md:text-2xl font-bold text-blue-600">
+                        {lang === "fr" ? card.nameFr : card.nameEn}
+                      </h3>
+                      <span className="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                        {card.id}
+                      </span>
+                    </div>
+                    <p className="text-gray-700 leading-relaxed">
+                      {lang === "fr" ? card.descFr : card.descEn}
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        </AnimatePresence>
+        
+        {/* If no results */}
+        {filteredCards.length === 0 && (
+          <div className="text-center text-blue-800 text-xl p-10 bg-blue-200 rounded-xl shadow-md">
+            {lang === "fr" 
+              ? "Aucune carte trouvée. Veuillez modifier votre recherche." 
+              : "No cards found. Please adjust your search."}
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
+
+// -----------------------------------------------------------------------------
+// Main Render Section - JSX Structure for Cards Display
+// This section returns the overall JSX layout for the page, which includes:
+// • A main container with a background gradient and responsive layout.
+// • Multiple UI sections such as the top navigation bar, category tabs, search input,
+//   result count display, and the grid/list view of cards.
+// • Conditional rendering for cases when no cards match the search criteria.
+// • Integration of Framer Motion for smooth transitions and animations.
+// -----------------------------------------------------------------------------
 export default function CardsInfoPage() {
   return (
-    <Suspense fallback={<div className="text-white p-8">Loading Cards...</div>}>
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-600 to-blue-400">
+        <div className="bg-white bg-opacity-20 backdrop-blur-md p-6 rounded-xl shadow-lg text-white text-xl">
+          <svg className="animate-spin h-8 w-8 mr-2 inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Loading Cards...
+        </div>
+      </div>
+    }>
       <CardsInfoContent />
     </Suspense>
   );

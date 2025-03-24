@@ -1,3 +1,10 @@
+// -----------------------------------------------------------------------------
+// File Header & Import Statements
+// "use client" ensures this component is rendered on the client side.
+// This file imports React, Suspense, Next.js navigation hooks (useSearchParams, useRouter),
+// and the motion component from Framer Motion to enable smooth animations on the Rules page.
+// -----------------------------------------------------------------------------
+
 "use client";
 import React from "react";
 
@@ -5,11 +12,29 @@ import { Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
+
+// -----------------------------------------------------------------------------
+// RulesContent Component - Game Rules Page Content
+// This component renders the game rules and instructions with support for both English and French.
+// It reads the language from the URL search parameters and uses a local translations object
+// to display all the text (titles, objectives, setup instructions, and winning conditions).
+// The component uses Framer Motion to animate the background and content overlay,
+// creating a visually engaging and immersive rules screen.
+// A button at the bottom allows the user to acknowledge the rules and proceed to the tutorial page.
+// -----------------------------------------------------------------------------
 function RulesContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const lang = (searchParams.get("lang") as "en" | "fr") || "en";
 
+
+
+  // -----------------------------------------------------------------------------
+// Local Translations Object for RulesContent
+// Contains all the localized strings for the rules page, including the title, objectives,
+// descriptions for team roles, setup instructions, winning conditions, and the button text.
+// This enables dynamic language support (English and French) based on URL parameters.
+// -----------------------------------------------------------------------------
   const translations = {
     en: {
       title: "Game Rules",
