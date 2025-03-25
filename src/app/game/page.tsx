@@ -4124,10 +4124,856 @@ const cardQuestions: { [id: string]: {
                       ],
                       "correctFr": "b"
                     },
-                                 
-
-
-};
+                        "A12H-1": {
+                          "questionEn": "Q1: Which gas do trees primarily absorb from the atmosphere to help reduce greenhouse effects? H",
+                          "optionsEn": [
+                            "Carbon Dioxide (CO2)",
+                            "Oxygen (O2)",
+                            "Nitrogen (N2)"
+                          ],
+                          "correctEn": "a",
+                          "questionFr": "Q1: Quel gaz les arbres absorbent-ils principalement de l’atmosphère pour réduire l’effet de serre? H",
+                          "optionsFr": [
+                            "Dioxyde de carbone (CO2)",
+                            "Oxygène (O2)",
+                            "Azote (N2)"
+                          ],
+                          "correctFr": "a"
+                        },
+                      
+                        "B34H-1": {
+                          "questionEn": "Q1: Recycling 10 tons of waste helps reduce greenhouse gas emissions mainly by saving resources. How does this action help the environment? H",
+                          "optionsEn": [
+                            "It lowers the need to produce new materials",
+                            "It increases the use of fossil fuels",
+                            "It leads to more landfill waste"
+                          ],
+                          "correctEn": "a",
+                          "questionFr": "Q1: Recycler 10 tonnes de déchets aide à réduire les gaz à effet de serre en économisant des ressources. Comment cette action aide-t-elle l’environnement? H",
+                          "optionsFr": [
+                            "Elle diminue la nécessité de produire de nouveaux matériaux",
+                            "Elle augmente l’utilisation de combustibles fossiles",
+                            "Elle entraîne plus de déchets dans les sites d’enfouissement"
+                          ],
+                          "correctFr": "a"
+                        },
+                      
+                        "C56H-1": {
+                          "questionEn": "Q1: Recycling 100 tons of waste promotes a circular economy. Which is the main environmental benefit? H",
+                          "optionsEn": [
+                            "It causes more pollution",
+                            "It reduces the need for raw materials",
+                            "It leads to water shortages"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Recycler 100 tonnes de déchets encourage une économie circulaire. Quel est le principal avantage pour l’environnement? H",
+                          "optionsFr": [
+                            "Cela provoque plus de pollution",
+                            "Cela réduit le besoin de matières premières",
+                            "Cela entraîne des pénuries d’eau"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "D78H-1": {
+                          "questionEn": "Q1: Why does recycling 1000 tons of waste significantly help protect ecosystems? H",
+                          "optionsEn": [
+                            "It increases landfilling",
+                            "It lowers pollution and conserves resources",
+                            "It encourages more deforestation"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Pourquoi le recyclage de 1000 tonnes de déchets aide-t-il de façon importante à protéger les écosystèmes? H",
+                          "optionsFr": [
+                            "Il augmente l’enfouissement des déchets",
+                            "Il réduit la pollution et préserve les ressources",
+                            "Il encourage la déforestation"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "E23H-1": {
+                          "questionEn": "Q1: Installing wind turbines generates renewable energy. How does this help combat climate change? H",
+                          "optionsEn": [
+                            "It relies mostly on burning coal",
+                            "It produces electricity with minimal CO2 emissions",
+                            "It needs gasoline to operate"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: L’installation d’éoliennes produit de l’énergie renouvelable. Comment cela aide-t-il à lutter contre le changement climatique? H",
+                          "optionsFr": [
+                            "Elle repose principalement sur la combustion du charbon",
+                            "Elle produit de l’électricité avec peu d’émissions de CO2",
+                            "Elle a besoin d’essence pour fonctionner"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "F45H-1": {
+                          "questionEn": "Q1: Hydropower uses moving water to generate electricity. Why is it considered a clean energy source? H",
+                          "optionsEn": [
+                            "It releases a lot of greenhouse gases",
+                            "It does not require burning fossil fuels",
+                            "It always pollutes rivers"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: L’hydroélectricité utilise l’eau en mouvement pour produire de l’électricité. Pourquoi est-elle considérée comme une énergie propre? H",
+                          "optionsFr": [
+                            "Elle émet beaucoup de gaz à effet de serre",
+                            "Elle ne nécessite pas de brûler de combustibles fossiles",
+                            "Elle pollue toujours les rivières"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "G67H-1": {
+                          "questionEn": "Q1: Solar panels generate electricity from sunlight. Which is the biggest environmental advantage? H",
+                          "optionsEn": [
+                            "They produce electricity without direct CO2 emissions",
+                            "They require constant burning of coal",
+                            "They increase air pollution"
+                          ],
+                          "correctEn": "a",
+                          "questionFr": "Q1: Les panneaux solaires produisent de l’électricité à partir du soleil. Quel est le plus grand avantage environnemental? H",
+                          "optionsFr": [
+                            "Ils produisent de l’électricité sans émissions directes de CO2",
+                            "Ils nécessitent la combustion constante de charbon",
+                            "Ils augmentent la pollution de l’air"
+                          ],
+                          "correctFr": "a"
+                        },
+                      
+                        "H89H-1": {
+                          "questionEn": "Q1: Nuclear energy can help lower carbon emissions if used safely. What is the main reason? H",
+                          "optionsEn": [
+                            "It generates electricity with little direct CO2",
+                            "It always pollutes the atmosphere with toxic fumes",
+                            "It needs more gasoline than other sources"
+                          ],
+                          "correctEn": "a",
+                          "questionFr": "Q1: L’énergie nucléaire peut aider à réduire les émissions de carbone si elle est utilisée de manière sûre. Quelle en est la principale raison? H",
+                          "optionsFr": [
+                            "Elle génère de l’électricité avec peu d’émissions directes de CO2",
+                            "Elle pollue toujours l’atmosphère avec des fumées toxiques",
+                            "Elle nécessite plus d’essence que d’autres sources"
+                          ],
+                          "correctFr": "a"
+                        },
+                      
+                        "J12H-1": {
+                          "questionEn": "Q1: Turning off unused lights can reduce energy consumption. How does this action lower greenhouse gases? H",
+                          "optionsEn": [
+                            "It leads to more coal burning",
+                            "It decreases electricity demand",
+                            "It increases CO2 emissions"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Éteindre les lumières inutilisées peut réduire la consommation d’énergie. Comment cette action diminue-t-elle les gaz à effet de serre? H",
+                          "optionsFr": [
+                            "Elle entraîne une plus grande combustion du charbon",
+                            "Elle diminue la demande d’électricité",
+                            "Elle augmente les émissions de CO2"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "K34H-1": {
+                          "questionEn": "Q1: Choosing to ride a bus instead of driving alone can lower carbon emissions because: H",
+                          "optionsEn": [
+                            "Fewer vehicles are used per person",
+                            "Buses use infinite fuel",
+                            "It increases air pollution"
+                          ],
+                          "correctEn": "a",
+                          "questionFr": "Q1: Choisir de prendre l’autobus au lieu de conduire seul peut réduire les émissions de carbone parce que: H",
+                          "optionsFr": [
+                            "Moins de véhicules sont utilisés par personne",
+                            "Les autobus consomment un carburant illimité",
+                            "Cela augmente la pollution de l’air"
+                          ],
+                          "correctFr": "a"
+                        },
+                      
+                        "L56H-1": {
+                          "questionEn": "Q1: Taking the train can be more eco-friendly than a car. Which reason supports this? H",
+                          "optionsEn": [
+                            "It usually carries more people per trip",
+                            "It only runs on diesel",
+                            "It causes more greenhouse gas emissions"
+                          ],
+                          "correctEn": "a",
+                          "questionFr": "Q1: Prendre le train peut être plus écologique qu’une voiture. Quelle raison l’explique? H",
+                          "optionsFr": [
+                            "Il transporte habituellement plus de personnes par voyage",
+                            "Il fonctionne uniquement au diesel",
+                            "Il génère plus d’émissions de gaz à effet de serre"
+                          ],
+                          "correctFr": "a"
+                        },
+                      
+                        "M78H-1": {
+                          "questionEn": "Q1: Using a bicycle for short trips helps the environment mainly by: H",
+                          "optionsEn": [
+                            "Releasing harmful fumes",
+                            "Producing no direct emissions",
+                            "Creating extra traffic"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Utiliser un vélo pour les trajets courts aide l’environnement principalement en: H",
+                          "optionsFr": [
+                            "Dégageant des fumées nocives",
+                            "Ne produisant aucune émission directe",
+                            "Créant plus d’embouteillages"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "N90H-1": {
+                          "questionEn": "Q1: Carpooling is beneficial because it: H",
+                          "optionsEn": [
+                            "Increases the number of cars per person",
+                            "Reduces overall fuel use",
+                            "Raises pollution levels"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Le covoiturage est avantageux parce qu’il: H",
+                          "optionsFr": [
+                            "Augmente le nombre de voitures par personne",
+                            "Réduit la consommation globale de carburant",
+                            "Augmente la pollution"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "O23H-1": {
+                          "questionEn": "Q1: Buying local products helps lessen climate change because it: H",
+                          "optionsEn": [
+                            "Requires more overseas shipping",
+                            "Reduces long-distance transport",
+                            "Uses extra plastic packaging"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Acheter des produits locaux contribue à réduire le changement climatique parce que cela: H",
+                          "optionsFr": [
+                            "Nécessite plus de transport maritime international",
+                            "Réduit le transport sur de longues distances",
+                            "Utilise plus d’emballages en plastique"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "P45H-1": {
+                          "questionEn": "Q1: Using sustainable farming methods (like careful plowing) can preserve soils by: H",
+                          "optionsEn": [
+                            "Increasing harmful pesticides",
+                            "Keeping nutrients in the ground",
+                            "Spreading more pollution"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Utiliser des méthodes agricoles durables (comme un labourage responsable) peut préserver les sols en: H",
+                          "optionsFr": [
+                            "Augmentant l’utilisation de pesticides nocifs",
+                            "Conservant les nutriments dans le sol",
+                            "Propageant plus de pollution"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "Q67H-1": {
+                          "questionEn": "Q1: Composting kitchen scraps helps the environment by: H",
+                          "optionsEn": [
+                            "Releasing extra methane in landfills",
+                            "Returning nutrients to the soil",
+                            "Burning more fossil fuels"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Le compostage des restes de cuisine aide l’environnement en: H",
+                          "optionsFr": [
+                            "Libérant plus de méthane dans les sites d’enfouissement",
+                            "Rendant des nutriments au sol",
+                            "Brûlant plus de combustibles fossiles"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "S12H-1": {
+                          "questionEn": "Q1: Donating $100 to an environmental nonprofit can help by: H",
+                          "optionsEn": [
+                            "Supporting projects that protect ecosystems",
+                            "Causing more factory pollution",
+                            "Making no positive difference"
+                          ],
+                          "correctEn": "a",
+                          "questionFr": "Q1: Faire un don de 100$ à un organisme environnemental peut aider en: H",
+                          "optionsFr": [
+                            "Soutenant des projets qui protègent les écosystèmes",
+                            "Causant plus de pollution industrielle",
+                            "Ne faisant aucune différence positive"
+                          ],
+                          "correctFr": "a"
+                        },
+                      
+                        "T34H-1": {
+                          "questionEn": "Q1: A $1000 donation to a nonprofit has a larger impact because: H",
+                          "optionsEn": [
+                            "It boosts major ecological initiatives",
+                            "It always funds harmful activities",
+                            "It encourages more pollution"
+                          ],
+                          "correctEn": "a",
+                          "questionFr": "Q1: Un don de 1000$ à un organisme à but non lucratif a un impact plus grand parce que: H",
+                          "optionsFr": [
+                            "Il soutient d’importantes initiatives écologiques",
+                            "Il finance toujours des activités nocives",
+                            "Il encourage plus de pollution"
+                          ],
+                          "correctFr": "a"
+                        },
+                      
+                        "U56H-1": {
+                          "questionEn": "Q1: Raising public awareness about the environment is important because: H",
+                          "optionsEn": [
+                            "It makes people pollute more",
+                            "It helps communities adopt greener habits",
+                            "It has no effect on behavior"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Sensibiliser le public à l’environnement est important parce que: H",
+                          "optionsFr": [
+                            "Cela incite les gens à polluer davantage",
+                            "Cela aide les communautés à adopter des habitudes plus écologiques",
+                            "Cela n’a aucun impact sur le comportement"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "V78H-1": {
+                          "questionEn": "Q1: Rescue and rehabilitation programs protect endangered species by: H",
+                          "optionsEn": [
+                            "Helping injured wildlife recover",
+                            "Destroying their habitats",
+                            "Reducing biodiversity"
+                          ],
+                          "correctEn": "a",
+                          "questionFr": "Q1: Les programmes de sauvetage et de réhabilitation protègent les espèces en danger en: H",
+                          "optionsFr": [
+                            "Aidant la faune blessée à se rétablir",
+                            "Détruisant leurs habitats",
+                            "Réduisant la biodiversité"
+                          ],
+                          "correctFr": "a"
+                        },
+                      
+                        "W90H-1": {
+                          "questionEn": "Q1: Creating laws for environmental protection can reduce pollution by: H",
+                          "optionsEn": [
+                            "Allowing unlimited harmful emissions",
+                            "Requiring industries to lower waste",
+                            "Making littering legal"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Mettre en place des lois de protection de l’environnement peut réduire la pollution en: H",
+                          "optionsFr": [
+                            "Autorisant des émissions nocives illimitées",
+                            "Obligeant les industries à réduire leurs déchets",
+                            "Rendant les déchets sauvages légaux"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "X23H-1": {
+                          "questionEn": "Q1: Requiring businesses to adopt sustainable practices helps the environment by: H",
+                          "optionsEn": [
+                            "Lowering pollution levels",
+                            "Encouraging more waste",
+                            "Stopping resource conservation"
+                          ],
+                          "correctEn": "a",
+                          "questionFr": "Q1: Exiger que les entreprises adoptent des pratiques durables aide l’environnement en: H",
+                          "optionsFr": [
+                            "Réduisant la pollution",
+                            "Encourageant plus de gaspillage",
+                            "Empêchant la préservation des ressources"
+                          ],
+                          "correctFr": "a"
+                        },
+                      
+                        "Y45H-1": {
+                          "questionEn": "Q1: Reducing meat consumption aids the environment because animal farming often: H",
+                          "optionsEn": [
+                            "Uses fewer resources than crops",
+                            "Lowers CO2 emissions automatically",
+                            "Requires large amounts of land and water"
+                          ],
+                          "correctEn": "c",
+                          "questionFr": "Q1: Réduire la consommation de viande aide l’environnement parce que l’élevage: H",
+                          "optionsFr": [
+                            "Utilise moins de ressources que l’agriculture",
+                            "Réduit automatiquement les émissions de CO2",
+                            "Nécessite beaucoup de terres et d’eau"
+                          ],
+                          "correctFr": "c"
+                        },
+                      
+                        "Z67H-1": {
+                          "questionEn": "Q1: Electric cars produce fewer emissions if powered by clean electricity. Why is this better for the climate? H",
+                          "optionsEn": [
+                            "They run only on gasoline",
+                            "They emit less CO2 overall",
+                            "They always create more pollution"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Les voitures électriques produisent moins d’émissions si l’électricité est propre. Pourquoi est-ce meilleur pour le climat? H",
+                          "optionsFr": [
+                            "Elles fonctionnent uniquement à l’essence",
+                            "Elles émettent moins de CO2 au total",
+                            "Elles créent toujours plus de pollution"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "A90H-1": {
+                          "questionEn": "Q1: Taking shorter showers conserves water and energy. How does this reduce environmental impact? H",
+                          "optionsEn": [
+                            "It wastes extra water",
+                            "It lowers hot water usage",
+                            "It pollutes rivers directly"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Prendre des douches plus courtes économise l’eau et l’énergie. Comment cela réduit-il l’impact environnemental? H",
+                          "optionsFr": [
+                            "Cela gaspille plus d’eau",
+                            "Cela diminue l’utilisation d’eau chaude",
+                            "Cela pollue directement les rivières"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "B23H-1": {
+                          "questionEn": "Q1: Turning off the tap when brushing your teeth helps the environment by: H",
+                          "optionsEn": [
+                            "Preserving clean water",
+                            "Releasing harmful gases",
+                            "Draining rivers completely"
+                          ],
+                          "correctEn": "a",
+                          "questionFr": "Q1: Fermer le robinet en se brossant les dents aide l’environnement en: H",
+                          "optionsFr": [
+                            "Préservant l’eau potable",
+                            "Libérant des gaz nocifs",
+                            "Asséchant complètement les rivières"
+                          ],
+                          "correctFr": "a"
+                        },
+                      
+                        "C45H-1": {
+                          "questionEn": "Q1: Using a reusable water bottle cuts down on plastic waste. Why is this important? H",
+                          "optionsEn": [
+                            "Plastic pollution harms wildlife and oceans",
+                            "Plastic always biodegrades instantly",
+                            "It encourages people to buy more plastic"
+                          ],
+                          "correctEn": "a",
+                          "questionFr": "Q1: Utiliser une bouteille d’eau réutilisable diminue les déchets plastiques. Pourquoi est-ce important? H",
+                          "optionsFr": [
+                            "La pollution plastique nuit à la faune et aux océans",
+                            "Le plastique se biodégrade toujours instantanément",
+                            "Cela encourage l’achat de plus de plastique"
+                          ],
+                          "correctFr": "a"
+                        },
+                      
+                        "D67H-1": {
+                          "questionEn": "Q1: Cutting down on paper (like paper towels) helps forests by: H",
+                          "optionsEn": [
+                            "Reducing the demand for new wood",
+                            "Needing more trees to be cut",
+                            "Eliminating wildlife habitats"
+                          ],
+                          "correctEn": "a",
+                          "questionFr": "Q1: Réduire l’utilisation de papier (par exemple, des essuie-mains) aide les forêts en: H",
+                          "optionsFr": [
+                            "Diminuant la demande de nouveau bois",
+                            "Nécessitant plus d’arbres à abattre",
+                            "Détruisant les habitats de la faune"
+                          ],
+                          "correctFr": "a"
+                        },
+                      
+                        "E89H-1": {
+                          "questionEn": "Q1: A deposit waste system motivates recycling by: H",
+                          "optionsEn": [
+                            "Rewarding people to return bottles or cans",
+                            "Making it impossible to recycle",
+                            "Encouraging illegal dumping"
+                          ],
+                          "correctEn": "a",
+                          "questionFr": "Q1: Un système de consignation des déchets encourage le recyclage en: H",
+                          "optionsFr": [
+                            "Récompensant les gens pour le retour des bouteilles ou des canettes",
+                            "Rendant le recyclage impossible",
+                            "Encourageant le dépôt illégal de déchets"
+                          ],
+                          "correctFr": "a"
+                        },
+                      
+                        "F12H-1": {
+                          "questionEn": "Q1: A carbon tax charges fees for high emissions. How does this help slow climate change? H",
+                          "optionsEn": [
+                            "It rewards polluters",
+                            "It encourages companies to produce more CO2",
+                            "It motivates cleaner energy usage"
+                          ],
+                          "correctEn": "c",
+                          "questionFr": "Q1: Une taxe carbone impose des frais pour les fortes émissions. Comment cela aide-t-il à ralentir le changement climatique? H",
+                          "optionsFr": [
+                            "Elle récompense les pollueurs",
+                            "Elle encourage les entreprises à produire plus de CO2",
+                            "Elle incite à utiliser des énergies plus propres"
+                          ],
+                          "correctFr": "c"
+                        },
+                      
+                        "G34H-1": {
+                          "questionEn": "Q1: Using a reusable bag can help lower plastic pollution by: H",
+                          "optionsEn": [
+                            "Adding more single-use plastics",
+                            "Reducing waste in landfills and oceans",
+                            "Forcing people to buy more bags"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Utiliser un sac réutilisable peut contribuer à réduire la pollution plastique en: H",
+                          "optionsFr": [
+                            "Ajoutant plus de plastiques à usage unique",
+                            "Réduisant les déchets dans les décharges et les océans",
+                            "Forçant les gens à acheter plus de sacs"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "H56H-1": {
+                          "questionEn": "Q1: Lowering heating or AC usage conserves energy. What is one major benefit? H",
+                          "optionsEn": [
+                            "It increases greenhouse gases",
+                            "It wastes electricity",
+                            "It cuts down on fossil fuel burning"
+                          ],
+                          "correctEn": "c",
+                          "questionFr": "Q1: Diminuer le chauffage ou la climatisation permet d’économiser de l’énergie. Quel est un avantage majeur? H",
+                          "optionsFr": [
+                            "Cela augmente les gaz à effet de serre",
+                            "Cela gaspille de l’électricité",
+                            "Cela réduit la combustion de combustibles fossiles"
+                          ],
+                          "correctFr": "c"
+                        },
+                      
+                        "I78H-1": {
+                          "questionEn": "Q1: Participating in street clean-ups protects wildlife by: H",
+                          "optionsEn": [
+                            "Leaving trash for animals to eat",
+                            "Removing harmful plastics and debris",
+                            "Encouraging more illegal dumping"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Participer aux nettoyages de rues protège la faune en: H",
+                          "optionsFr": [
+                            "Laissant les déchets pour que les animaux les consomment",
+                            "Enlevant les plastiques et détritus dangereux",
+                            "Encourageant davantage de dépôts illégaux"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "J90H-1": {
+                          "questionEn": "Q1: Community gardens support local food production. Why is this eco-friendly? H",
+                          "optionsEn": [
+                            "It often reduces transport pollution",
+                            "It forces everyone to drive more",
+                            "It relies only on imported produce"
+                          ],
+                          "correctEn": "a",
+                          "questionFr": "Q1: Les jardins communautaires encouragent la production alimentaire locale. Pourquoi est-ce écologique? H",
+                          "optionsFr": [
+                            "Cela réduit souvent la pollution liée au transport",
+                            "Cela oblige tout le monde à conduire davantage",
+                            "Cela dépend uniquement des produits importés"
+                          ],
+                          "correctFr": "a"
+                        },
+                      
+                        "K23H-1": {
+                          "questionEn": "Q1: Eliminating single-use plastics is vital because: H",
+                          "optionsEn": [
+                            "They break down instantly in nature",
+                            "They often end up polluting oceans",
+                            "They benefit marine wildlife"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Éliminer les plastiques à usage unique est essentiel parce que: H",
+                          "optionsFr": [
+                            "Ils se décomposent immédiatement dans la nature",
+                            "Ils finissent souvent par polluer les océans",
+                            "Ils sont bénéfiques pour la faune marine"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "L45H-1": {
+                          "questionEn": "Q1: Using a rainwater bin to water plants helps conserve fresh water. Why is this useful? H",
+                          "optionsEn": [
+                            "It wastes tap water",
+                            "It protects clean water supplies",
+                            "It removes habitats for local wildlife"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Utiliser un bac de récupération d’eau de pluie pour arroser les plantes aide à économiser l’eau potable. Pourquoi est-ce utile? H",
+                          "optionsFr": [
+                            "Cela gaspille l’eau du robinet",
+                            "Cela préserve les réserves d’eau potable",
+                            "Cela supprime les habitats de la faune locale"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "M12H-1": {
+                          "questionEn": "Q1: Forest protection is crucial for biodiversity because trees: H",
+                          "optionsEn": [
+                            "Destroy wildlife habitats",
+                            "Absorb CO2 and shelter many species",
+                            "Only produce pollution"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: La protection des forêts est essentielle à la biodiversité car les arbres: H",
+                          "optionsFr": [
+                            "Détruisent les habitats fauniques",
+                            "Absorbent le CO2 et abritent de nombreuses espèces",
+                            "Produisent uniquement de la pollution"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "N34H-1": {
+                          "questionEn": "Q1: A green roof can help reduce a building’s energy use because it: H",
+                          "optionsEn": [
+                            "Adds extra air pollution",
+                            "Improves insulation and absorbs CO2",
+                            "Removes all plant life"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Une toiture végétalisée peut aider à réduire la consommation d’énergie d’un bâtiment parce qu’elle: H",
+                          "optionsFr": [
+                            "Ajoute de la pollution atmosphérique",
+                            "Améliore l’isolation et absorbe le CO2",
+                            "Élimine toute vie végétale"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "O56H-1": {
+                          "questionEn": "Q1: Planting hedges (hedgerows) is environmentally helpful because they: H",
+                          "optionsEn": [
+                            "Worsen soil erosion",
+                            "Provide shelter for wildlife and store carbon",
+                            "Remove green spaces"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Planter des haies est bénéfique pour l’environnement car elles: H",
+                          "optionsFr": [
+                            "Aggravent l’érosion des sols",
+                            "Offrent un abri à la faune et stockent du carbone",
+                            "Éliminent les espaces verts"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "P78H-1": {
+                          "questionEn": "Q1: Sustainable fashion aims to lower environmental damage by: H",
+                          "optionsEn": [
+                            "Encouraging more clothing waste",
+                            "Using harmful chemicals without limits",
+                            "Reducing resource use and pollution from production"
+                          ],
+                          "correctEn": "c",
+                          "questionFr": "Q1: La mode écoresponsable vise à réduire l’impact sur l’environnement en: H",
+                          "optionsFr": [
+                            "Encourageant plus de gaspillage vestimentaire",
+                            "Utilisant des produits chimiques nocifs sans limite",
+                            "Réduisant l’utilisation de ressources et la pollution liée à la production"
+                          ],
+                          "correctFr": "c"
+                        },
+                      
+                        "Q90H-1": {
+                          "questionEn": "Q1: Better insulation in a home helps fight climate change by: H",
+                          "optionsEn": [
+                            "Letting heat escape quickly",
+                            "Cutting down on heating energy use",
+                            "Generating more CO2"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Une meilleure isolation d’une maison aide à lutter contre le changement climatique en: H",
+                          "optionsFr": [
+                            "Laissant la chaleur s’échapper rapidement",
+                            "Réduisant l’énergie nécessaire au chauffage",
+                            "Générant plus de CO2"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "R23H-1": {
+                          "questionEn": "Q1: Environmental education for students helps the planet by: H",
+                          "optionsEn": [
+                            "Encouraging more pollution habits",
+                            "Teaching eco-friendly choices early on",
+                            "Having no impact on behavior"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: L’éducation environnementale pour les élèves aide la planète en: H",
+                          "optionsFr": [
+                            "Encourageant plus d’habitudes polluantes",
+                            "Enseignant les choix écologiques dès le plus jeune âge",
+                            "N’ayant aucun impact sur le comportement"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "S45H-1": {
+                          "questionEn": "Q1: Reducing food waste lowers greenhouse gas emissions because: H",
+                          "optionsEn": [
+                            "Food in landfills creates more methane",
+                            "Unused food is always beneficial",
+                            "Less decomposition in landfills decreases methane"
+                          ],
+                          "correctEn": "c",
+                          "questionFr": "Q1: Réduire le gaspillage alimentaire diminue les émissions de gaz à effet de serre parce que: H",
+                          "optionsFr": [
+                            "La nourriture en décharge produit plus de méthane",
+                            "Les aliments non utilisés sont toujours bénéfiques",
+                            "Moins de décomposition dans les décharges réduit le méthane"
+                          ],
+                          "correctFr": "c"
+                        },
+                      
+                        "T67H-1": {
+                          "questionEn": "Q1: Electronic waste (e-waste) must be properly recycled because it: H",
+                          "optionsEn": [
+                            "Contains hazardous materials",
+                            "Is harmless if left in landfills",
+                            "Never pollutes soil or water"
+                          ],
+                          "correctEn": "a",
+                          "questionFr": "Q1: Les déchets électroniques (e-déchets) doivent être recyclés correctement parce qu’ils: H",
+                          "optionsFr": [
+                            "Contiennent des matières dangereuses",
+                            "Sont inoffensifs s’ils sont laissés en décharge",
+                            "Ne polluent jamais le sol ou l’eau"
+                          ],
+                          "correctFr": "a"
+                        },
+                      
+                        "U89H-1": {
+                          "questionEn": "Q1: Reducing plastic in oceans is critical because plastic can: H",
+                          "optionsEn": [
+                            "Improve fish health",
+                            "Harm or kill marine animals",
+                            "Turn into safe drinking water"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Réduire la présence de plastique dans les océans est essentiel parce que le plastique peut: H",
+                          "optionsFr": [
+                            "Améliorer la santé des poissons",
+                            "Nuire ou tuer les animaux marins",
+                            "Se transformer en eau potable"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "V12H-1": {
+                          "questionEn": "Q1: Encouraging agroecology helps protect soil and biodiversity by: H",
+                          "optionsEn": [
+                            "Relying on harsh chemical fertilizers",
+                            "Using sustainable methods that respect ecosystems",
+                            "Destroying beneficial insects"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Encourager l’agroécologie aide à protéger le sol et la biodiversité en: H",
+                          "optionsFr": [
+                            "S’appuyant sur des engrais chimiques agressifs",
+                            "Utilisant des méthodes durables qui respectent les écosystèmes",
+                            "Détruisant les insectes utiles"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "W34H-1": {
+                          "questionEn": "Q1: Recovering industrial heat can reduce overall energy use by: H",
+                          "optionsEn": [
+                            "Wasting all heat in the air",
+                            "Reusing leftover heat from machinery",
+                            "Requiring more fossil fuels"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: La récupération de la chaleur industrielle peut réduire la consommation d’énergie en: H",
+                          "optionsFr": [
+                            "Gaspillant toute la chaleur dans l’air",
+                            "Réutilisant la chaleur résiduelle des machines",
+                            "Nécessitant plus de combustibles fossiles"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "X56H-1": {
+                          "questionEn": "Q1: Encouraging remote work (telecommuting) cuts carbon emissions mainly by: H",
+                          "optionsEn": [
+                            "Increasing daily commutes",
+                            "Reducing car travel",
+                            "Needing everyone to fly frequently"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Encourager le télétravail réduit les émissions de carbone principalement en: H",
+                          "optionsFr": [
+                            "Augmentant les déplacements quotidiens",
+                            "Réduisant l’utilisation de la voiture",
+                            "Obligeant chacun à prendre l’avion régulièrement"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "Y78H-1": {
+                          "questionEn": "Q1: Reusing construction materials helps reduce resource extraction. How does that fight climate change? H",
+                          "optionsEn": [
+                            "It requires cutting more forests",
+                            "It slows down raw material usage",
+                            "It burns more fossil fuels"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Réutiliser des matériaux de construction aide à diminuer l’extraction de ressources. Comment cela combat-il le changement climatique? H",
+                          "optionsFr": [
+                            "Cela nécessite d’abattre plus de forêts",
+                            "Cela freine l’utilisation de matières premières",
+                            "Cela brûle plus de combustibles fossiles"
+                          ],
+                          "correctFr": "b"
+                        },
+                      
+                        "A13H-1": {
+                          "questionEn": "Q1: A reforestation plan benefits the planet by: H",
+                          "optionsEn": [
+                            "Clearing more forests",
+                            "Planting trees that absorb CO2",
+                            "Driving wildlife away"
+                          ],
+                          "correctEn": "b",
+                          "questionFr": "Q1: Un plan de reforestation profite à la planète en: H",
+                          "optionsFr": [
+                            "Dégageant davantage de forêts",
+                            "Plantant des arbres qui absorbent le CO2",
+                            "Faisant fuir la faune"
+                          ],
+                          "correctFr": "b"
+                        }
+                      }
 
 // -----------------------------------------------------------------------------
 // Scenario List
@@ -4578,24 +5424,33 @@ const uiTranslations = {
 // It first checks for a direct match, and if not found, it looks for variants (e.g., A12-1, A12-2, A12-3).
 // If one or more variants exist, it randomly selects one; otherwise, it returns null.
 // -----------------------------------------------------------------------------
-function getRandomQuestionForCard(cardId: string): CardQuestion | null {
-  if (cardQuestions[cardId]) {
-    return cardQuestions[cardId];
+function getRandomQuestionForCard(cardId: string, grade?: string): CardQuestion | null {
+  // Define the grades that should trigger the "hard" questions.
+  const hardGrades = ["6th", "7th", "6th-7th"];
+  
+  // Append "H" to the card ID if the grade is in the hardGrades array.
+  let keyToCheck = grade && hardGrades.includes(grade) ? cardId + "H" : cardId;
+
+  if (cardQuestions[keyToCheck]) {
+    // If an exact match is found (e.g. "A12H"), return it.
+    return cardQuestions[keyToCheck];
   } else {
-    // Some cards might have suffixes like "A12-1", "A12-2", "A12-3"
+    // Otherwise, check for variants with suffixes -1, -2, -3.
     const variants: CardQuestion[] = [];
     for (let i = 1; i <= 3; i++) {
-      const variantKey = `${cardId}-${i}`;
+      const variantKey = `${keyToCheck}-${i}`;
       if (cardQuestions[variantKey]) {
         variants.push(cardQuestions[variantKey]);
       }
     }
     if (variants.length > 0) {
+      // Randomly pick one of the found variants.
       return variants[Math.floor(Math.random() * variants.length)];
     }
   }
   return null;
 }
+
 
 
 
@@ -4610,6 +5465,7 @@ function getRandomQuestionForCard(cardId: string): CardQuestion | null {
 function GameContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const grade = searchParams.get("grade") || "4th-5th";
 
 
 
@@ -4809,16 +5665,16 @@ const toggleDictionary = () => {
     const ranking = newScenarioRankings[scenarioId] || [];
     const c1 = team1Card.trim().toUpperCase();
     const c2 = team2Card.trim().toUpperCase();
-
+  
     // Check if these cards are valid for the scenario
     if (!ranking.includes(c1) || !ranking.includes(c2)) {
       setCardError(t.invalidCardsError);
       return;
     }
-
-    // Attempt to get question data
-    const qData1 = getRandomQuestionForCard(c1);
-    const qData2 = getRandomQuestionForCard(c2);
+  
+    // Get question data based on the selected grade:
+    const qData1 = getRandomQuestionForCard(c1, grade);
+    const qData2 = getRandomQuestionForCard(c2, grade);
     if (!qData1 || !qData2) {
       setCardError(t.noQuestionDataError);
       return;
@@ -4833,9 +5689,10 @@ const toggleDictionary = () => {
     setTeam2Bonus(false);
     setTeam1AnswerCorrect(false);
     setTeam2AnswerCorrect(false);
-
+  
     setShowQuestionPhase(true);
-  }, [currentScenario, team1Card, team2Card, t]);
+  }, [currentScenario, team1Card, team2Card, t, grade]);
+  
 
  // ---------------------------------------------------------------------------
 // Answer Handling & Confirmation

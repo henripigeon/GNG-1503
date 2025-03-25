@@ -1,24 +1,14 @@
-// -----------------------------------------------------------------------------
-// File Header & Import Statements
-// "use client" ensures that this file is executed on the client side.
-// The import statements bring in necessary React hooks (useState, useEffect, Suspense),
-// Next.js navigation tools (useRouter, useSearchParams), and Framer Motion components
-// (motion, AnimatePresence) to support UI rendering, routing, and smooth animations.
-// -----------------------------------------------------------------------------
 "use client";
 
 import React, { Suspense, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
-
-
 // -----------------------------------------------------------------------------
 // Walkthrough Steps Data (Instructions)
 // This array defines each step of the game walkthrough/tutorial.
 // Each step includes localized titles and descriptions (for both English and French)
 // as well as an optional image source to visually represent the step.
-// These instructions guide the user through the game features before playing.
 // -----------------------------------------------------------------------------
 const walkthroughSteps = [
   {
@@ -70,8 +60,6 @@ const walkthroughSteps = [
   },
 ];
 
-
-
 // -----------------------------------------------------------------------------
 // Simulation Data
 // This section contains fake data used for demonstration purposes.
@@ -105,13 +93,9 @@ const fakeQuestionTeam2 = {
   correctFr: "a",
 };
 
-
-
 // -----------------------------------------------------------------------------
 // Styles
 // Defines inline style objects for various UI elements throughout the walkthrough.
-// These styles include settings for the walkthrough container, buttons, progress indicators,
-// content cards, images, and loading animations, ensuring a consistent and appealing design.
 // -----------------------------------------------------------------------------
 const styles = {
   walkthrough: {
@@ -143,10 +127,10 @@ const styles = {
   langToggle: {
     position: "absolute",
     top: "108px", // Position below the header
-    right: "1.5rem", 
+    right: "1.5rem",
     display: "flex",
     gap: "0.5rem",
-    zIndex: "10",
+    zIndex: 10,
   },
   langBtn: (isActive: boolean) => ({
     padding: "0.25rem 0.75rem",
@@ -169,11 +153,11 @@ const styles = {
     width: "12px",
     height: "12px",
     borderRadius: "50%",
-    backgroundColor: isActive 
-      ? "#10b981" 
-      : isCompleted 
-        ? "rgba(16,185,129,0.6)" 
-        : "rgba(255,255,255,0.3)",
+    backgroundColor: isActive
+      ? "#10b981"
+      : isCompleted
+      ? "rgba(16,185,129,0.6)"
+      : "rgba(255,255,255,0.3)",
     cursor: "pointer",
     transition: "all 0.3s",
     transform: isActive ? "scale(1.2)" : "scale(1)",
@@ -261,35 +245,23 @@ const styles = {
   },
 };
 
-
-
 // -----------------------------------------------------------------------------
 // Main RunThrough Component - RunThroughContent
 // This component handles the interactive walkthrough (tutorial) for the game.
 // It manages language detection, the current walkthrough step, and navigation between steps.
-// It renders a progress indicator, a content card for the current step (with title, image, and description),
-// and navigation buttons (Back, Next, or Start Game).
+// It also retrieves necessary query parameters (section, grade, team names, and members) from the URL.
 // -----------------------------------------------------------------------------
 function RunThroughContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-
-
- // -----------------------------------------------------------------------------
-// Language State & Detection
-// Initializes the language state (default "en") and uses URL search parameters (or localStorage)
-// to determine the current language. This ensures that all text displayed is localized.
-// -----------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // Language State & Detection
+  // Initializes the language state (default "en") and uses URL search parameters (or localStorage)
+  // to determine the current language. This ensures that all text displayed is localized.
+  // ---------------------------------------------------------------------------
   const [lang, setLang] = useState<"en" | "fr">("en");
 
-
-
-  // -----------------------------------------------------------------------------
-// Walkthrough Step State & Validation
-// Manages the current step (index) of the walkthrough using state.
-// A useEffect ensures that the step value does not exceed the total number of steps.
-// -----------------------------------------------------------------------------
   useEffect(() => {
     const urlLang = searchParams.get("lang");
     if (urlLang === "en" || urlLang === "fr") {
@@ -298,45 +270,56 @@ function RunThroughContent() {
     } else {
       const storedLang = localStorage.getItem("selectedLang");
       if (storedLang === "en" || storedLang === "fr") {
-        setLang(storedLang);
+        setLang(storedLang as "en" | "fr");
       }
     }
   }, [searchParams]);
 
-  // Walkthrough state
+  // ---------------------------------------------------------------------------
+  // Retrieve Query Parameters from URL
+  // This ensures that the values from the game setup page are transferred to the tutorial.
+  // ----------------------------------------------------------------------------
+  const section = searchParams.get("section") || "";
+  const grade = searchParams.get("grade") || "";
+  const team1Name =
+    searchParams.get("team1") || (lang === "fr" ? "Équipe 1" : "Team 1");
+  const team2Name =
+    searchParams.get("team2") || (lang === "fr" ? "Équipe 2" : "Team 2");
+  const team1Members = searchParams.get("members1")
+    ? searchParams.get("members1")!.split(",")
+    : [];
+  const team2Members = searchParams.get("members2")
+    ? searchParams.get("members2")!.split(",")
+    : [];
+
+  // ---------------------------------------------------------------------------
+  // Local error state and translation for errors
+  // ----------------------------------------------------------------------------
+  const [error, setError] = useState("");
+  const t = {
+    fillRequiredFields:
+      lang === "fr"
+        ? "Veuillez remplir tous les champs requis."
+        : "Please fill out all required fields.",
+  };
+
+  // ---------------------------------------------------------------------------
+  // Walkthrough Step State & Validation
+  // Manages the current step (index) of the walkthrough using state.
+  // ----------------------------------------------------------------------------
   const [step, setStep] = useState(0);
   const totalSteps = walkthroughSteps.length;
 
-  // Make sure we have a valid step
   useEffect(() => {
     if (step >= totalSteps) {
       setStep(totalSteps - 1);
     }
   }, [step, totalSteps]);
-  
-  // This effect helps with language detection from URL
-  useEffect(() => {
-    const urlLang = searchParams.get("lang");
-    if (urlLang === "en" || urlLang === "fr") {
-      setLang(urlLang);
-      localStorage.setItem("selectedLang", urlLang);
-    } else {
-      const storedLang = localStorage.getItem("selectedLang");
-      if (storedLang === "en" || storedLang === "fr") {
-        setLang(storedLang);
-      }
-    }
-  }, [searchParams]);
 
-
-
- // -----------------------------------------------------------------------------
-// Navigation Handlers
-// Defines functions to navigate between walkthrough steps:
-// - handleNext: Advances to the next step.
-// - handleBack: Goes back to the previous step.
-// - handleStartGame: Navigates to the game page when the walkthrough is complete.
-// -----------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // Navigation Handlers
+  // Defines functions to navigate between walkthrough steps.
+  // ----------------------------------------------------------------------------
   const handleNext = () => {
     if (step < totalSteps - 1) setStep(step + 1);
   };
@@ -345,14 +328,33 @@ function RunThroughContent() {
     if (step > 0) setStep(step - 1);
   };
 
+  // ---------------------------------------------------------------------------
+  // handleStartGame Function
+  // Validates that section, grade, team1, and team2 are provided, then routes to the /game page with query parameters.
+  // ----------------------------------------------------------------------------
   const handleStartGame = () => {
-    router.push("/game");
+    if (!section || !team1Name || !team2Name || !grade) {
+      setError(t.fillRequiredFields);
+      return;
+    }
+    setError("");
+    router.push(
+      `/game?lang=${lang}` +
+        `&section=${encodeURIComponent(section)}` +
+        `&grade=${encodeURIComponent(grade)}` +
+        `&team1=${encodeURIComponent(team1Name)}` +
+        `&team2=${encodeURIComponent(team2Name)}` +
+        `&members1=${encodeURIComponent(team1Members.join(","))}` +
+        `&members2=${encodeURIComponent(team2Members.join(","))}`
+    );
   };
 
+  // ---------------------------------------------------------------------------
+  // Render the Walkthrough/Tutorial UI
+  // ----------------------------------------------------------------------------
   return (
     <div style={styles.walkthrough as React.CSSProperties}>
-      {/* Background and Container */}
-      <motion.div 
+      <motion.div
         style={styles.container as React.CSSProperties}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -365,8 +367,8 @@ function RunThroughContent() {
         {/* Progress Indicator */}
         <div style={styles.progressIndicator}>
           {Array.from({ length: totalSteps }).map((_, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               style={styles.progressDot(index === step, index < step)}
               onClick={() => setStep(index)}
             />
@@ -374,7 +376,7 @@ function RunThroughContent() {
         </div>
 
         {/* Walkthrough Content Card */}
-        <motion.div 
+        <motion.div
           style={styles.contentCard as React.CSSProperties}
           key={step}
           initial={{ opacity: 0, y: 20 }}
@@ -383,25 +385,32 @@ function RunThroughContent() {
           transition={{ duration: 0.4 }}
         >
           <div style={styles.stepCounter as React.CSSProperties}>
-            {lang === "fr" ? `Étape ${step + 1} sur ${totalSteps}` : `Step ${step + 1} of ${totalSteps}`}
+            {lang === "fr"
+              ? `Étape ${step + 1} sur ${totalSteps}`
+              : `Step ${step + 1} of ${totalSteps}`}
           </div>
 
-          {/* Safely render image with error handling */}
-          {walkthroughSteps[step] && walkthroughSteps[step].imageSrc && (
-            <img
-              src={walkthroughSteps[step].imageSrc}
-              alt={walkthroughSteps[step].title[lang as "en" | "fr"] || `Step ${step + 1}`}
-              style={styles.stepImage}
-            />
-          )}
+          {walkthroughSteps[step] &&
+            walkthroughSteps[step].imageSrc && (
+              <img
+                src={walkthroughSteps[step].imageSrc}
+                alt={
+                  walkthroughSteps[step].title[lang as "en" | "fr"] ||
+                  `Step ${step + 1}`
+                }
+                style={styles.stepImage}
+              />
+            )}
 
           <h2 style={styles.stepTitle as React.CSSProperties}>
-            {walkthroughSteps[step] && walkthroughSteps[step].title ? 
-              walkthroughSteps[step].title[lang] : ''}
+            {walkthroughSteps[step] && walkthroughSteps[step].title
+              ? walkthroughSteps[step].title[lang]
+              : ""}
           </h2>
           <p style={styles.stepDescription as React.CSSProperties}>
-            {walkthroughSteps[step] && walkthroughSteps[step].description ? 
-              walkthroughSteps[step].description[lang] : ''}
+            {walkthroughSteps[step] && walkthroughSteps[step].description
+              ? walkthroughSteps[step].description[lang]
+              : ""}
           </p>
 
           {/* Navigation Buttons */}
@@ -409,42 +418,58 @@ function RunThroughContent() {
             <button
               onClick={handleBack}
               disabled={step === 0}
-              style={{...styles.navBtn, ...styles.backBtn(step === 0)}}
+              style={{ ...styles.navBtn, ...styles.backBtn(step === 0) }}
             >
               {lang === "fr" ? "Précédent" : "Back"}
             </button>
-            
             {step < totalSteps - 1 ? (
-              <button onClick={handleNext} style={{...styles.navBtn, ...styles.nextBtn}}>
+              <button
+                onClick={handleNext}
+                style={{ ...styles.navBtn, ...styles.nextBtn }}
+              >
                 {lang === "fr" ? "Suivant" : "Next"}
               </button>
             ) : (
-              <button onClick={handleStartGame} style={{...styles.navBtn, ...styles.startGameBtn}}>
+              <button
+                onClick={handleStartGame}
+                style={{ ...styles.navBtn, ...styles.startGameBtn }}
+              >
                 {lang === "fr" ? "Commencer le Jeu" : "Start Game"}
               </button>
             )}
           </div>
+
+          {error && (
+            <div
+              style={{
+                marginTop: "1rem",
+                color: "#f87171",
+                fontWeight: "bold",
+              }}
+            >
+              {error}
+            </div>
+          )}
         </motion.div>
       </motion.div>
     </div>
   );
 }
 
-
 // -----------------------------------------------------------------------------
 // RunThrough Component - Main Page Export
-// Wraps the RunThroughContent component within a Suspense component that displays a loading
-// indicator until the content is ready. This ensures a smooth user experience while the tutorial
-// data and assets load.
+// Wraps the RunThroughContent component within a Suspense fallback to display a loading indicator until the content loads.
 // -----------------------------------------------------------------------------
 export default function RunThrough() {
   return (
-    <Suspense fallback={
-      <div style={styles.loadingContainer as React.CSSProperties}>
-        <div style={styles.loadingSpinner}></div>
-        <p>Loading tutorial...</p>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div style={styles.loadingContainer as React.CSSProperties}>
+          <div style={styles.loadingSpinner}></div>
+          <p>Loading tutorial...</p>
+        </div>
+      }
+    >
       <RunThroughContent />
     </Suspense>
   );

@@ -141,24 +141,25 @@ function GameSetupContent() {
 // If validation fails, it displays an error message. Otherwise, it constructs a URL query string
 // (including team member names) and navigates to the tutorial page.
 // -----------------------------------------------------------------------------
-  const handleStartGame = () => {
-    // Ensuring that the grade and both team names are filled before proceeding.
-    if (!section || !team1Name || !team2Name) {
-      setError(t.fillRequiredFields);
-      return;
-    }
-    
-    setError("");
-    router.push(
-      `/tutorial?lang=${lang}&section=${encodeURIComponent(
-        section
-      )}&team1=${encodeURIComponent(team1Name)}&team2=${encodeURIComponent(
-        team2Name
-      )}&members1=${encodeURIComponent(team1Members.join(","))}&members2=${encodeURIComponent(
-        team2Members.join(",")
-      )}`
-    );
-  };
+const handleStartGame = () => {
+  // Ensuring that the grade, section, and both team names are filled before proceeding.
+  if (!section || !team1Name || !team2Name || !section) {
+    setError(t.fillRequiredFields);
+    return;
+  }
+
+  setError("");
+  router.push(
+    `/tutorial?lang=${lang}` +
+      `&section=${encodeURIComponent(section)}` +
+      `&team1=${encodeURIComponent(team1Name)}` +
+      `&team2=${encodeURIComponent(team2Name)}` +
+      `&members1=${encodeURIComponent(team1Members.join(","))}` +
+      `&members2=${encodeURIComponent(team2Members.join(","))}` +
+      `&grade=${encodeURIComponent(section)}`
+  );
+};
+
 
 
   // -----------------------------------------------------------------------------

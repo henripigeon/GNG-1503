@@ -11,8 +11,6 @@ import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
-
-
 // -----------------------------------------------------------------------------
 // Tutorial Content Translations
 // This object holds the localized text for the tutorial steps in both English and French.
@@ -56,7 +54,7 @@ const tutorialTranslations = {
     },
     {
       title: "Jouer une Carte",
-      content: `À chaque tour, votre équipe choisira une carte.\n\nLes cartes offrent différentes options pour aider la planète de plusieur différentes façons!\n\nRéfléchissez bien et choisissez la meilleure.`,
+      content: `À chaque tour, votre équipe choisira une carte.\n\nLes cartes offrent différentes options pour aider la planète de plusieurs manières!\n\nRéfléchissez bien et choisissez la meilleure.`,
       icon: "🃏",
       illustration: "/cards-illustration.svg", // Placeholder path
     },
@@ -74,8 +72,6 @@ const tutorialTranslations = {
     },
   ],
 };
-
-
 
 // -----------------------------------------------------------------------------
 // Custom Illustrations for Tutorial Slides
@@ -113,36 +109,51 @@ const illustrations = {
   ),
 };
 
-
-
 // -----------------------------------------------------------------------------
 // TutorialContent Component - Main Tutorial Screen
 // This component renders the tutorial (or walkthrough) for the game.
 // It uses localized slide data from tutorialTranslations and displays one slide at a time,
 // complete with a title, content text, an icon, and a custom illustration.
 // It also shows animated background particles for visual effect, and includes navigation
-// controls (Next, Previous) to move through the slides. On the final slide, clicking the button
-// will redirect the user to the next page (/runthrough).
+// controls (Next, Previous) to move through the slides.
+// On the final slide, clicking the button will redirect the user to the run-through page,
+// passing along the query parameters (section, grade, team names, and members) from the setup.
 // -----------------------------------------------------------------------------
 function TutorialContent() {
-
-  // -----------------------------------------------------------------------------
-// Language Detection & Particle Effects Setup
-// - Determines the current language from the URL search parameters, defaulting to English.
-// - Initializes state for the current slide and animation control.
-// - Generates an array of random "particle" objects used to create animated background effects.
-// -----------------------------------------------------------------------------
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  // ---------------------------------------------------------------------------
+  // Language Detection & Particle Effects Setup
+  // - Determines the current language from the URL search parameters, defaulting to English.
+  // - Initializes state for the current slide and animation control.
+  // - Generates an array of random "particle" objects used to create animated background effects.
+  // ---------------------------------------------------------------------------
   // Get the language from the query parameter, default to English
   const lang = (searchParams.get("lang") as "en" | "fr") || "en";
   const slides = tutorialTranslations[lang];
 
+  // Retrieve additional query parameters from the game setup page
+  const section = searchParams.get("section") || "";
+  const grade = searchParams.get("grade") || "";
+  const team1Name =
+    searchParams.get("team1") || (lang === "fr" ? "Équipe 1" : "Team 1");
+  const team2Name =
+    searchParams.get("team2") || (lang === "fr" ? "Équipe 2" : "Team 2");
+  const team1Members = searchParams.get("members1")
+    ? searchParams.get("members1")!.split(",")
+    : [];
+  const team2Members = searchParams.get("members2")
+    ? searchParams.get("members2")!.split(",")
+    : [];
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [animate, setAnimate] = useState(true);
-  const [particles, setParticles] = useState<{ id: number; x: number; y: number; size: number; duration: number; delay: number; }[]>([]);
+  const [particles, setParticles] = useState<
+    { id: number; x: number; y: number; size: number; duration: number; delay: number }[]
+  >([]);
 
-  // Generate random particles for background
+  // Generate random particles for background effect
   useEffect(() => {
     const newParticles = [];
     for (let i = 0; i < 20; i++) {
@@ -158,12 +169,26 @@ function TutorialContent() {
     setParticles(newParticles);
   }, []);
 
+  // ---------------------------------------------------------------------------
+  // Navigation Handlers
+  // Functions to go to the next or previous slide.
+  // On the last slide, the "Next" button will redirect to the run-through page,
+  // passing along all the required query parameters.
+  // ---------------------------------------------------------------------------
   function goNext() {
     if (currentSlide < slides.length - 1) {
       setCurrentSlide(currentSlide + 1);
     } else {
-      // When all slides are done, redirect to the game page
-      router.push("/runthrough?lang=" + lang);
+      // When all slides are done, redirect to the run-through page with query parameters
+      router.push(
+        `/runthrough?lang=${lang}` +
+          `&section=${encodeURIComponent(section)}` +
+          `&grade=${encodeURIComponent(grade)}` +
+          `&team1=${encodeURIComponent(team1Name)}` +
+          `&team2=${encodeURIComponent(team2Name)}` +
+          `&members1=${encodeURIComponent(team1Members.join(","))}` +
+          `&members2=${encodeURIComponent(team2Members.join(","))}`
+      );
     }
   }
 
@@ -172,14 +197,15 @@ function TutorialContent() {
       setCurrentSlide(currentSlide - 1);
     }
   }
-  
+
   const isLastSlide = currentSlide === slides.length - 1;
-  const buttonText = isLastSlide 
-    ? (lang === "fr" ? "Commencer le Jeu" : "Start Game") 
+  const buttonText = isLastSlide
+    ? (lang === "fr" ? "Commencer le Jeu" : "Start Game")
     : (lang === "fr" ? "Suivant" : "Next");
 
+  // Function to return the appropriate illustration based on the slide index
   const getIllustration = (index: number) => {
-    switch(index) {
+    switch (index) {
       case 0: return illustrations.timer;
       case 1: return illustrations.cards;
       case 2: return illustrations.question;
@@ -188,6 +214,9 @@ function TutorialContent() {
     }
   };
 
+  // ---------------------------------------------------------------------------
+  // Render the Tutorial UI
+  // ---------------------------------------------------------------------------
   return (
     <div
       style={{
@@ -196,7 +225,8 @@ function TutorialContent() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        backgroundImage: "linear-gradient(135deg, rgba(42, 63, 84, 0.9), rgba(24, 34, 45, 0.95)), url('/tutbg-02.jpg')",
+        backgroundImage:
+          "linear-gradient(135deg, rgba(42, 63, 84, 0.9), rgba(24, 34, 45, 0.95)), url('/tutbg-02.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -205,7 +235,7 @@ function TutorialContent() {
         overflow: "hidden",
       }}
     >
-      {/* Animated Particles */}
+      {/* Animated Background Particles */}
       {particles.map((particle) => (
         <motion.div
           key={particle.id}
@@ -232,12 +262,16 @@ function TutorialContent() {
         />
       ))}
 
-      <div className="language-switcher" style={{ 
-        position: "absolute", 
-        top: "20px", 
-        right: "20px",
-        zIndex: 10,
-      }}>
+      {/* Language Switcher Button (Top Right) */}
+      <div
+        className="language-switcher"
+        style={{
+          position: "absolute",
+          top: "20px",
+          right: "20px",
+          zIndex: 10,
+        }}
+      >
         <motion.button
           onClick={() => router.push(`/tutorial?lang=${lang === "en" ? "fr" : "en"}`)}
           style={{
@@ -266,73 +300,84 @@ function TutorialContent() {
           <span>{lang === "en" ? "Français" : "English"}</span>
         </motion.button>
       </div>
-      
-      <header style={{ 
-        position: "absolute", 
-        top: "20px", 
-        left: "20px", 
-        display: "flex", 
-        alignItems: "center",
-        zIndex: 10,
-      }}>
+
+      {/* Header (Top Left) */}
+      <header
+        style={{
+          position: "absolute",
+          top: "20px",
+          left: "20px",
+          display: "flex",
+          alignItems: "center",
+          zIndex: 10,
+        }}
+      >
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-            backgroundColor: "rgba(0, 0, 0, 0.3)",
-            padding: "8px 16px",
-            borderRadius: "30px",
-            boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
-            backdropFilter: "blur(5px)",
-            border: "1px solid rgba(255, 255, 255, 0.1)",
-          }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              backgroundColor: "rgba(0, 0, 0, 0.3)",
+              padding: "8px 16px",
+              borderRadius: "30px",
+              boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
+              backdropFilter: "blur(5px)",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+            }}
+          >
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
             >
-              <div style={{
-                width: "36px", 
-                height: "36px", 
-                borderRadius: "50%", 
-                backgroundColor: "#2ecc71",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                boxShadow: "0 0 15px rgba(46, 204, 113, 0.5)",
-                position: "relative",
-              }}>
-                <div style={{
-                  width: "30px",
-                  height: "30px",
+              <div
+                style={{
+                  width: "36px",
+                  height: "36px",
                   borderRadius: "50%",
-                  backgroundImage: "radial-gradient(circle, #27ae60, #2ecc71)",
+                  backgroundColor: "#2ecc71",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  fontSize: "18px",
-                }}>
+                  boxShadow: "0 0 15px rgba(46, 204, 113, 0.5)",
+                  position: "relative",
+                }}
+              >
+                <div
+                  style={{
+                    width: "30px",
+                    height: "30px",
+                    borderRadius: "50%",
+                    backgroundImage: "radial-gradient(circle, #27ae60, #2ecc71)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "18px",
+                  }}
+                >
                   🌍
                 </div>
               </div>
             </motion.div>
-            <h1 style={{ 
-              fontSize: "1.5rem", 
-              margin: 0, 
-              fontWeight: "bold",
-              textShadow: "0px 0px 10px rgba(0,0,0,0.7)",
-              letterSpacing: "1px",
-            }}>
+            <h1
+              style={{
+                fontSize: "1.5rem",
+                margin: 0,
+                fontWeight: "bold",
+                textShadow: "0px 0px 10px rgba(0,0,0,0.7)",
+                letterSpacing: "1px",
+              }}
+            >
               Earth Dual
             </h1>
           </div>
         </motion.div>
       </header>
-      
+
       {/* Main Tutorial Card */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -352,54 +397,66 @@ function TutorialContent() {
         }}
       >
         {/* Animated Gradient Border */}
-        <div style={{
-          position: "absolute",
-          inset: 0,
-          padding: "2px",
-          borderRadius: "24px",
-          background: "linear-gradient(45deg, #2ecc71, transparent, #3498db, transparent, #2ecc71)",
-          backgroundSize: "400% 400%",
-          animation: "gradientBorder 8s ease infinite",
-          WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-          WebkitMaskComposite: "xor",
-          maskComposite: "exclude",
-          zIndex: -1,
-        }}>
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            padding: "2px",
+            borderRadius: "24px",
+            background: "linear-gradient(45deg, #2ecc71, transparent, #3498db, transparent, #2ecc71)",
+            backgroundSize: "400% 400%",
+            animation: "gradientBorder 8s ease infinite",
+            WebkitMask:
+              "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+            WebkitMaskComposite: "xor",
+            maskComposite: "exclude",
+            zIndex: -1,
+          }}
+        >
           <style jsx>{`
             @keyframes gradientBorder {
-              0% { background-position: 0% 50% }
-              50% { background-position: 100% 50% }
-              100% { background-position: 0% 50% }
+              0% {
+                background-position: 0% 50%;
+              }
+              50% {
+                background-position: 100% 50%;
+              }
+              100% {
+                background-position: 0% 50%;
+              }
             }
           `}</style>
         </div>
 
         <div style={{ padding: "40px" }}>
-          {/* Progress indicator */}
-          <div style={{ 
-            display: "flex", 
-            justifyContent: "center", 
-            marginBottom: "40px",
-            gap: "12px"
-          }}>
+          {/* Progress indicator for slides */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginBottom: "40px",
+              gap: "12px",
+            }}
+          >
             {slides.map((_, index) => (
               <motion.button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
                 initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ 
-                  opacity: 1, 
+                animate={{
+                  opacity: 1,
                   scale: 1,
-                  backgroundColor: index === currentSlide 
-                    ? "#2ecc71" 
-                    : index < currentSlide 
-                      ? "rgba(46, 204, 113, 0.5)" 
+                  backgroundColor:
+                    index === currentSlide
+                      ? "#2ecc71"
+                      : index < currentSlide
+                      ? "rgba(46, 204, 113, 0.5)"
                       : "rgba(255, 255, 255, 0.1)",
                 }}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                transition={{ 
-                  duration: 0.3, 
+                transition={{
+                  duration: 0.3,
                   delay: 0.1 * index,
                   type: "spring",
                   stiffness: 300,
@@ -416,14 +473,21 @@ function TutorialContent() {
               />
             ))}
           </div>
-          
-          <div style={{ display: "flex", flexDirection: "row", gap: "40px", alignItems: "center" }}>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              gap: "40px",
+              alignItems: "center",
+            }}
+          >
             {/* Left side: Illustration */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              style={{ 
+              style={{
                 flex: "0 0 180px",
                 display: "flex",
                 justifyContent: "center",
@@ -445,7 +509,7 @@ function TutorialContent() {
                 </motion.div>
               </AnimatePresence>
             </motion.div>
-            
+
             {/* Right side: Content */}
             <div style={{ flex: 1 }}>
               <AnimatePresence mode="wait">
@@ -455,58 +519,66 @@ function TutorialContent() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.5 }}
-                  style={{ 
-                    minHeight: "300px", 
-                    display: "flex", 
-                    flexDirection: "column", 
+                  style={{
+                    minHeight: "300px",
+                    display: "flex",
+                    flexDirection: "column",
                     justifyContent: "center",
                     alignItems: "flex-start",
                     textAlign: "left",
                   }}
                 >
-                  <div style={{
-                    backgroundColor: "rgba(46, 204, 113, 0.2)",
-                    borderRadius: "30px",
-                    padding: "6px 16px",
-                    marginBottom: "16px",
-                    display: "inline-block",
-                  }}>
+                  <div
+                    style={{
+                      backgroundColor: "rgba(46, 204, 113, 0.2)",
+                      borderRadius: "30px",
+                      padding: "6px 16px",
+                      marginBottom: "16px",
+                      display: "inline-block",
+                    }}
+                  >
                     <span style={{ fontSize: "14px", fontWeight: "bold" }}>
                       {lang === "fr" ? "ÉTAPE" : "STEP"} {currentSlide + 1}/{slides.length}
                     </span>
                   </div>
-                  
-                  <h2 style={{ 
-                    fontSize: "2.5rem", 
-                    marginBottom: "24px", 
-                    fontWeight: "800",
-                    background: "linear-gradient(135deg, #2ecc71, #3498db)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    textShadow: "0px 0px 15px rgba(46, 204, 113, 0.2)"
-                  }}>
+
+                  <h2
+                    style={{
+                      fontSize: "2.5rem",
+                      marginBottom: "24px",
+                      fontWeight: "800",
+                      background: "linear-gradient(135deg, #2ecc71, #3498db)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      textShadow: "0px 0px 15px rgba(46, 204, 113, 0.2)",
+                    }}
+                  >
                     {slides[currentSlide].icon} {slides[currentSlide].title}
                   </h2>
-                  
-                  <p style={{ 
-                    whiteSpace: "pre-line", 
-                    fontSize: "1.1rem",
-                    lineHeight: "1.7",
-                    color: "rgba(255, 255, 255, 0.9)",
-                    textShadow: "0px 0px 5px rgba(0,0,0,0.2)",
-                  }}>
+
+                  <p
+                    style={{
+                      whiteSpace: "pre-line",
+                      fontSize: "1.1rem",
+                      lineHeight: "1.7",
+                      color: "rgba(255, 255, 255, 0.9)",
+                      textShadow: "0px 0px 5px rgba(0,0,0,0.2)",
+                    }}
+                  >
                     {slides[currentSlide].content}
                   </p>
                 </motion.div>
               </AnimatePresence>
-              
+
               {/* Navigation buttons */}
-              <div style={{ 
-                display: "flex", 
-                justifyContent: "flex-start", 
-                gap: "12px",
-                marginTop: "30px"
-              }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  gap: "12px",
+                  marginTop: "30px",
+                }}
+              >
                 {currentSlide > 0 && (
                   <motion.button
                     onClick={goPrev}
@@ -531,12 +603,12 @@ function TutorialContent() {
                     <span>{lang === "fr" ? "Précédent" : "Previous"}</span>
                   </motion.button>
                 )}
-                
+
                 <motion.button
                   onClick={goNext}
-                  whileHover={{ 
-                    scale: 1.05, 
-                    backgroundColor: isLastSlide ? "#27ae60" : "#2980b9" 
+                  whileHover={{
+                    scale: 1.05,
+                    backgroundColor: isLastSlide ? "#27ae60" : "#2980b9",
                   }}
                   whileTap={{ scale: 0.95 }}
                   style={{
@@ -567,7 +639,6 @@ function TutorialContent() {
   );
 }
 
-
 // -----------------------------------------------------------------------------
 // TutorialPage Component - Suspense Wrapper & Main Export
 // Wraps the TutorialContent component in a Suspense component that provides a fallback UI
@@ -576,60 +647,76 @@ function TutorialContent() {
 // -----------------------------------------------------------------------------
 export default function TutorialPage() {
   return (
-    <Suspense fallback={
-      <div style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#1a1a1a",
-        color: "#fff",
-      }}>
-        <div style={{
-          position: "relative",
-          width: "80px",
-          height: "80px",
-          marginBottom: "24px",
-        }}>
-          <div style={{
-            position: "absolute",
-            width: "80px",
-            height: "80px",
-            border: "4px solid rgba(255,255,255,0.1)",
-            borderRadius: "50%",
-            borderTop: "4px solid #2ecc71",
-            animation: "spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite",
-          }}></div>
-          <div style={{
-            position: "absolute",
-            width: "60px",
-            height: "60px",
-            left: "10px",
-            top: "10px",
-            border: "4px solid transparent",
-            borderRadius: "50%",
-            borderRight: "4px solid #3498db",
-            animation: "spin 1.8s cubic-bezier(0.5, 0, 0.5, 1) infinite",
-          }}></div>
+    <Suspense
+      fallback={
+        <div
+          style={{
+            minHeight: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "#1a1a1a",
+            color: "#fff",
+          }}
+        >
+          <div
+            style={{
+              position: "relative",
+              width: "80px",
+              height: "80px",
+              marginBottom: "24px",
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                width: "80px",
+                height: "80px",
+                border: "4px solid rgba(255,255,255,0.1)",
+                borderRadius: "50%",
+                borderTop: "4px solid #2ecc71",
+                animation: "spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite",
+              }}
+            ></div>
+            <div
+              style={{
+                position: "absolute",
+                width: "60px",
+                height: "60px",
+                left: "10px",
+                top: "10px",
+                border: "4px solid transparent",
+                borderRadius: "50%",
+                borderRight: "4px solid #3498db",
+                animation: "spin 1.8s cubic-bezier(0.5, 0, 0.5, 1) infinite",
+              }}
+            ></div>
+          </div>
+          <style jsx>{`
+            @keyframes spin {
+              0% {
+                transform: rotate(0deg);
+              }
+              100% {
+                transform: rotate(360deg);
+              }
+            }
+          `}</style>
+          <div
+            style={{
+              background: "linear-gradient(135deg, #2ecc71, #3498db)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              fontSize: "1.5rem",
+              fontWeight: "bold",
+            }}
+          >
+            Loading Earth Dual...
+          </div>
         </div>
-        <style jsx>{`
-          @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
-        `}</style>
-        <div style={{
-          background: "linear-gradient(135deg, #2ecc71, #3498db)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          fontSize: "1.5rem",
-          fontWeight: "bold",
-        }}>
-          Loading Earth Dual...
-        </div>
-      </div>
-    }>
+      }
+    >
       <TutorialContent />
     </Suspense>
   );
